@@ -13,7 +13,12 @@ public enum Scene
 	Unknown,
 	Title,
 	Game,
-	FirstLibraryScene
+	LibraryScene,
+	stage01,
+	stage02,
+	stage03,
+	stage04,
+	stage05,
 }
 
 public enum Sound

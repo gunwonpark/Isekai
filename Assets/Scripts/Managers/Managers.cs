@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Managers : MonoBehaviour
@@ -10,8 +11,12 @@ public class Managers : MonoBehaviour
 	#region Contents
 	GameManagerEx _game = new GameManagerEx();
 	HappinessManager _happy = new HappinessManager();
+	StageManager _stage = null;
+	DialogueManager _dialogue = null;
 	public static GameManagerEx Game { get { return Instance._game; } }
 	public static HappinessManager Happy { get { return Instance._happy; } }
+	public static StageManager Stage { get { return Instance._stage; } }
+	public static DialogueManager Dialogue { get { return Instance._dialogue; } }
 	#endregion
 
 	#region Core
@@ -42,6 +47,8 @@ public class Managers : MonoBehaviour
 
 			s_instance._sound.Init();
 			s_instance._happy.Init();
+			s_instance.AddComponent<DialogueManager>();
+			s_instance.AddComponent<StageManager>();
 		}
 	}
 
