@@ -10,6 +10,7 @@ public class Stage01Scene : BaseScene
 
 		SceneType = Scene.stage01;
 		//Managers.UI.ShowSceneUI<UI_GameScene>();
+		Managers.Sound.Play("anotherWorldBgm",Sound.Bgm);
 	}
 
 	public override void Clear()

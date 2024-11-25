@@ -7,9 +7,11 @@ public class DialogueManager : MonoBehaviour
 	// 스테이지별 대사 목록을 추가로 관리할 수 있습니다.
 	private Dictionary<string, string[]> stageDialogues = new Dictionary<string, string[]>();
 
+	private StageManager stageManager;
+
 	void Start()
 	{
-		stageDialogues.Add("Stage01", new string[] {
+		stageDialogues.Add("stage01", new string[] {
 		"역시 명문 가문의 품격을 갖춘 완벽한 인물이셔",
 		"공작님의 재능은 신이 내리신 선물이야.",
 		"공작님의 외모는 신이 내리신 예술 작품 같아.",
@@ -19,7 +21,7 @@ public class DialogueManager : MonoBehaviour
 	});
 
 		// Stage3 대사 추가
-		stageDialogues.Add("Stage02", new string[] {
+		stageDialogues.Add("stage02", new string[] {
 		"평범하기 짝이 없다면서 어딜 나서려고 하는 거야?",
 		"넌 진짜 존재감이라고는 1도 없다",
 		"외모도 능력도 특별할 것 없는 사람에게 뭘 기대하겠어.",
@@ -29,7 +31,7 @@ public class DialogueManager : MonoBehaviour
 	});
 
 		// Stage3 대사 추가
-		stageDialogues.Add("Stage03", new string[] {
+		stageDialogues.Add("stage03", new string[] {
 		"너의 지혜와 재치는 그 누구도 따라올 수 없을거야",
 		"유머와 영리함이 너의 가장 큰 매력이야.",
 		"너는 사람들 사이에서도 두각을 드러내는 특별한 존재야.",
@@ -39,7 +41,7 @@ public class DialogueManager : MonoBehaviour
 		"너의 적응력은 정말 대단해",
 	});
 		// Stage3 대사 추가
-		stageDialogues.Add("Stage04", new string[] {
+		stageDialogues.Add("stage04", new string[] {
 		"그 직업으로는 돈 많이 못 벌지 않아?",
 		"진짜 아는 게 뭐야",
 		"너네 가족들은 너한테 기대 많이 하셨을텐데...",
@@ -51,7 +53,7 @@ public class DialogueManager : MonoBehaviour
 		"너한테 너무 큰 기대였구나.",
 		"언제까지 힘들래?",
 	});
-		stageDialogues.Add("Stage05", new string[] {
+		stageDialogues.Add("stage05", new string[] {
 		"너의 존재만으로도 세상이 축복받은 것 같아",
 		"그는 희망을 불어넣는 빛과 같은 존재야!!",
 		"너의 곁에는 항상 평화와 경외심이 가득해.",
@@ -63,7 +65,16 @@ public class DialogueManager : MonoBehaviour
 		"나도 너처럼 행복해지고 싶어",
 	});
 		// 다른 스테이지 추가 가능
+		stageManager = FindObjectOfType<StageManager>();
+		if (stageManager == null)
+		{
+			Debug.LogError("StageManager를 찾을 수 없습니다.");
+		}
+
+
 		StartCoroutine(SpawnDialogues());
+		StartCoroutine(EndingCoroutine());
+
 	}
 
 	IEnumerator SpawnDialogues()
@@ -71,10 +82,16 @@ public class DialogueManager : MonoBehaviour
 		while (true)
 		{
 			yield return new WaitForSeconds(2f); // 대화창 생성 간격
+			Debug.Log("SpawnDialogues: Coroutine 실행 중");
 
 			string currentScene = Managers.Scene.CurrentScene.SceneType.ToString();
+			Debug.Log($"Current Scene: {currentScene}");
+
 			if (!stageDialogues.ContainsKey(currentScene))
+			{
+				Debug.LogWarning($"스테이지 '{currentScene}'에 대한 대사가 존재하지 않습니다.");
 				continue;
+			}
 
 			string[] currentDialogues = stageDialogues[currentScene];
 			int index = Random.Range(0, currentDialogues.Length);
@@ -101,7 +118,7 @@ public class DialogueManager : MonoBehaviour
 			);
 
 			// 현재 대화 수 관리
-			Managers.Stage.OnDialogueSpawned();
+			stageManager.OnDialogueSpawned();
 		}
 	}
 
@@ -127,15 +144,15 @@ public class DialogueManager : MonoBehaviour
 		// 스테이지별 요구되는 키 개수를 반환
 		switch (sceneName)
 		{
-			case "Stage01":
+			case "stage01":
 				return 5; // 예: 4개의 키 요구
-			case "Stage02":
+			case "stage02":
 				return 5;
-			case "Stage03":
+			case "stage03":
 				return 5;
-			case "Stage04":
+			case "stage04":
 				return 5;
-			case "Stage05":
+			case "stage05":
 				return 5;
 			default:
 				return 4;
@@ -147,15 +164,15 @@ public class DialogueManager : MonoBehaviour
 		// 스테이지별 제한 시간 설정
 		switch (sceneName)
 		{
-			case "Stage01":
+			case "stage01":
 				return 3f;
-			case "Stage02":
+			case "stage02":
 				return 1.5f;
-			case "Stage03":
+			case "stage03":
 				return 2f;
-			case "Stage04":
+			case "stage04":
 				return 1f;
-			case "Stage05":
+			case "stage05":
 				return 2f;
 			default:
 				return 3f;
@@ -167,15 +184,15 @@ public class DialogueManager : MonoBehaviour
 		// 스테이지별 행복도 증가량 설정
 		switch (sceneName)
 		{
-			case "Stage01":
+			case "stage01":
 				return 40;
-			case "Stage02":
+			case "stage02":
 				return 5;
-			case "Stage03":
+			case "stage03":
 				return 20;
-			case "Stage04":
+			case "stage04":
 				return 5;
-			case "Stage05":
+			case "stage05":
 				return 1;
 			default:
 				return 40;
@@ -187,15 +204,15 @@ public class DialogueManager : MonoBehaviour
 		// 스테이지별 행복도 감소량 설정
 		switch (sceneName)
 		{
-			case "Stage01":
+			case "stage01":
 				return 5;
-			case "Stage02":
+			case "stage02":
 				return 20;
-			case "Stage03":
+			case "stage03":
 				return 5;
-			case "Stage04":
+			case "stage04":
 				return 10;
-			case "Stage05":
+			case "stage05":
 				return 5;
 			default:
 				return 10;
@@ -210,5 +227,12 @@ public class DialogueManager : MonoBehaviour
 	private void OnDialogueFail(int happinessDecrease)
 	{
 		Managers.Happy.ChangeHappiness(happinessDecrease);
+	}
+
+	private IEnumerator EndingCoroutine()
+	{
+		yield return new WaitForSeconds(10.0f);
+		Managers.Scene.LoadScene(Scene.EndingScene);
+
 	}
 }

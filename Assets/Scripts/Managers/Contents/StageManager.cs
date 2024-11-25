@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
@@ -10,10 +11,13 @@ public class StageManager : MonoBehaviour
 
 	private int currentDialogueCount = 0;
 
+	private string currentSceneName;
+
 	void Start()
 	{
 		// 스테이지 시작 시 초기화
 		currentDialogueCount = 0;
+		currentSceneName = SceneManager.GetActiveScene().name;
 	}
 
 	void Update()
@@ -38,7 +42,7 @@ public class StageManager : MonoBehaviour
 	private void ClearStage()
 	{
 		// 포탈 생성
-		GameObject portal = Managers.Resource.Instantiate("Prefabs/Portal", Managers.UI.Root.transform);
+		GameObject portal = Managers.Resource.Instantiate("Portal", Managers.UI.Root.transform);
 		Portal portalScript = portal.GetComponent<Portal>();
 		portalScript.targetSceneName = GetNextSceneName();
 
@@ -48,9 +52,18 @@ public class StageManager : MonoBehaviour
 
 	private string GetNextSceneName()
 	{
-		// 현재 씬의 다음 씬 이름을 반환하는 로직 구현
-		// 예시로 "NextStage" 반환
-		return "NextStage";
+		switch (currentSceneName)
+		{
+			case "stage01":
+				return "stage02";
+			case "stage02":
+				return "FirstLibrary";
+			case "stage03":
+				return "stage04";
+			case "stage04":
+				return "FirstLibrary";
+		}
+		return null;
 	}
 
 	private void FailStage()

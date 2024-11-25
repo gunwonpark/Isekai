@@ -20,10 +20,10 @@ public class HappinessManager
 			OnHappinessChanged?.Invoke(_happiness);
 			Debug.Log($"Happiness: {_happiness}");
 
-			if (_happiness <= _minHappiness)
-			{
-				Managers.Game.GameOver();
-			}
+			//if (_happiness <= 100)
+			//{
+			//	Managers.Scene.LoadScene(Scene.EndingScene);
+			//}
 		}
 	}
 	public float MaxHappiness { get { return _maxHappiness; } }

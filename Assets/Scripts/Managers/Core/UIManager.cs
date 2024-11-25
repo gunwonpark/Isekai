@@ -96,7 +96,10 @@ public class UIManager
 	public void ClosePopupUI(UI_Popup popup)
 	{
 		if (_popupStack.Count == 0)
+		{
+			Debug.LogWarning("´ÝÀ» ÆË¾÷ÀÌ ¾ø½À´Ï´Ù.");
 			return;
+		}
 
 		if (_popupStack.Peek() != popup)
 		{

@@ -8,7 +8,7 @@ public class MiniGameScene : BaseScene
 	{
 		base.Init();
 
-		SceneType = Scene.Game;
+		SceneType = Scene.GameScene;
 		//Managers.UI.ShowSceneUI<UI_GameScene>();
 
 	}

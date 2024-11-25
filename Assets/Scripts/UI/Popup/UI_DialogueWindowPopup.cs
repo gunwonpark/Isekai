@@ -61,6 +61,8 @@ public class UI_DialogueWindowPopup : UI_Popup
 			}
 		}
 
+		SetRandomPosition();
+
 		countdownCoroutine = StartCoroutine(Countdown());
 	}
 
@@ -90,18 +92,62 @@ public class UI_DialogueWindowPopup : UI_Popup
 		}
 	}
 
+	/// <summary>
+	/// 화면의 오른쪽 또는 왼쪽에 랜덤한 위치로 팝업 배치
+	/// </summary>
+	private void SetRandomPosition()
+	{
+		RectTransform rectTransform = GetComponent<RectTransform>();
+		if (rectTransform == null)
+		{
+			Debug.LogError("RectTransform이 필요합니다.");
+			return;
+		}
+
+		// 화면 크기 가져오기
+		Canvas canvas = GetComponentInParent<Canvas>();
+		if (canvas == null)
+		{
+			Debug.LogError("Canvas가 필요합니다.");
+			return;
+		}
+
+		// anchor를 설정하여 캔버스 전체를 기준으로 잡음
+		rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+		rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+		rectTransform.pivot = new Vector2(0.5f, 0.5f);
+
+		// Canvas의 화면 너비와 높이
+		RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+		float canvasWidth = canvasRect.rect.width;
+		float canvasHeight = canvasRect.rect.height;
+
+		// 랜덤 X 위치 (왼쪽 또는 오른쪽)
+		float randomX = Random.value < 0.5f ? -canvasWidth / 4f : canvasWidth / 4f;
+
+		// Y 위치는 중앙에 가까운 랜덤 값
+		float randomY = Random.Range(-canvasHeight / 4f, canvasHeight / 4f);
+
+		// 팝업의 위치 설정
+		rectTransform.anchoredPosition = new Vector2(randomX, randomY);
+
+		Debug.Log($"Canvas Width: {canvasRect.rect.width}, Canvas Height: {canvasRect.rect.height}");
+		Debug.Log($"Random Position: X={randomX}, Y={randomY}");
+		Debug.Log($"Final Anchored Position: {rectTransform.anchoredPosition}");
+	}
+
 	private void Success()
 	{
 		if (countdownCoroutine != null)
 			StopCoroutine(countdownCoroutine);
 
 		onSuccess?.Invoke(happinessIncrease);
-		ClosePopupUI();
+		Managers.UI.ClosePopupUI();
 	}
 
 	private void Fail()
 	{
 		onFail?.Invoke(happinessDecrease);
-		ClosePopupUI();
+		Managers.UI.ClosePopupUI();
 	}
 }

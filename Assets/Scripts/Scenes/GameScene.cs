@@ -8,9 +8,9 @@ public class GameScene : BaseScene
 	{
 		base.Init();
 
-		SceneType = Scene.Game;
+		SceneType = Scene.GameScene;
 		//Managers.UI.ShowSceneUI<UI_GameScene>();
-
+		Managers.Sound.Play("realWorldBgm", Sound.Bgm);
 	}
 
 	public override void Clear()

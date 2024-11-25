@@ -9,7 +9,7 @@ public class LibraryPortal : MonoBehaviour
 	{
 		if (collision.gameObject.CompareTag("Player"))
 		{
-			SceneManager.LoadScene("02DukeWorldScene");
+			Managers.Scene.LoadScene(Scene.FirstLibrary);
 		}
 	}
 }

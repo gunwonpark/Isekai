@@ -8,8 +8,8 @@ public class LibraryScene : BaseScene
 	{
 		base.Init();
 
-		SceneType = Scene.LibraryScene;
-		//Managers.UI.ShowSceneUI<UI_GameScene>();
+		SceneType = Scene.FirstLibrary;
+		Managers.UI.ShowPopupUI<UI_BookPopup>();
 	}
 
 	public override void Clear()
