@@ -10,8 +10,9 @@ public class UI_LetterPopup : UI_Popup
 
 	private string _dialogues = "이 세계에 지친 당신.\n이 세계에 싫증을 느낀 당신.\n이 세계를 리셋하고\n 이세계로 떠나고픈 당신\n\n그런 당신에게 추천합니다.\n\n'이세계 도서관'에서 행복하고 아름다운 이세계를 체험하고 행복을 되찾아보세요.";
 
-	private void Start()
+	public override void Init()
 	{
+		base.Init();
 		_letterText.text = "";
 		StartCoroutine(typingEffectCo(_dialogues));
 	}

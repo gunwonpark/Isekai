@@ -5,27 +5,6 @@ using UnityEngine.UI;
 
 public class HappinessHUD : UI_Scene
 {
-	#region enum
-	enum GameObjects
-	{
-		Slider
-	}
-	enum Buttons
-	{
-		// 필요한 경우 추가
-	}
-
-	enum Texts
-	{
-		// 필요한 경우 추가
-	}
-
-	enum Images
-	{
-		Fill
-	}
-	#endregion
-
 	[SerializeField] private Slider _happinessSlider;
 	[SerializeField] private Image _gaugeBarImage;
 
@@ -48,9 +27,6 @@ public class HappinessHUD : UI_Scene
 	public override void Init()
 	{
 		base.Init();
-
-		Bind<Slider>(typeof(GameObjects));
-		Bind<Image>(typeof(Images));
 
 		_happinessSlider.value = Managers.Happy.Happiness / Managers.Happy.MaxHappiness;
 		UpdateHappinessUI(Managers.Happy.Happiness);

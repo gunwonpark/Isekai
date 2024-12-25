@@ -15,6 +15,6 @@ public class UI_NoticePopup : UI_Popup
 
 	private void OnClickNextSceneButton()
 	{
-		Managers.Scene.LoadScene(Scene.stage01);
+		Managers.Scene.LoadScene(Scene.GameScene);
 	}
 }

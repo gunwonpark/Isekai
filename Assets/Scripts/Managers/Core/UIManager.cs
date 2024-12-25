@@ -132,24 +132,4 @@ public class UIManager
 		CloseAllPopupUI();
 		_sceneUI = null;
 	}
-
-	//public void UpdateBackgroundColor(float happiness)
-	//{
-	//	Camera mainCamera = Camera.main;
-	//	if (mainCamera == null)
-	//	{
-	//		Debug.LogError("Main Camera is not found.");
-	//		return;
-	//	}
-
-	//	if (happiness < 50)
-	//	{
-	//		mainCamera.backgroundColor = Color.black;
-	//	}
-	//	else
-	//	{
-	//		mainCamera.backgroundColor = Color.white;
-	//	}
-	//}
-
 }

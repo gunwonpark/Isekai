@@ -19,11 +19,6 @@ public class PlayerAnimator : MonoBehaviour
 		}
 
 		_animator.SetFloat("Speed", Mathf.Abs(x) * Mathf.Abs(_movement.Velocity.x));
-		//if (_movement.IsGrounded)
-		//{
-		//}
-
-		//_animator.SetBool("isJump", !_movement.IsGrounded);
 	}
 
 	private void SpriteFlipX(float x)

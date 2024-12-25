@@ -8,7 +8,7 @@ public class LibraryScene : BaseScene
 	{
 		base.Init();
 
-		SceneType = Scene.FirstLibrary;
+		SceneType = Scene.LibraryScene;
 		Managers.UI.ShowPopupUI<UI_BookPopup>();
 	}
 

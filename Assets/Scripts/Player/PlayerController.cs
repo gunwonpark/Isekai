@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-	//[SerializeField] private KeyCode jumpKeyCode = KeyCode.Space;
-
 	private MovementRigidbody2D _movement;
 	private PlayerAnimator _playerAnimator;
 	public bool isMoving = false;
@@ -53,12 +51,4 @@ public class PlayerController : MonoBehaviour
 	{
 		_movement.MoveTo(x);
 	}
-
-	//private void UpdateJump()
-	//{
-	//	if (Input.GetKeyDown(jumpKeyCode))
-	//	{
-	//		_movement.Jump();
-	//	}
-	//}
 }

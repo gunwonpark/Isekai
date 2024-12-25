@@ -19,8 +19,9 @@ public class UI_BlamePopup : UI_Popup
 
 	private float _glitchDuration = 1f; // 글리치 효과 지속 시간
 
-	private void Start()
+	public override void Init()
 	{
+		base.Init();
 		// 모든 대화 풍선 이미지를 비활성화하고 텍스트를 초기화합니다.
 		for (int i = 0; i < _talkBalloonImages.Length; i++)
 		{
@@ -30,7 +31,7 @@ public class UI_BlamePopup : UI_Popup
 
 		// 대사 출력 코루틴 시작
 		StartCoroutine(ShowDialogues());
-		_playerController = FindObjectOfType<PlayerController>();		
+		_playerController = FindObjectOfType<PlayerController>();
 	}
 
 	private IEnumerator ShowDialogues()

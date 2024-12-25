@@ -8,9 +8,8 @@ public class TitleScene : BaseScene
 	{
 		base.Init();
 
-		SceneType = Scene.Title;
-		//Managers.UI.ShowSceneUI<UI_TitleScene>();
-
+		SceneType = Scene.TitleScene;
+		Managers.UI.ShowSceneUI<UI_TitleScene>();
 	}
 
 	public override void Clear()

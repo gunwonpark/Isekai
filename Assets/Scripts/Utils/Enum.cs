@@ -11,14 +11,10 @@ public enum State
 public enum Scene
 {
 	Unknown,
-	Title,
+	TitleScene,
+	IntroScene,
+	LibraryScene,
 	GameScene,
-	FirstLibrary,
-	stage01,
-	stage02,
-	stage03,
-	stage04,
-	stage05,
 	EndingScene
 }
 
