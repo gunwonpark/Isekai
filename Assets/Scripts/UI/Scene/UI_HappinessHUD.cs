@@ -29,7 +29,11 @@ public class HappinessHUD : UI_Scene
 		base.Init();
 
 		_happinessSlider.value = Managers.Happy.Happiness / Managers.Happy.MaxHappiness;
-		UpdateHappinessUI(Managers.Happy.Happiness);
+		UpdateHappinessUI(Managers.Happy.Happiness);		
+	}
+
+	private void OnEnable()
+	{
 		Managers.Happy.OnHappinessChanged += UpdateHappinessUI;
 	}
 

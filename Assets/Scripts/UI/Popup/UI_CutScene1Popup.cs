@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UI_CutScenePopup : UI_Popup
+public class UI_CutScene1Popup : UI_Popup
 {
 	[SerializeField] private Image _letterImage;
 	[SerializeField] private TMP_Text _letterText;
@@ -13,7 +13,11 @@ public class UI_CutScenePopup : UI_Popup
 
 	public override void Init()
 	{
-		base.Init();
-		
+		base.Init();	
+	}
+
+	public void ClosePopup()
+	{
+		Managers.UI.ClosePopupUI(this);
 	}
 }

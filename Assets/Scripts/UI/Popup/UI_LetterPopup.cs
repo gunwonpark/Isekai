@@ -26,10 +26,8 @@ public class UI_LetterPopup : UI_Popup
 		}
 
 		yield return new WaitForSeconds(5.0f);
-		GameObject cutscene2 = Managers.Resource.Instantiate("Cutscene/cutscene2 Variant");
+		Managers.UI.ShowPopupUI<UI_CutScene2Popup>();
 
-		// 10초 후에 삭제 예약
-		Destroy(cutscene2, 4.5f);
-		Managers.UI.ClosePopupUI();
+		gameObject.SetActive(false);
 	}
 }

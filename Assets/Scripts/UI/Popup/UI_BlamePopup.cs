@@ -7,7 +7,6 @@ public class UI_BlamePopup : UI_Popup
 {
 	[SerializeField] private Image[] _talkBalloonImages;
 	[SerializeField] private TMP_Text[] _dialogueTexts;
-	[SerializeField] private PlayerController _playerController;
 
 	private string[] _dialogues = {
 		"너만 뒤쳐지고 있는 거 아니야?",
@@ -31,7 +30,6 @@ public class UI_BlamePopup : UI_Popup
 
 		// 대사 출력 코루틴 시작
 		StartCoroutine(ShowDialogues());
-		_playerController = FindObjectOfType<PlayerController>();
 	}
 
 	private IEnumerator ShowDialogues()
@@ -62,7 +60,7 @@ public class UI_BlamePopup : UI_Popup
 		yield return StartCoroutine(FadeOutDialogues());
 
 		// 모든 처리가 끝난 후 팝업 닫기 또는 다음 행동 수행
-		ClosePopupUI();
+		//ClosePopupUI();
 	}
 
 	private IEnumerator TypeEffect(TMP_Text textComponent, string dialogue)
@@ -203,14 +201,8 @@ public class UI_BlamePopup : UI_Popup
 				_talkBalloonImages[i].gameObject.SetActive(false);
 			}
 		}
-		GameObject go = Managers.Resource.Instantiate("Cutscene/cutscene1 Variant");
-		yield return new WaitForSeconds(8.5f);
-		Managers.Resource.Destroy(go);
-		Managers.UI.ShowPopupUI<UI_LetterPopup>();
-		yield return new WaitForSeconds(10.5f);
-		Debug.Log("Hello");
-		Managers.Resource.Instantiate("Cutscene/after cutscene Variant");
-		yield return new WaitForSeconds(6f);
-		_playerController.isMoving = true;
+
+		GameObject go = new GameObject { name = "CutSceneDirector" };
+		go.AddComponent<CutSceneDirector>();		
 	}
 }
