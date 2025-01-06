@@ -9,7 +9,7 @@ public class LibraryScene : BaseScene
 		base.Init();
 
 		SceneType = Scene.LibraryScene;
-		Managers.UI.ShowPopupUI<UI_BookPopup>();
+		//Managers.UI.ShowPopupUI<UI_BookPopup>();
 	}
 
 	public override void Clear()

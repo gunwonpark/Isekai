@@ -1584,6 +1584,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_CutScene3Popup
       objectReference: {fileID: 0}
+    - target: {fileID: 7991111464978784758, guid: ab40e1833a801ae44a206b1a740c2006, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2080,10 +2084,6 @@ PrefabInstance:
     - target: {fileID: 4147007341724875850, guid: 078e5d60c6bb6ea459f50ef49ba67d12, type: 3}
       propertyPath: m_Name
       value: UI_LetterPopup
-      objectReference: {fileID: 0}
-    - target: {fileID: 4147007341724875850, guid: 078e5d60c6bb6ea459f50ef49ba67d12, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

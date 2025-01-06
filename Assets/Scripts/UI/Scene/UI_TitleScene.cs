@@ -38,10 +38,10 @@ public class UI_TitleScene : UI_Scene
 	private IEnumerator PlayIntroSequence()
 	{
 		// 장면 1
-		yield return StartCoroutine(TypeAndWait(_dialogueText, dialogue1, 0.05f));
+		yield return StartCoroutine(TypeAndWait(_dialogueText, dialogue1, 0.075f));
 		yield return StartCoroutine(FadeOutText());
 
-		yield return StartCoroutine(TypeAndWait(_dialogueText, dialogue2, 0.05f));
+		yield return StartCoroutine(TypeAndWait(_dialogueText, dialogue2, 0.075f));
 		yield return StartCoroutine(FadeOutText());
 
 		// 장면 2
@@ -55,7 +55,7 @@ public class UI_TitleScene : UI_Scene
 		// 장면 3
 		// 유저 입력 완료 후 마지막 대사 출력
 		_dialogueText.text = "";
-		yield return StartCoroutine(TypeAndWait(_dialogueText, dialogue3, 0.05f));
+		yield return StartCoroutine(TypeAndWait(_dialogueText, dialogue3, 0.075f));
 		yield return StartCoroutine(FadeOutText());
 
 		// 게임 씬으로 페이드인

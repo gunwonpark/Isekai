@@ -10,11 +10,10 @@ public class UI_NoticePopup : UI_Popup
 	public override void Init()
 	{
 		base.Init();
-		_button.onClick.AddListener(OnClickNextSceneButton);
 	}
 
 	private void OnClickNextSceneButton()
 	{
-		Managers.Scene.LoadScene(Scene.GameScene);
+		
 	}
 }

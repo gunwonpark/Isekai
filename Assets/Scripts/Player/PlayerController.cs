@@ -21,11 +21,12 @@ public class PlayerController : MonoBehaviour
 	private void Start()
 	{
 		currentScene = SceneManager.GetActiveScene().name;
+		Debug.Log(currentScene);
 	}
 
 	private void Update()
 	{
-		if (isMoving == true || currentScene != "01GameScene")
+		if (isMoving == true || currentScene != "IntroScene")
 		{
 			float x = 0f;
 
