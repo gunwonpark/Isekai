@@ -16,6 +16,6 @@ public class CutScene2AnimationEvents : MonoBehaviour
 	public void OnCutScene2AnimationEnd()
 	{
 		cutScene2Popup.ClosePopupUI();
-		Managers.UI.ShowPopupUI<UI_CutScene3Popup>();
+		Managers.Resource.Instantiate("CutScene/after cutscene Variant");
 	}
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7600892786804439048}
   - component: {fileID: 1999070291870130548}
   - component: {fileID: 9084271240370274757}
+  - component: {fileID: -1577317389032681736}
   m_Layer: 0
   m_Name: after cutscene Variant
   m_TagString: Untagged
@@ -106,3 +107,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-1577317389032681736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6942504536277542377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f759e41b30a9eb48824584caa83eede, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
