@@ -9,7 +9,9 @@ public class GameSceneEx: BaseScene
 		base.Init();
 
 		SceneType = Scene.GameScene;
-		//Managers.UI.ShowSceneUI<UI_GameScene>();
+
+        VinterWorldInfo world = new VinterWorldInfo();
+        Managers.UI.ShowPopupUI<UI_MiniGame>().Init(world);
 		Managers.Sound.Play("anotherWorldBgm",Sound.Bgm);
 	}
 

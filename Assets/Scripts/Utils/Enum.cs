@@ -39,3 +39,19 @@ public enum MouseEvent
 	Click,
 }
 
+public enum MiniGameDifficulty
+{
+    Easy,
+    Normal,
+    Hard,
+
+    Max
+}
+
+public enum WorldType
+{
+    Vinter,
+    Chaumm,
+    Gang,
+    Pelmanus,
+}
