@@ -15,7 +15,9 @@ public enum Scene
 	IntroScene,
 	LibraryScene,
 	GameScene,
-	EndingScene
+	EndingScene,
+
+	TestScene,
 }
 
 public enum Sound
