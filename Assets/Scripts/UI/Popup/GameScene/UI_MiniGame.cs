@@ -1,321 +1,197 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// 시간에 따라 게이지가 점점 줄어든다
-/// 스페이스바를 누르면 게이지가 조금씩 찬다
-/// 게임지를 100까지 해우면 행복도 상승 그렇지 않으면 행복도 하락
-/// 
-/// 난이도는 하 중 상으로 나누어져 있다
-/// 하 :
-///     일반적인 상황
-///     
-/// 중 :
-///     키보드 키를 모두 누른다음 스페리스바를 눌러야 게이지가 찬다 ( 3 ~ 6개 랜덤)
-///     
-/// 상 :
-///     동시에 눌러야 되는 키보드도 등장한다
-/// </summary>
-
-
-#region Data
-struct MiniGameInfo
-{
-    public MiniGameDifficulty difficulty;
-    public int startGauge;
-    public int perDecreaseGauge;
-    public int perIncreaseGauge;
-    public int succedGauge;
-    public int failGauge;
-    public int runGauge;
-    public int limitTime;
-
-    public List<KeyCode> requiredKeys;
-    public List<int> requiredKeyCount;
-    public List<bool> canPressConcurrent;
-    public string dialog;
-}
-
-public abstract class WorldInfo
-{
-    public WorldType worldType;
-
-    public List<int> difficulty = new List<int>();
-    public List<int> startGauge = new List<int>();
-    public List<int> perDecreaseGauge = new List<int>();
-    public List<int> perIncreaseGauge = new List<int>();
-    public List<int> succedGauge = new List<int>();
-    public List<int> failGauge = new List<int>();
-    public List<int> runGauge = new List<int>();
-    public List<int> limitTime = new List<int>();
-
-    public readonly List<string> dialog = new List<string>();
-
-    public WorldInfo(WorldType worldType)
-    {
-        this.worldType = worldType;
-    }
-}
-
-public class VinterWorldInfo : WorldInfo
-{
-    public VinterWorldInfo() : base(WorldType.Vinter)
-    {
-        difficulty.AddRange(new List<int>() { 6, 0, 0 });
-        startGauge.AddRange(new List<int>() { 50, 50, 50 });
-        perDecreaseGauge.AddRange(new List<int>() { -10, -10, -10 });
-        perIncreaseGauge.AddRange(new List<int>() { 3, 3, 3 });
-        succedGauge.AddRange(new List<int>() { 40, 40, 40 });
-        failGauge.AddRange(new List<int>() { -10, -10, -10 });
-        runGauge.AddRange(new List<int>() { -20, -20, -20 });
-        limitTime.AddRange(new List<int>() { 4, 4, 4 });
-
-        dialog.AddRange(new List<string>
-        {
-            "역시 명문 가문의 품격을 갖춘 완벽한 인물이셔!",
-            "공작님의 재능은 신이 내리신 선물이야.",
-            "공작님의 외모는 신이 내리신 예술 작품 같아.",
-            "공작님을 칭송하는 것만으로도 영광이야!",
-            "그의 존재 자체가 이 국가에 큰 축복이지.",
-            "모든 영애가 공작님의 외모만 보면 눈물을 흘린다지?"
-        });
-    }
-}
-
-public class ChaummWorldInfo : WorldInfo
-{
-    public readonly List<KeyCode> requireKeys = new List<KeyCode>()
-    { KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.A, KeyCode.S, KeyCode.D };
-    public List<int> requiredKeyCount = new List<int>() { 0, 3, 0 };
-    public List<bool> canPressConcurrent = new List<bool>() { false, false, false };
-    public ChaummWorldInfo() : base(WorldType.Chaumm)
-    {
-        difficulty.AddRange(new List<int>() { 3, 4, 0 });
-        startGauge.AddRange(new List<int>() { 50, 40, 50 });
-        perDecreaseGauge.AddRange(new List<int>() { -10, -15, -10 });
-        perIncreaseGauge.AddRange(new List<int>() { 5, 5, 3 });
-        succedGauge.AddRange(new List<int>() { 30, 30, 40 });
-        failGauge.AddRange(new List<int>() { -10, -10, -10 });
-        runGauge.AddRange(new List<int>() { -20, -20, -20 });
-        limitTime.AddRange(new List<int>() { 4, 4, 4 });
-
-        dialog.AddRange(new List<string>
-        {
-            "왜 아직 너를 위한 나라가 없는거야!!",
-            "김 묻었어. 잘생김.",
-            "내면의 아름다움이란 얼마나 하찮은 것인가...",
-            "너는 린스 안써도 되겠다.. 나만의 프린스니까 ><",
-            "은유만 보면 후광이 보여!!",
-            "제발 나를 가져요 엉엉",
-            "단신 자체가 내 삶이야"
-        });
-    }
-}
-
-#endregion
-
 public class UI_MiniGame : UI_Popup
 {
+    [SerializeField] private Image _bubbleImage;
+    [SerializeField] private TextMeshProUGUI _bubbleText;
     [SerializeField] private Image _minigameGaugeBar;
-    [SerializeField] private WorldInfo _worldInfo;
-    [SerializeField] private TextMeshProUGUI _dialogText;
-    [SerializeField] private Transform _miniGamePosition;
-    [SerializeField] private Transform[] _miniGameSpawnPosition;
+
+    private SpawnInfo _spawnInfo;
+
+    [Tooltip("미니게임 정보")]
+    [SerializeField] private MiniGameInfo _miniGameInfo;
+
+    [Tooltip("타이머 텍스트")]
     [SerializeField] private TextMeshProUGUI _remainTimeText;
 
-    [SerializeField] private float _createDelayTime = 4f;
+    [SerializeField] private float _mosaicRemoveSpeed = 1.0f;
 
-    private float _sudoGauge;
-    public float SudoGauge
-    {
-        get => _sudoGauge;
-        set
+    private bool _isGameEnd = false;
+    private bool _isGameStart = false;
+
+    private float _remainingTime;
+    private float _currentGauge;
+
+    private List<KeyCode> _requiredKeys = new List<KeyCode>(); // 난이도별로 필요한 키
+
+    public void Init(MiniGameInfo miniGameInfo, SpawnInfo spawnInfo)
+    {        
+        _miniGameInfo = miniGameInfo;
+        _spawnInfo = spawnInfo;
+
+        if (_spawnInfo.isLeft)
         {
-            _sudoGauge = Mathf.Clamp(value, 0f, 100f); // 게이지 제한 (0 ~ 100)
-            _minigameGaugeBar.fillAmount = _sudoGauge / 100f;
+            _bubbleImage.transform.Rotate(0, 180, 0);
+        }
+
+        // 초기화
+        _bubbleText.text = _miniGameInfo.dialog;
+        _currentGauge = _miniGameInfo.startGauge;
+        _remainingTime = _miniGameInfo.limitTime + 5f;
+        
+        GenerateKeysByDifficulty();
+        UpdateUI();
+    }
+
+    private IEnumerator ShowText()
+    {
+        while (_bubbleText.outlineWidth > 0f)
+        {
+            _bubbleText.outlineWidth -= _mosaicRemoveSpeed * Time.deltaTime;
+            yield return null;
         }
     }
 
-    public void Init(WorldInfo worldInfo)
+    private void Update()
     {
-        _worldInfo = worldInfo;
-        SudoGauge = 100f;
+        if (_isGameEnd) return;
 
-        StartCoroutine(StartMiniGames());
+        // 시간 감소
+        _remainingTime -= Time.deltaTime;
+        if (_remainingTime <= 0)
+        {
+            EndMiniGame(false);
+            return;
+        }
+
+        // 게이지 감소
+        ChangeGauge(_miniGameInfo.perDecreaseGauge * Time.deltaTime);
+        if (_currentGauge <= 0)
+        {
+            EndMiniGame(false);
+            return;
+        }
+
+        // 키 입력 처리
+        HandleKeyPress();
+
+        // UI 업데이트
+        UpdateUI();
     }
 
-    private IEnumerator StartMiniGames()
+    private void HandleKeyPress()
     {
-        // 랜덤 인덱스 생성
-        List<int> randomIndex = new List<int>(_worldInfo.dialog.Count);
-        for (int i = 0; i < _worldInfo.dialog.Count; i++)
-        {
-            randomIndex.Add(i);
-        }
-        randomIndex.Shuffle();
+        if(!_isGameStart) return;
 
-        int randomIndexCount = 0;
 
-        // 난이도 순차 실행
-        for (int i = 0; i < (int)MiniGameDifficulty.Max; i++)
+        if (_miniGameInfo.difficulty == MiniGameDifficulty.Easy)
         {
-            for (int j = 0; j < _worldInfo.difficulty[i]; j++)
+            // 스페이스바를 누르면 게이지 증가
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                if (randomIndexCount >= randomIndex.Count) break;
-
-                MiniGameInfo miniGameInfo = new MiniGameInfo()
-                {
-                    difficulty = (MiniGameDifficulty)i,
-                    startGauge = _worldInfo.startGauge[i],
-                    perDecreaseGauge = _worldInfo.perDecreaseGauge[i],
-                    perIncreaseGauge = _worldInfo.perIncreaseGauge[i],
-                    succedGauge = _worldInfo.succedGauge[i],
-                    failGauge = _worldInfo.failGauge[i],
-                    runGauge = _worldInfo.runGauge[i],
-                    limitTime = _worldInfo.limitTime[i],
-
-                    dialog = _worldInfo.dialog[randomIndex[randomIndexCount++]]
-
-                };
-
-                // key세팅
-                if(_worldInfo is ChaummWorldInfo chaummWorldInfo)
-                {
-                    miniGameInfo.requiredKeys = chaummWorldInfo.requireKeys;
-                    miniGameInfo.requiredKeyCount = chaummWorldInfo.requiredKeyCount;
-                    miniGameInfo.canPressConcurrent = chaummWorldInfo.canPressConcurrent;
-                }
-              
-
-                yield return StartCoroutine(HandleMiniGame(miniGameInfo));
-                yield return new WaitForSeconds(_createDelayTime);
-                _miniGamePosition.gameObject.SetActive(false);
+                ChangeGauge(_miniGameInfo.perIncreaseGauge);
+            }
+        }
+        else if (_miniGameInfo.difficulty == MiniGameDifficulty.Normal)
+        {
+            // 모든 키를 누른 후 스페이스바를 누르는 난이도
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ChangeGauge(_miniGameInfo.perIncreaseGauge);
+                ResetKeyStates();
+            }
+        }
+        else if (_miniGameInfo.difficulty == MiniGameDifficulty.Hard)
+        {
+            // 동시에 특정 키를 누르는 난이도
+            if (AreAllKeysPressed())
+            {
+                ChangeGauge(_miniGameInfo.perIncreaseGauge);
+                ResetKeyStates();
             }
         }
     }
 
-    private IEnumerator HandleMiniGame(MiniGameInfo miniGameInfo)
+    private void GenerateKeysByDifficulty()
     {
-        _miniGamePosition.gameObject.SetActive(true);
-        Debug.Log($"미니게임 시작! {miniGameInfo.dialog}");
-
-        // 미니게임 초기화
-        SudoGauge = miniGameInfo.startGauge;
-        SetMiniGamePositionAndDialog(miniGameInfo);
-
-        List<KeyCode> requiredKeys = null;
-        bool canPressConcurrent = false;
-
-        if (miniGameInfo.requiredKeys != null)
+        _requiredKeys.Clear();
+        if (_miniGameInfo.difficulty == MiniGameDifficulty.Normal || _miniGameInfo.difficulty == MiniGameDifficulty.Hard)
         {
-            canPressConcurrent = miniGameInfo.canPressConcurrent[(int)miniGameInfo.difficulty];
-            int requiredKeyCount = miniGameInfo.requiredKeyCount[(int)miniGameInfo.difficulty];
-            requiredKeys = miniGameInfo.requiredKeys.GetRandomN(requiredKeyCount);
+            int keyCount = UnityEngine.Random.Range(3, 7); // 3~6개의 키를 랜덤으로 선택
+            Array values = Enum.GetValues(typeof(KeyCode));
+            for (int i = 0; i < keyCount; i++)
+            {
+                KeyCode randomKey = (KeyCode)values.GetValue(UnityEngine.Random.Range(0, values.Length));
+                _requiredKeys.Add(randomKey);
+            }
         }
-
-        float remainingTime = miniGameInfo.limitTime;
-        _remainTimeText.text = $"남은 시간: {remainingTime:F1}초";
-
-        Coroutine decreaseGaugeRoutine = StartCoroutine(DecreaseGauge(miniGameInfo.perDecreaseGauge));
-        Coroutine miniGameRoutine = StartCoroutine(MiniGameStart(miniGameInfo, requiredKeys, canPressConcurrent));
-
-        float elapsedTime = 0f;
-        while (elapsedTime < miniGameInfo.limitTime)
-        {
-            _remainTimeText.text = $"남은 시간: {remainingTime - elapsedTime:F1}초";
-            yield return null;
-            elapsedTime += Time.deltaTime;
-        }
-
-        _remainTimeText.text = $"남은 시간: 0.0초";
-
-        // 코루틴 정지
-        StopCoroutine(decreaseGaugeRoutine);
-        StopCoroutine(miniGameRoutine);
-
-        // 결과 체크
-        CheckMiniGameResult(miniGameInfo);
     }
 
-    private void CheckMiniGameResult(MiniGameInfo miniGameInfo)
+    private bool AreAllKeysPressed()
     {
-        if (SudoGauge >= 100)
+        foreach (var key in _requiredKeys)
         {
-            // 성공
-            Managers.Happy.ChangeHappiness(miniGameInfo.succedGauge);
-            Debug.Log("미니게임 성공!");
+            if (!Input.GetKey(key))
+                return false;
+        }
+        return true;
+    }
+
+    private void ResetKeyStates()
+    {
+        // 키 상태 초기화 (필요 시)
+    }
+
+    private void ChangeGauge(float amount)
+    {
+        _currentGauge += amount;
+        if (_currentGauge >= 100f)
+        {
+            EndMiniGame(true);
+        }
+    }
+
+    private void UpdateUI()
+    {
+        _minigameGaugeBar.fillAmount = _currentGauge / 100f;
+        _remainTimeText.text = $"남은 시간: {_remainingTime:F1}초";
+    }
+
+    private void EndMiniGame(bool isSuccess)
+    {
+        if (_isGameEnd) return;
+
+        _isGameEnd = true;
+
+        if (isSuccess)
+        {
+            Debug.Log("미니게임 성공! 행복도가 상승합니다.");
+            Managers.Happy.ChangeHappiness(_miniGameInfo.succedGauge);
         }
         else
         {
-            // 실패
-            Managers.Happy.ChangeHappiness(miniGameInfo.failGauge);
-            Debug.Log("미니게임 실패...");
+            Debug.Log("미니게임 실패! 행복도가 감소합니다.");
+            Managers.Happy.ChangeHappiness(_miniGameInfo.failGauge);
         }
+
+        // 게임 종료 로직
+        gameObject.SetActive(false);
     }
 
-    private void SetMiniGamePositionAndDialog(MiniGameInfo miniGameInfo)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        int pos = UnityEngine.Random.Range(0, _miniGameSpawnPosition.Length);
-        _miniGamePosition.position = _miniGameSpawnPosition[pos].position;
-        _dialogText.text = miniGameInfo.dialog;
-    }
+        if (_isGameStart) return;
 
-    private IEnumerator MiniGameStart(MiniGameInfo miniGameInfo, List<KeyCode> keys, bool canPressConcurrent)
-    {
-        
-        while (true)
+        _isGameStart = true;
+
+        if (collision.CompareTag("Player"))
         {
-            if (miniGameInfo.difficulty == MiniGameDifficulty.Easy)
-            {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    SudoGauge += miniGameInfo.perIncreaseGauge;
-                }
-            }
-            else if (miniGameInfo.difficulty == MiniGameDifficulty.Normal)
-            {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    SudoGauge += miniGameInfo.perIncreaseGauge;
-                }
-            }
-            else if (miniGameInfo.difficulty == MiniGameDifficulty.Hard)
-            {
-                
-            }
-
-            yield return null;
-        }
-    }
-
-    // 1초마다 게이지 감소
-    private IEnumerator DecreaseGauge(int perDecreaseGauge)
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(1f);
-            SudoGauge += perDecreaseGauge;
-        }
-    }
-
-    private void SpawnKeys(List<KeyCode> keys, bool canPressConcurrent)
-    {
-        RectTransform rectTransform = _minigameGaugeBar.rectTransform;
-        float startX = rectTransform.position.x - rectTransform.rect.width / 2;
-        float endX = rectTransform.position.x + rectTransform.rect.width / 2;
-
-        for (int i = 0; i < keys.Count; i++)
-        {
-            float interval = (i + 1) / (keys.Count + 1);
-            float posX = Mathf.Lerp(startX, endX, interval);
-            float posY = rectTransform.position.y;
-
-            Managers.UI.MakeSubItem<KeyButton>(this.transform);
+            StartCoroutine(ShowText());
         }
     }
 

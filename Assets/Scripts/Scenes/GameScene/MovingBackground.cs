@@ -4,15 +4,39 @@ using UnityEngine;
 
 public class MovingBackground : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Material _material;
+    [SerializeField] private float _floatingSpeed = 0.001f;
+
+    [SerializeField] private PlayerController _playerController;
+
+    private Vector2 _currentOffset = new Vector2(0,0);
+    // Update is called once per frame
+    private void Start()
     {
-        
+        _playerController.OnPlayerMove += MoveBackgound;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void MoveBackgound(Vector2 dir, float moveSpeed)
     {
-        
+        _currentOffset += dir * _floatingSpeed * Time.deltaTime * moveSpeed;
+        _material.SetTextureOffset("_MainTex", _currentOffset);
+    }
+
+    private void Reset()
+    {
+        _material = GetComponent<SpriteRenderer>().material;
+
+        PlayerController playerController = FindObjectOfType<PlayerController>();
+        if (playerController != null)
+        {
+
+            _playerController = playerController;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if(_playerController != null)
+            _playerController.OnPlayerMove -= MoveBackgound;
     }
 }

@@ -1,3 +1,4 @@
+using Cinemachine.Examples;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +12,9 @@ public class PlayerController : MonoBehaviour
 	public bool isMoving = false;
 
 	private string currentScene;
+
+	// dir, moveSpeed
+	public event Action<Vector2, float> OnPlayerMove;
 
 	private void Awake()
 	{
@@ -35,10 +39,13 @@ public class PlayerController : MonoBehaviour
 				x = -1f;
 			}
 			else if (Input.GetKey(KeyCode.RightArrow))
-			{
-				x = 1f;
+            {
+                x = 1f;
 			}
-			UpdateMove(x);
+
+            OnPlayerMove?.Invoke(new Vector2(x, 0), _movement.GetMoveSpeed());
+
+            UpdateMove(x);
 			_playerAnimator.UpdateAnimation(x);
 		}
 		else

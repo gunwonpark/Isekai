@@ -49,4 +49,9 @@ public class MovementRigidbody2D : MonoBehaviour
 	{
 		_moveSpeed = speed;
 	}
+
+	public float GetMoveSpeed()
+	{
+		return _moveSpeed;
+	}
 }
