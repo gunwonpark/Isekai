@@ -210,6 +210,7 @@ public class MiniGameFactory : MonoBehaviour
 
         if (happiness <= 0 || happiness >= 100)
         {
+            Debug.Log("GameEnd");
             StopAllCoroutines();
             foreach (var miniGame in _miniGameQueue)
             {

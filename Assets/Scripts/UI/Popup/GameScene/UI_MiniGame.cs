@@ -29,6 +29,7 @@ public class UI_MiniGame : UI_Popup
 
     private List<KeyCode> _requiredKeys = new List<KeyCode>(); // 난이도별로 필요한 키
 
+    public float CheetCode = 100f;
     public void Init(MiniGameInfo miniGameInfo, SpawnInfo spawnInfo)
     {        
         _miniGameInfo = miniGameInfo;
@@ -94,7 +95,7 @@ public class UI_MiniGame : UI_Popup
             // 스페이스바를 누르면 게이지 증가
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                ChangeGauge(_miniGameInfo.perIncreaseGauge);
+                ChangeGauge(_miniGameInfo.perIncreaseGauge + CheetCode);
             }
         }
         else if (_miniGameInfo.difficulty == MiniGameDifficulty.Normal)
@@ -171,12 +172,12 @@ public class UI_MiniGame : UI_Popup
         if (isSuccess)
         {
             Debug.Log("미니게임 성공! 행복도가 상승합니다.");
-            Managers.Happy.ChangeHappiness(_miniGameInfo.succedGauge);
+            Managers.Happy.ChangeHappiness(_miniGameInfo.succedGauge + CheetCode);
         }
         else
         {
             Debug.Log("미니게임 실패! 행복도가 감소합니다.");
-            Managers.Happy.ChangeHappiness(_miniGameInfo.failGauge);
+            Managers.Happy.ChangeHappiness(_miniGameInfo.failGauge - CheetCode);
         }
 
         // 게임 종료 로직

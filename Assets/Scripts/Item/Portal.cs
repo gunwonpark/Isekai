@@ -7,6 +7,13 @@ public class Portal : MonoBehaviour
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private float _fadeDuration = 1f;
 
+    private UI_Information _information;
+
+    private void Start()
+    {
+        FadeIn();
+    }
+
     public void FadeIn()
     {
         StartCoroutine(CoFadeIn());
@@ -31,9 +38,11 @@ public class Portal : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (_information != null) return;
+
         if (collision.CompareTag("Player"))
         {
-            Managers.UI.ShowPopupUI<UI_Information>();
+            _information = Managers.UI.ShowPopupUI<UI_Information>();
         }
     }
 }
