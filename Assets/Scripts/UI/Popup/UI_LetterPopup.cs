@@ -13,17 +13,17 @@ public class UI_LetterPopup : UI_Popup
 	public override void Init()
 	{
 		base.Init();
-		_letterText.text = "";
+		_letterText.text = _dialogues;
 		StartCoroutine(typingEffectCo(_dialogues));
 	}
 
 	private IEnumerator typingEffectCo(string dialogue)
 	{
-		foreach (char c in dialogue)
-		{
-			_letterText.text += c;
-			yield return new WaitForSeconds(0.05f); // 타자 치는 속도 조절 가능
-		}
+		//foreach (char c in dialogue)
+		//{
+		//	_letterText.text += c;
+		//	yield return new WaitForSeconds(0.05f); // 타자 치는 속도 조절 가능
+		//}
 
 		yield return new WaitForSeconds(5.0f);
 		Managers.UI.ShowPopupUI<UI_CutScene2Popup>();

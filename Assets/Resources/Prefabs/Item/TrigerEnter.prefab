@@ -90,3 +90,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc6c07dd9b884a446ad5dbac84d55d0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zoomDuration: 2
+  targetZoom: 2
+  delayBeforeLoad: 2
