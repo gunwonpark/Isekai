@@ -105,17 +105,16 @@ public class UI_MiniGame : UI_Popup
 
         int requiredKeyCount = _miniGameInfo.requiredKeyCount;
 
-        int iter = 0;
-
+        int adder = 0;
         //동시 입력이 가능할 경우
         if (_miniGameInfo.canPressConcurrent)
         {
             List<KeyCode> keyCode = new List<KeyCode>();
 
             int randomKeyCount = UnityEngine.Random.Range(2, 4);
-            for (; iter < randomKeyCount; iter++)
+            for (int i = _miniGameInfo.requiredKeys.Count - 1; i >= _miniGameInfo.requiredKeys.Count - randomKeyCount; i--)
             {
-                keyCode.Add(_miniGameInfo.requiredKeys[iter]);
+                keyCode.Add(_miniGameInfo.requiredKeys[i]);
             }
 
             if(randomKeyCount == 2)
@@ -134,14 +133,16 @@ public class UI_MiniGame : UI_Popup
                 keyButton.Init(keyCode[0], keyCode[1], keyCode[2], _keySpriteFactory.GetKeySprite(keyCode[0]), _keySpriteFactory.GetKeySprite(keyCode[1]), _keySpriteFactory.GetKeySprite(keyCode[2])); // KeyCode 설정
                 _requiredKeys.Add(keyButton); // 리스트에 추가
             }
+
+            adder = 1;
         }
 
-        for(; iter < requiredKeyCount; iter++)
+        for(int i = 0; i < requiredKeyCount - adder; i++)
         {
             // KeyButton 생성
             KeyButton keyButton = Managers.UI.MakeSubItem<KeyButton>(_minigameGaugeBar.transform, "KeyButton");
             keyButton.OnKeyPressed += OnKeyPressed; // 입력 이벤트 연결
-            KeyCode keyCode = _miniGameInfo.requiredKeys[iter];
+            KeyCode keyCode = _miniGameInfo.requiredKeys[i];
             keyButton.Init(keyCode, _keySpriteFactory.GetKeySprite(keyCode)); // KeyCode 설정
             _requiredKeys.Add(keyButton); // 리스트에 추가
         }
