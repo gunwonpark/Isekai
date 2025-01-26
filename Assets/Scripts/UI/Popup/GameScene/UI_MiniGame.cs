@@ -29,7 +29,7 @@ public class UI_MiniGame : UI_Popup
 
     private List<KeyCode> _requiredKeys = new List<KeyCode>(); // 난이도별로 필요한 키
 
-    public float CheetCode = 100f;
+    public float CheetCode = 1f;
     public void Init(MiniGameInfo miniGameInfo, SpawnInfo spawnInfo)
     {        
         _miniGameInfo = miniGameInfo;
@@ -135,7 +135,7 @@ public class UI_MiniGame : UI_Popup
 
     private bool AreAllKeysPressed()
     {
-        foreach (var key in _requiredKeys)
+        foreach (var key in _requiredKeys) 
         {
             if (!Input.GetKey(key))
                 return false;

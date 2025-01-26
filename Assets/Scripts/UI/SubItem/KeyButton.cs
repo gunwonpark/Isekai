@@ -6,6 +6,6 @@ public class KeyButton : UI_Base
 {
     public override void Init()
     {
-        return;
+        throw new System.NotImplementedException();
     }
 }

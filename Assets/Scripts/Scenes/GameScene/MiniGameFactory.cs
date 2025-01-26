@@ -32,7 +32,7 @@ public abstract class WorldInfo
     public List<int> succedGauge = new List<int>();
     public List<int> failGauge = new List<int>();
     public List<int> runGauge = new List<int>();
-    public List<int> limitTime = new List<int>();
+    public List<int> limitTime = new List<int>();    
 
     public readonly List<string> dialog = new List<string>();
 
@@ -132,6 +132,21 @@ public class ChaummWorldInfo : WorldInfo
             "단신 자체가 내 삶이야"
         });
     }
+    public override MiniGameInfo GetRandomMiniGameInfo()
+    {
+        MiniGameInfo miniGameInfo = base.GetRandomMiniGameInfo();
+
+        int keyCount = requiredKeyCount[(int)miniGameInfo.difficulty];
+
+        if (keyCount != 0)
+        {
+            miniGameInfo.requiredKeys = requireKeys.GetRandomN<KeyCode>(keyCount);
+            miniGameInfo.requiredKeyCount = requiredKeyCount;
+            miniGameInfo.canPressConcurrent = canPressConcurrent;
+        }
+       
+        return miniGameInfo;
+    }
 }
 
 #endregion
@@ -206,11 +221,10 @@ public class MiniGameFactory : MonoBehaviour
     {
         if(_isGameEnd) return;
 
-        _isGameEnd = true;
 
         if (happiness <= 0 || happiness >= 100)
         {
-            Debug.Log("GameEnd");
+            _isGameEnd = true;
             StopAllCoroutines();
             foreach (var miniGame in _miniGameQueue)
             {

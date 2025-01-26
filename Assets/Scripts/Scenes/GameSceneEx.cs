@@ -28,7 +28,7 @@ public class GameSceneEx : BaseScene
 		{
 			// 현실세계로 이동하는 포탈이 생성된다
 			GameObject go = Managers.Resource.Instantiate("Item/Portal");
-			Vector3 newPosition = _player.position + new Vector3(10f, 0, 0);
+			Vector3 newPosition = _player.position + new Vector3(8f, 0, 0);
             newPosition.y = -2.5f;
             go.transform.position = newPosition;
         }
