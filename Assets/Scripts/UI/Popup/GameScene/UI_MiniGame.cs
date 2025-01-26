@@ -32,7 +32,12 @@ public class UI_MiniGame : UI_Popup
     public float CheetCode = 1f;
     public void Init(MiniGameInfo miniGameInfo, SpawnInfo spawnInfo)
     {        
+        //미니게임 정보 설정
         _miniGameInfo = miniGameInfo;
+        _bubbleText.text = _miniGameInfo.dialog;
+        _currentGauge = _miniGameInfo.startGauge;
+        _remainingTime = _miniGameInfo.limitTime + 5f;
+
         _spawnInfo = spawnInfo;
 
         if (_spawnInfo.isLeft)
@@ -41,10 +46,9 @@ public class UI_MiniGame : UI_Popup
         }
 
         // 초기화
-        _bubbleText.text = _miniGameInfo.dialog;
-        _currentGauge = _miniGameInfo.startGauge;
-        _remainingTime = _miniGameInfo.limitTime + 5f;
         
+
+
         GenerateKeysByDifficulty();
         UpdateUI();
     }
