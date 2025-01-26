@@ -14,7 +14,7 @@ public class GameSceneEx : BaseScene
 		SceneType = Scene.GameScene;
 
 		//미니게임 공장 초기화
-		_miniGameFactory.Init(WorldType.Vinter);
+		_miniGameFactory.Init(WorldType.Chaumm);
         _miniGameFactory.OnGameEnd += GameOver;
 
         //배경음악 재생

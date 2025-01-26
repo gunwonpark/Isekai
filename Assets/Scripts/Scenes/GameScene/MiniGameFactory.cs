@@ -114,7 +114,7 @@ public class ChaummWorldInfo : WorldInfo
     {
         difficulty.AddRange(new List<int>() { 3, 4, 0 });
         startGauge.AddRange(new List<int>() { 50, 40, 50 });
-        perDecreaseGauge.AddRange(new List<int>() { -10, -15, -10 });
+        perDecreaseGauge.AddRange(new List<int>() { -10, -10, -10 });
         perIncreaseGauge.AddRange(new List<int>() { 5, 5, 3 });
         succedGauge.AddRange(new List<int>() { 30, 30, 40 });
         failGauge.AddRange(new List<int>() { -10, -10, -10 });
@@ -162,6 +162,8 @@ public class MiniGameFactory : MonoBehaviour
     [SerializeField] private UI_MiniGame _miniGame;
     [SerializeField] private WorldInfo _worldInfo;
 
+    [SerializeField] private KeySpriteFactory _keySpriteFactory;
+
     [SerializeField] private Transform target;
     [SerializeField] private float _minX = -10f;
     [SerializeField] private float _maxX = 10f;
@@ -179,6 +181,9 @@ public class MiniGameFactory : MonoBehaviour
     
         Managers.Happy.OnHappinessChanged += CreateControll;
 
+        _keySpriteFactory = new KeySpriteFactory();
+        _keySpriteFactory.Init();
+
         StartCoroutine(CreateMiniGame());
     }
 
@@ -191,7 +196,7 @@ public class MiniGameFactory : MonoBehaviour
             UI_MiniGame miniGame = Instantiate(_miniGame, spawnInfo.position, Quaternion.identity);
             MiniGameInfo miniGameInfo = _worldInfo.GetRandomMiniGameInfo();
             _miniGameQueue.Enqueue(miniGame);
-            miniGame.Init(miniGameInfo, spawnInfo);
+            miniGame.Init(miniGameInfo, spawnInfo, _keySpriteFactory);
             yield return new WaitForSeconds(4f);
         }
     }
