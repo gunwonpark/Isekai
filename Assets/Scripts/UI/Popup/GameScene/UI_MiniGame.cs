@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,7 @@ public class UI_MiniGame : UI_Popup
     [SerializeField] private Image _bubbleImage;
     [SerializeField] private TextMeshProUGUI _bubbleText;
     [SerializeField] private Image _minigameGaugeBar;
+    private string _originalText;
 
     private SpawnInfo _spawnInfo;
 
@@ -23,6 +25,8 @@ public class UI_MiniGame : UI_Popup
     [SerializeField] private TextMeshProUGUI _remainTimeText;
 
     [SerializeField] private float _mosaicRemoveSpeed = 1.0f;
+
+    [SerializeField] private string[] _maskCharacters = { "#", "*", "@", "$", "%", "&", "!" }; // 특수문자 집합
 
     private bool _isGameEnd = false;
     private bool _isGameStart = false;
@@ -41,7 +45,8 @@ public class UI_MiniGame : UI_Popup
     {
         //미니게임 정보 설정
         _miniGameInfo = miniGameInfo;
-        _bubbleText.text = _miniGameInfo.dialog;
+        _originalText = _miniGameInfo.dialog;
+        _bubbleText.text = GetRandomMaskedText(_miniGameInfo.dialog.Length);
         _currentGauge = _miniGameInfo.startGauge;
         _remainingTime = _miniGameInfo.limitTime + 5f;
         _keySpriteFactory = keySpriteFactory;
@@ -59,6 +64,37 @@ public class UI_MiniGame : UI_Popup
 
         // 초기화
         UpdateUI();
+    }
+
+    private string GetRandomMaskedText(int length)
+    {
+        StringBuilder randomText = new StringBuilder(length);
+        for (int i = 0; i < length; i++)
+        {
+            randomText.Append(_maskCharacters[UnityEngine.Random.Range(0, _maskCharacters.Length)]);
+        }
+        return randomText.ToString();
+    }
+
+    // 텍스트 효과 
+    private IEnumerator ShowText()
+    {
+
+        int textLength = _originalText.Length;
+        float totalDuration = 1.0f; // 전체 변환 시간
+        float delayPerChar = totalDuration / textLength; // 각 글자당 딜레이
+
+        // StringBuilder를 사용하여 효율적으로 텍스트 구성
+        StringBuilder currentText = new StringBuilder(_bubbleText.text);
+
+        for (int i = 0; i < textLength; i++)
+        {
+            // 원래 텍스트의 i번째 글자를 업데이트
+            currentText[i] = _originalText[i];
+
+            _bubbleText.text = currentText.ToString();
+            yield return new WaitForSeconds(delayPerChar);
+        }
     }
 
     private void SetKeyPressButton()
@@ -118,6 +154,7 @@ public class UI_MiniGame : UI_Popup
         }
     }
 
+
     private void SetKeyButtonPosition()
     {
         int keyCount = _requiredKeys.Count;
@@ -139,18 +176,6 @@ public class UI_MiniGame : UI_Popup
         {
             _canPressKey = true;
         }
-    }
-
-    // 텍스트 효과 
-    private IEnumerator ShowText()
-    {
-        yield return null;
-        // 모자이크 효과
-        //while (_bubbleText.outlineWidth > 0f)
-        //{
-        //    _bubbleText.outlineWidth -= _mosaicRemoveSpeed * Time.deltaTime;
-        //    yield return null;
-        //}
     }
 
     private void Update()
