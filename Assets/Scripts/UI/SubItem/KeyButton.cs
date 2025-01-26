@@ -8,18 +8,33 @@ using UnityEngine.UI;
 public class KeyButton : UI_Base
 {
     public event Action OnKeyPressed;
-    private KeyCode _keyCode;
+    [SerializeField] protected KeyCode _keyCode;
+    [SerializeField] protected Image _image;
+
+    protected bool _canPressKey = false;
     public void Init(KeyCode keyCode, Sprite sprite)
     {
         _keyCode = keyCode;
-        this.GetComponent<Image>().sprite = sprite;
+        _image.sprite = sprite;
+        _canPressKey = false;
     }
+
     private void Update()
     {
-        if (Input.GetKeyDown(_keyCode)){
-            OnKeyPressed?.Invoke();
+        if (_canPressKey && Input.GetKeyDown(_keyCode)){
+            OnkeyPressedEvent();
             Destroy(gameObject);
         }
+    }
+
+    public void EnableKeyPress()
+    {
+        _canPressKey = true;
+    }
+
+    protected void OnkeyPressedEvent()
+    {
+        OnKeyPressed?.Invoke();
     }
 
     public override void Init()

@@ -48,6 +48,8 @@ public class UI_MiniGame : UI_Popup
 
         SetKeyPressButton();
 
+
+
         _spawnInfo = spawnInfo;
 
         if (_spawnInfo.isLeft)
@@ -64,16 +66,51 @@ public class UI_MiniGame : UI_Popup
         if (_miniGameInfo.requiredKeys == null) return;
 
         _requiredKeys.Clear(); // 초기화
-        foreach (KeyCode keyCode in _miniGameInfo.requiredKeys)
+
+        int requiredKeyCount = _miniGameInfo.requiredKeyCount;
+
+        int iter = 0;
+
+        //동시 입력이 가능할 경우
+        if (_miniGameInfo.canPressConcurrent)
+        {
+            List<KeyCode> keyCode = new List<KeyCode>();
+
+            int randomKeyCount = UnityEngine.Random.Range(2, 4);
+            for (; iter < randomKeyCount; iter++)
+            {
+                keyCode.Add(_miniGameInfo.requiredKeys[iter]);
+            }
+
+            if(randomKeyCount == 2)
+            {
+                // KeyButton 생성
+                TwoKeyButton keyButton = Managers.UI.MakeSubItem<TwoKeyButton>(_minigameGaugeBar.transform, "TwoKeyButton");
+                keyButton.OnKeyPressed += OnKeyPressed; // 입력 이벤트 연결
+                keyButton.Init(keyCode[0], keyCode[1], _keySpriteFactory.GetKeySprite(keyCode[0]), _keySpriteFactory.GetKeySprite(keyCode[1])); // KeyCode 설정
+                _requiredKeys.Add(keyButton); // 리스트에 추가
+            }
+            else if(randomKeyCount == 3)
+            {
+                // KeyButton 생성
+                ThreeKeyButton keyButton = Managers.UI.MakeSubItem<ThreeKeyButton>(_minigameGaugeBar.transform, "ThreeKeyButton");
+                keyButton.OnKeyPressed += OnKeyPressed; // 입력 이벤트 연결
+                keyButton.Init(keyCode[0], keyCode[1], keyCode[2], _keySpriteFactory.GetKeySprite(keyCode[0]), _keySpriteFactory.GetKeySprite(keyCode[1]), _keySpriteFactory.GetKeySprite(keyCode[2])); // KeyCode 설정
+                _requiredKeys.Add(keyButton); // 리스트에 추가
+            }
+        }
+
+        for(; iter < requiredKeyCount; iter++)
         {
             // KeyButton 생성
             KeyButton keyButton = Managers.UI.MakeSubItem<KeyButton>(_minigameGaugeBar.transform, "KeyButton");
             keyButton.OnKeyPressed += OnKeyPressed; // 입력 이벤트 연결
+            KeyCode keyCode = _miniGameInfo.requiredKeys[iter];
             keyButton.Init(keyCode, _keySpriteFactory.GetKeySprite(keyCode)); // KeyCode 설정
             _requiredKeys.Add(keyButton); // 리스트에 추가
         }
 
-        if (_requiredKeys.Count > 0)
+        if (requiredKeyCount > 0)
         {
             _canPressKey = false; // Space 비활성화
             _keyCount = _requiredKeys.Count;
@@ -130,13 +167,6 @@ public class UI_MiniGame : UI_Popup
 
         // 게이지 감소
         ChangeGauge(_miniGameInfo.perDecreaseGauge * Time.deltaTime);
-        if (_currentGauge <= 0)
-        {
-            EndMiniGame(false);
-            return;
-        }
-
-
         // 키 입력 처리
         HandleKeyPress();
 
@@ -178,6 +208,12 @@ public class UI_MiniGame : UI_Popup
     private void ChangeGauge(float amount)
     {
         _currentGauge += amount;
+
+        if (_currentGauge < 0)
+        {
+            _currentGauge = 0;
+        }
+
         if (_currentGauge >= 100f)
         {
             EndMiniGame(true);
@@ -219,6 +255,10 @@ public class UI_MiniGame : UI_Popup
 
         if (collision.CompareTag("Player"))
         {
+            foreach (var key in _requiredKeys)
+            {
+                key.EnableKeyPress();
+            }
             StartCoroutine(ShowText());
         }
     }

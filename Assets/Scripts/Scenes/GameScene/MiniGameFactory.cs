@@ -16,8 +16,8 @@ public struct MiniGameInfo
     public int limitTime;
 
     public List<KeyCode> requiredKeys;
-    public List<int> requiredKeyCount;
-    public List<bool> canPressConcurrent;
+    public int requiredKeyCount;
+    public bool canPressConcurrent;
     public string dialog;
 }
 
@@ -122,6 +122,9 @@ public class MiniGameFactory : MonoBehaviour
                 break;
             case WorldType.Chaumm:
                 _worldInfo = new ChaummWorldInfo();
+                break;
+            case WorldType.Gang:
+                _worldInfo = new GangWorldInfo();
                 break;
         }
     }

@@ -121,8 +121,110 @@ public class ChaummWorldInfo : WorldInfo
         if (keyCount != 0)
         {
             miniGameInfo.requiredKeys = requireKeys.GetRandomN<KeyCode>(keyCount);
-            miniGameInfo.requiredKeyCount = requiredKeyCount;
-            miniGameInfo.canPressConcurrent = canPressConcurrent;
+            miniGameInfo.requiredKeyCount = keyCount;
+            miniGameInfo.canPressConcurrent = canPressConcurrent[(int)miniGameInfo.difficulty];
+        }
+
+        return miniGameInfo;
+    }
+}
+
+public class GangWorldInfo : WorldInfo
+{
+    public readonly List<KeyCode> requireKeys = new List<KeyCode>()
+    { KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.A, KeyCode.S, KeyCode.D };
+    public List<int> requiredKeyCount = new List<int>() { 0, 4, 3 };
+    public List<bool> canPressConcurrent = new List<bool>() { false, false, true };
+    public GangWorldInfo() : base(WorldType.Chaumm)
+    {
+        difficulty.AddRange(new List<int>() { 0, 6, 3 });
+        startGauge.AddRange(new List<int>() { 0, 50, 40 });
+        perDecreaseGauge.AddRange(new List<int>() { 0, -15, -20 });
+        perIncreaseGauge.AddRange(new List<int>() { 0, 3, 2 });
+        succedGauge.AddRange(new List<int>() { 0, 20, 10 });
+        failGauge.AddRange(new List<int>() { 0, -5, -5 });
+        runGauge.AddRange(new List<int>() { 0, -10, -10 });
+        limitTime.AddRange(new List<int>() { 0, 4, 3 });
+
+        dialog.AddRange(new List<string>
+        {
+            "너의 지혜와 재치는 그 누구도 따라올 수 없을 거야!",
+            "영리함이 너의 가장 큰 매력이야.",
+            "너는 사람들 사이에서도 두각을 드러내는 특별한 존재야.",
+            "함께 있으면 즐거워 !!",
+            "너의 긍정적 에너지가 나에게 많은 힘이 돼.",
+            "너는 참 믿음직스러워.",
+            "너의 적응력은 정말 대단해.",
+            "너는 뭐든지 해낼 수 있는 존재야!",
+            "나도 너처럼 되고 싶어"
+        });
+    }
+    public override MiniGameInfo GetRandomMiniGameInfo()
+    {
+        MiniGameInfo miniGameInfo = base.GetRandomMiniGameInfo();
+
+        int keyCount = requiredKeyCount[(int)miniGameInfo.difficulty];
+
+        if (keyCount != 0)
+        {
+            miniGameInfo.requiredKeyCount = keyCount;
+            miniGameInfo.canPressConcurrent = canPressConcurrent[(int)miniGameInfo.difficulty];
+
+            if(miniGameInfo.canPressConcurrent)
+            {
+                miniGameInfo.requiredKeys = requireKeys.GetRandomN<KeyCode>(keyCount + 2);
+            }
+            else
+            {
+                miniGameInfo.requiredKeys = requireKeys.GetRandomN<KeyCode>(keyCount);
+            }
+        }
+
+        return miniGameInfo;
+    }
+}
+
+public class PelmanusWorldInfo : WorldInfo
+{
+    public readonly List<KeyCode> requireKeys = new List<KeyCode>()
+    { KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F, KeyCode.R};
+    public List<int> requiredKeyCount = new List<int>() { 0, 4, 3 };
+    public List<bool> canPressConcurrent = new List<bool>() { false, false, false };
+    public PelmanusWorldInfo() : base(WorldType.Chaumm)
+    {
+        difficulty.AddRange(new List<int>() { 0, 3, 6 });
+        startGauge.AddRange(new List<int>() { 0, 40, 40 });
+        perDecreaseGauge.AddRange(new List<int>() { 0, -10, -20 });
+        perIncreaseGauge.AddRange(new List<int>() { 0, 3, 3 });
+        succedGauge.AddRange(new List<int>() { 0, 1, 1 });
+        failGauge.AddRange(new List<int>() { 0, -5, -5 });
+        runGauge.AddRange(new List<int>() { 0, -10, -10 });
+        limitTime.AddRange(new List<int>() { 0, 4, 3 });
+
+        dialog.AddRange(new List<string>
+        {
+            "너의 존재만으로도 세상이 축복받은 것 같아.",
+            "그는 희망을 불어넣는 빛과 같은 존재야!!",
+            "너의 곁에는 항상 평화와 경의심이 가득해.",
+            "정말 성스러움이 느껴져.",
+            "그의 손길은 기적을 일으켜.",
+            "바라보기만 해도 경이로워.",
+            "그의 존재는 인간에게 있어 가장 큰 선물이야.",
+            "당신을 바라보기만 해도 행복해.",
+            "나도 너처럼 행복해지고 싶어."
+        });
+    }
+    public override MiniGameInfo GetRandomMiniGameInfo()
+    {
+        MiniGameInfo miniGameInfo = base.GetRandomMiniGameInfo();
+
+        int keyCount = requiredKeyCount[(int)miniGameInfo.difficulty];
+
+        if (keyCount != 0)
+        {
+            miniGameInfo.requiredKeyCount = keyCount;
+            miniGameInfo.canPressConcurrent = canPressConcurrent[(int)miniGameInfo.difficulty];
+            miniGameInfo.requiredKeys = requireKeys.GetRandomN<KeyCode>(keyCount);
         }
 
         return miniGameInfo;

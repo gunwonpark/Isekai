@@ -354,7 +354,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4220830607454805924, guid: c3d6d2b36a95c4d4bbca1a853e8aaa56, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -807,6 +807,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _miniGameFactory: {fileID: 184603174}
   _player: {fileID: 1786195230}
+  _worldType: 2
 --- !u!1 &875281927
 GameObject:
   m_ObjectHideFlags: 0
