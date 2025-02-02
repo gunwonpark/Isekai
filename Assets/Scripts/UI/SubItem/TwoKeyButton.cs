@@ -1,0 +1,25 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class TwoKeyButton : KeyButton
+{
+    [SerializeField] protected KeyCode _secondKeyCode;
+    [SerializeField] protected Image _secondImage;
+    public void Init(KeyCode keyCode, KeyCode secondKeyCode, Sprite sprite, Sprite sceondSprite)
+    {
+        base.Init(keyCode, sprite);
+        _secondKeyCode = secondKeyCode;
+        _secondImage.sprite = sceondSprite;
+    }
+    private void Update()
+    {
+        if(_canPressKey && Input.GetKeyDown(_keyCode) && Input.GetKeyDown(_secondKeyCode))
+        {
+            OnkeyPressedEvent();
+            Destroy(gameObject);
+        }
+    }
+}
+

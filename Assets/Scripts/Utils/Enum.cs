@@ -56,4 +56,6 @@ public enum WorldType
     Chaumm,
     Gang,
     Pelmanus,
+
+	Max
 }

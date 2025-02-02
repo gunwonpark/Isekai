@@ -6,15 +6,15 @@ public class GameSceneEx : BaseScene
 {
 	[SerializeField] private MiniGameFactory _miniGameFactory;
 	[SerializeField] private Transform _player;
-
-	protected override void Init()
+	[SerializeField] private WorldType _worldType = WorldType.Chaumm;
+    protected override void Init()
 	{
 		base.Init();
 
 		SceneType = Scene.GameScene;
 
 		//미니게임 공장 초기화
-		_miniGameFactory.Init(WorldType.Vinter);
+		_miniGameFactory.Init(_worldType);
         _miniGameFactory.OnGameEnd += GameOver;
 
         //배경음악 재생

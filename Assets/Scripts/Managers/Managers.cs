@@ -8,12 +8,14 @@ public class Managers : MonoBehaviour
 	#region Contents
 	GameManagerEx _game = new GameManagerEx();
 	HappinessManager _happy = new HappinessManager();
+	WorldManager _world = new WorldManager();
 	public static GameManagerEx Game { get { return Instance._game; } }
 	public static HappinessManager Happy { get { return Instance._happy; } }
-	#endregion
+	public static WorldManager World { get { return Instance._world; } }
+    #endregion
 
-	#region Core
-	SceneManagerEx _scene = new SceneManagerEx();
+    #region Core
+    SceneManagerEx _scene = new SceneManagerEx();
 	SoundManager _sound = new SoundManager();
 	ResourceManager _resource = new ResourceManager();
 	UIManager _ui = new UIManager();
@@ -39,7 +41,8 @@ public class Managers : MonoBehaviour
 
 			s_instance._sound.Init();
 			s_instance._happy.Init();
-		}
+            s_instance._world.Init();
+        }
 	}
 
 	public static void Clear()
