@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,12 @@ public class RealGameFactory : MonoBehaviour
     private int _gameCount = 0;
 
     [SerializeField] private float _makeGameDelay = 2.0f;
+
+    [SerializeField] private Vector2 _spawnPos = new Vector2(6, 8f);
+
+    private List<UI_Bubble> _bubbles = new List<UI_Bubble>();
+
+    public event Action<bool> OnGameEnd;
     public void Init(RealWorldInfo realWorldInfo)
     {
         _realWorldInfo = realWorldInfo;
@@ -32,7 +39,8 @@ public class RealGameFactory : MonoBehaviour
     public void MakeRealGame()
     {
         UI_Bubble ui_Bubble = Managers.UI.MakeSubItem<UI_Bubble>(this.transform);
-        Vector2 pos = new Vector2(Random.Range(-6.0f, 6.0f), 10f);
+        _bubbles.Add(ui_Bubble);
+        Vector2 pos = new Vector2(UnityEngine.Random.Range(-_spawnPos.x, _spawnPos.x), _spawnPos.y);
         ui_Bubble.transform.position = pos;
 
         ui_Bubble.Init(_realWorldInfo.dialog[_gameIndex], _realWorldInfo.score[_gameIndex]);
@@ -47,22 +55,22 @@ public class RealGameFactory : MonoBehaviour
 
         if (Managers.Happy.Happiness <= 0)
         {
-            EndGame(false);
+            for(int i = 0; i < _bubbles.Count; i++)
+            {
+                UI_Bubble bubble = _bubbles[i];
+                if(bubble != null)
+                {
+                    Destroy(bubble.gameObject);
+                }
+            }
+            StopAllCoroutines();
+            OnGameEnd.Invoke(false);
         }
         else if(_gameCount == 0)
         {
-            EndGame(true);
+            StopAllCoroutines();
+            OnGameEnd.Invoke(true);
         }
-    }
-
-    private void EndGame(bool isSucess)
-    {
-        StopAllCoroutines();
-
-        Debug.Log("EndGame");
-        //주인공은 오른쪽으로 이동하고 카메라는 고정
-        //화면은 천천히 faded out되고 fade in 되면서 도서관 씬으로 이동
-        //상관없이 도서관 씬으로 이동
     }
 
     IEnumerator COMakeRealGame()

@@ -48,6 +48,7 @@ public class UI_Bubble : UI_Base
         if (other.CompareTag("Player"))
         {
             Managers.Happy.ChangeHappiness(_score);
+            Camera.main.GetComponent<CameraShake>().Shake();
             OnCollisionEvent?.Invoke();
             Destroy(gameObject);
         }
@@ -57,7 +58,9 @@ public class UI_Bubble : UI_Base
             Destroy(gameObject);
         }
     }
-    
+
+   
+
     public override void Init()
     {
        
