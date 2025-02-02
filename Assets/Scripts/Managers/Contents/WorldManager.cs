@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class WorldManager
 {
+    private WorldType _currentWorldType = WorldType.Vinter;
     public List<bool> isWorldClear;
     public WorldType CurrentWorldType
     {
-        get;set;
+        get { return _currentWorldType; }
+        set { _currentWorldType = value; }
     }
 
 

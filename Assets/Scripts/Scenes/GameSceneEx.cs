@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameSceneEx : BaseScene
@@ -10,6 +11,11 @@ public class GameSceneEx : BaseScene
     protected override void Init()
 	{
 		base.Init();
+
+		_worldType = Managers.World.CurrentWorldType;
+
+        Debug.Log($"CurrentWorld is : {_worldType}");
+		Debug.Log("GameSceneEx Init");
 
 		SceneType = Scene.GameScene;
 
