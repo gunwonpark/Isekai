@@ -7,12 +7,15 @@ public class GameSceneEx : BaseScene
 {
 	[SerializeField] private MiniGameFactory _miniGameFactory;
 	[SerializeField] private Transform _player;
-	[SerializeField] private WorldType _worldType = WorldType.Chaumm;
+	[SerializeField] private WorldType _worldType = WorldType.Gang;
+
+	[SerializeField] private List<GameObject> _portalList;
+	[SerializeField] private float _gameStartDelay = 1.0f;
     protected override void Init()
 	{
 		base.Init();
 
-		_worldType = Managers.World.CurrentWorldType;
+		//_worldType = Managers.World.CurrentWorldType;
 
         Debug.Log($"CurrentWorld is : {_worldType}");
 		Debug.Log("GameSceneEx Init");

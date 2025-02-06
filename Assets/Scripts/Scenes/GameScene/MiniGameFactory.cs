@@ -33,13 +33,17 @@ public class MiniGameFactory : MonoBehaviour
 {
     [SerializeField] private UI_MiniGame _miniGame;
     [SerializeField] private WorldInfo _worldInfo;
+    [SerializeField] private GridSystem _gridSystem;
 
     [SerializeField] private KeySpriteFactory _keySpriteFactory;
 
     [SerializeField] private Transform target;
-    [SerializeField] private float _minX = -10f;
-    [SerializeField] private float _maxX = 10f;
-    [SerializeField] private float _pivotY = 4f;
+    [SerializeField] private Transform _leftPosition;
+    [SerializeField] private Transform _rightPosition;
+
+    [SerializeField] private float _minY = -2f;
+    [SerializeField] private float _maxY = 2f;
+    [SerializeField] private float _spawnDelay = 4f;
 
     private bool _isGameEnd = false;
 
@@ -56,9 +60,12 @@ public class MiniGameFactory : MonoBehaviour
         _keySpriteFactory = new KeySpriteFactory();
         _keySpriteFactory.Init();
 
+        _gridSystem.Init(target);
+
         StartCoroutine(CreateMiniGame());
     }
 
+    
     public IEnumerator CreateMiniGame()
     {
         while (true)
@@ -69,28 +76,22 @@ public class MiniGameFactory : MonoBehaviour
             MiniGameInfo miniGameInfo = _worldInfo.GetRandomMiniGameInfo();
             _miniGameQueue.Enqueue(miniGame);
             miniGame.Init(miniGameInfo, spawnInfo, _keySpriteFactory);
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(_spawnDelay);
         }
     }
 
     // target을 기준으로 일정 거리만큼 떨어진 곳에 생성
     private SpawnInfo GetRandomPosition()
     {
-        float randomX = UnityEngine.Random.Range(_minX, _maxX);
-        bool isLeft = randomX < 0;
+        float randomY = UnityEngine.Random.Range(_minY, _maxY);
 
-        Vector2 spawnPos = target.transform.position;
-
-        if(randomX < 0)
+        if(_gridSystem.TryGetEmptyPosition(out Vector2 spawnPos))
         {
-            spawnPos += new Vector2(_minX,  _pivotY);
-        }
-        else
-        {
-            spawnPos += new Vector2(_maxX,  _pivotY);
         }
 
-        return new SpawnInfo() { position = spawnPos, isLeft = isLeft };
+        bool isLeft = spawnPos.x < target.position.x;
+
+        return new SpawnInfo() { position = spawnPos + new Vector2(0, randomY), isLeft = isLeft };
     }
 
     // 행복도에 따른 게임종료여부 판단
@@ -125,6 +126,9 @@ public class MiniGameFactory : MonoBehaviour
                 break;
             case WorldType.Gang:
                 _worldInfo = new GangWorldInfo();
+                break;
+            case WorldType.Pelmanus:
+                _worldInfo = new PelmanusWorldInfo();
                 break;
         }
     }

@@ -18,7 +18,7 @@ public class HappinessManager
 			UpdateHappinessEffects();
 
 			OnHappinessChanged?.Invoke(_happiness);
-			Debug.Log($"Happiness: {_happiness}");
+			//Debug.Log($"Happiness: {_happiness}");
 
 			//if (_happiness <= 100)
 			//{
