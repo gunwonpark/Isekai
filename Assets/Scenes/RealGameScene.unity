@@ -443,7 +443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 0.1
-  magnitude: 0.15
+  magnitude: 0.23
   count: 5
 --- !u!1001 &624605130
 PrefabInstance:
@@ -461,9 +461,9 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3112631483616072117, guid: 18df94262f3f8634d980a9a444389c1f, type: 3}
-      propertyPath: m_Color.a
-      value: 0.7882353
+    - target: {fileID: 4745563388074862498, guid: 18df94262f3f8634d980a9a444389c1f, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4985347692713175458, guid: 18df94262f3f8634d980a9a444389c1f, type: 3}
       propertyPath: m_Pivot.x
@@ -1212,6 +1212,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72aaa48a33321ca4fb8d2c7f6480f886, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameIndex: 0
+  _gameCount: 0
   _makeGameDelay: 2
   _spawnPos: {x: 6, y: 4}
 --- !u!4 &1623981013

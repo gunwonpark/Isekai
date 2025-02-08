@@ -76,6 +76,8 @@ public class RealGameScene : MonoBehaviour
             yield return null;
         }
 
+        Managers.Scene.LoadScene(Scene.LibraryScene);
+
         yield return null;
     }
 }

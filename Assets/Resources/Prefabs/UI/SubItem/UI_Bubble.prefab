@@ -170,7 +170,7 @@ RectTransform:
   m_Children:
   - {fileID: 5080185382193206533}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -222,7 +222,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 16
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &7737399253146130425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,8 +303,16 @@ MonoBehaviour:
   _widthPadding: 0.5
   _heightPadding: 0.8
   _textSize: 0.4
+  _dropSpeed: 1
   testText: "\uD3C9\uBC94\uD558\uAE30 \uC9DD\uC774 \uC5C6\uC73C\uBA74\uC11C \uC5B4\uB51C
     \uB098\uC11C\uB824\uACE0 \uD558\uB294 \uAC70\uC57C?"
+  test: 2
+  dropTime: 1
+  bounceHeight: 0.8
+  bounceCount: 4
+  bounceDuration: 0.3
+  fadeOutTime: 1
+  bounceDecrease: 0.6
 --- !u!1 &2447189092386211698
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,7 +372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.7882353}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

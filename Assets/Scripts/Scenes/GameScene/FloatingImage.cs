@@ -6,7 +6,10 @@ public class FloatingImage : MonoBehaviour
 {
     [SerializeField] private Material _material;
     [SerializeField] private float _floatingSpeed = 0.05f;
-    
+    private void Awake()
+    {
+        _material = GetComponent<SpriteRenderer>().material;
+    }
     private void Update()
     {
         _material.SetTextureOffset("_MainTex", Vector2.left * _floatingSpeed * Time.time);

@@ -16,6 +16,7 @@ public enum Scene
 	LibraryScene,
 	GameScene,
 	EndingScene,
+	RealGameScene,
 
 	TestScene,
 }

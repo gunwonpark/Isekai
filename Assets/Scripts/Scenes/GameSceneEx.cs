@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GameSceneEx : BaseScene
 {
+	// 이를 이용하는 것은 추후에 ObjectManager를 사용하며 player를 관리하게 만드는 것이 좋겠다.
+	public static Transform player;
 	[SerializeField] private MiniGameFactory _miniGameFactory;
 	[SerializeField] private Transform _player;
 	[SerializeField] private WorldType _worldType = WorldType.Gang;
@@ -15,7 +17,8 @@ public class GameSceneEx : BaseScene
 	{
 		base.Init();
 
-		//_worldType = Managers.World.CurrentWorldType;
+        _worldType = Managers.World.CurrentWorldType;
+        GameSceneEx.player = _player;
 
         Debug.Log($"CurrentWorld is : {_worldType}");
 		Debug.Log("GameSceneEx Init");
@@ -26,6 +29,7 @@ public class GameSceneEx : BaseScene
 		_miniGameFactory.Init(_worldType);
         _miniGameFactory.OnGameEnd += GameOver;
 
+		GameObject background = Managers.Resource.Instantiate($"Background/{_worldType.ToString()}World");
         //배경음악 재생
         Managers.Sound.Play("anotherWorldBgm", Sound.Bgm);
 	}

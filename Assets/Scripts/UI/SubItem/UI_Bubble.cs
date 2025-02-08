@@ -19,7 +19,8 @@ public class UI_Bubble : UI_Base
     public string testText = "평범하기 짝이 없으면서 어딜 나서려고 하는 거야?";
 
     public event Action OnCollisionEvent;
-    
+
+    public float test;
     public void Init(string text, int score)
     {
         FixBubbleSize(text, score);
@@ -59,7 +60,7 @@ public class UI_Bubble : UI_Base
 
         while (elapsedTime < dropTime)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime * test;
             transform.position = Vector3.Lerp(startPos, targetPos, elapsedTime / dropTime);
             yield return null;
         }
@@ -115,29 +116,27 @@ public class UI_Bubble : UI_Base
         {
             elapsedTime += Time.deltaTime;
             _bubbleImage.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1 - (elapsedTime / fadeOutTime));
+            _text.color = new Color(_text.color.r, _text.color.g, _text.color.b, 1 - (elapsedTime / fadeOutTime));
             yield return null;
         }
 
+        OnCollisionEvent?.Invoke();
         Destroy(gameObject); // 완전히 사라지면 오브젝트 삭제
     }
 
+    bool isFading = false;
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (isFading) return;
+
         if (other.CompareTag("Player"))
         {
+            isFading = true;
             Managers.Happy.ChangeHappiness(_score);
             Camera.main.GetComponent<CameraShake>().Shake();
-            //OnCollisionEvent?.Invoke();
-            //Destroy(gameObject);
-        }
-        else if (other.CompareTag("Ground"))
-        {
-            OnCollisionEvent?.Invoke();
-            Destroy(gameObject);
-        }
-    }
+        }        
+    }    
 
-   
 
     public override void Init()
     {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 #region Data
 public struct MiniGameInfo
@@ -35,6 +36,9 @@ public class MiniGameFactory : MonoBehaviour
     [SerializeField] private WorldInfo _worldInfo;
     [SerializeField] private GridSystem _gridSystem;
 
+    [SerializeField] private GameObject _leftExclamation;
+    [SerializeField] private GameObject _rightExclamation;
+
     [SerializeField] private KeySpriteFactory _keySpriteFactory;
 
     [SerializeField] private Transform target;
@@ -65,7 +69,47 @@ public class MiniGameFactory : MonoBehaviour
         StartCoroutine(CreateMiniGame());
     }
 
-    
+    private void Update()
+    {
+        if(_gridSystem.IsBubbleEmpty)
+        {
+            Debug.Log("IsBubbleEmpty");
+            bool isLeft = false;
+            bool isRight = false;
+            foreach(UI_MiniGame _miniGame in _miniGameQueue)
+            {
+                if(_miniGame.gameObject.activeSelf)
+                {
+                    isLeft = _miniGame.transform.position.x < target.position.x;
+                    isRight = _miniGame.transform.position.x > target.position.x;
+                }
+            }
+
+            if (isLeft)
+            {
+                _leftExclamation.SetActive(true);
+            }
+            else
+            {
+                _leftExclamation.SetActive(false);
+            }
+            if (isRight)
+            {
+                _rightExclamation.SetActive(true);
+            }
+            else
+            {
+                _rightExclamation.SetActive(false);
+            }
+        }
+        else
+        {
+            _leftExclamation.SetActive(false);
+            _rightExclamation.SetActive(false);
+        }
+    }
+
+
     public IEnumerator CreateMiniGame()
     {
         while (true)

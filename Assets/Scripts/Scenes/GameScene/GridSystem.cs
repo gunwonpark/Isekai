@@ -42,8 +42,7 @@ public class GridSystem : MonoBehaviour
             float height = Camera.main.orthographicSize * 2f;  
             float width = height * Camera.main.aspect;         
 
-            Collider2D col = Physics2D.OverlapBox(referenceSize, new Vector2(width, height), 0, LayerMask.GetMask("UI"));
-            Debug.Log(col);
+            Collider2D col = Physics2D.OverlapBox(Camera.main.transform.position, new Vector2(width, height), 0, LayerMask.GetMask("UI"));
             return col == null;
         }
     }
@@ -150,6 +149,8 @@ public class GridSystem : MonoBehaviour
         {
             DrawGrid(gridInfo);
         }
+
+        DrawCamera();
     }
 
     private void DrawGrid(GridInfo gridInfo)
@@ -159,5 +160,13 @@ public class GridSystem : MonoBehaviour
 
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube(position, size);
+    }
+
+    private void DrawCamera()
+    {
+        Gizmos.color = Color.red;
+        float height = Camera.main.orthographicSize * 2f;
+        float width = height * Camera.main.aspect;
+        Gizmos.DrawWireCube(Camera.main.transform.position, new Vector3(width - 0.1f, height - 0.1f, 0.1f));
     }
 }

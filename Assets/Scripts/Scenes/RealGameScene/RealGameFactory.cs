@@ -18,8 +18,8 @@ public struct RealGameInfo
 public class RealGameFactory : MonoBehaviour
 {
     private RealWorldInfo _realWorldInfo;
-    private int _gameIndex = 0;
-    private int _gameCount = 0;
+    [SerializeField] private int _gameIndex = 0;
+    [SerializeField] private int _gameCount = 0;
 
     [SerializeField] private float _makeGameDelay = 1.0f;
 
@@ -33,7 +33,7 @@ public class RealGameFactory : MonoBehaviour
         _realWorldInfo = realWorldInfo;
         _gameCount = _realWorldInfo.dialog.Count;
 
-        MakeRealGame();
+        StartCoroutine(CoMakeRealGame());
         //StartCoroutine(COMakeRealGame());
     }
 
@@ -48,6 +48,12 @@ public class RealGameFactory : MonoBehaviour
 
         ui_Bubble.OnCollisionEvent += Ui_Bubble_OnCollisionEvent;
         _gameIndex++;
+    }
+
+    private IEnumerator CoMakeRealGame()
+    {
+        yield return new WaitForSeconds(_makeGameDelay);
+        MakeRealGame();
     }
 
     private void Ui_Bubble_OnCollisionEvent()
@@ -66,16 +72,18 @@ public class RealGameFactory : MonoBehaviour
             }
             StopAllCoroutines();
             OnGameEnd.Invoke(false);
+            return;
         }
-        else if(_gameCount == 0)
+
+
+        if(_gameCount == 0)
         {
             StopAllCoroutines();
             OnGameEnd.Invoke(true);
+            return;
         }
-        else
-        {
-            MakeRealGame();
-        }
+
+        StartCoroutine(CoMakeRealGame());
     }
 
     //IEnumerator COMakeRealGame()

@@ -14,7 +14,6 @@ public class UI_MiniGame : UI_Popup
     [SerializeField] private Image _bubbleImage;
     [SerializeField] private TextMeshProUGUI _bubbleText;
     [SerializeField] private Image _minigameGaugeBar;
-    [SerializeField] private Image _positionImage;
 
     private string _originalText;
 
@@ -302,19 +301,6 @@ public class UI_MiniGame : UI_Popup
         }
     }
 
-    public void ShowExclamation(Vector3 position)
-    {
-        if (!_positionImage.gameObject.activeSelf) _positionImage.gameObject.SetActive(true);
-
-        _positionImage.transform.position = position;
-    }
-
-    public void HideExclamation()
-    {
-        if (!_positionImage.gameObject.activeSelf) return;
-
-        _positionImage.gameObject.SetActive(false);
-    }
     public override void Init()
     {
         // 추가 초기화가 필요한 경우 여기에 작성
