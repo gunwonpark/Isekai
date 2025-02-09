@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7853681930647307025}
   - component: {fileID: 2881051372412830427}
   m_Layer: 5
-  m_Name: UI_BookSelectPopup
+  m_Name: UI_BookSelectWorldSpace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,16 +29,16 @@ RectTransform:
   m_GameObject: {fileID: 172205551011981783}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.005, y: 0.005, z: 0.005}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2620583005985550445}
   - {fileID: 9059541398036195228}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
@@ -51,7 +51,7 @@ Canvas:
   m_GameObject: {fileID: 172205551011981783}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -63,7 +63,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!114 &2925518815310434803
 MonoBehaviour:
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &7853681930647307025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,6 +121,11 @@ MonoBehaviour:
   _selectImage2: {fileID: 1529670668700992972}
   _selectText1: {fileID: 5090406564034225069}
   _selectText2: {fileID: 3847200111108414400}
+  bookTransforms:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &1992251181013224156
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,10 +160,10 @@ RectTransform:
   m_Father: {fileID: 130191151987576615}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -683}
-  m_SizeDelta: {x: 989.7728, y: 222.0972}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 602.0156, y: 126.7148}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4423952627600708601
 CanvasRenderer:
@@ -502,10 +507,10 @@ RectTransform:
   m_Father: {fileID: 130191151987576615}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -382}
-  m_SizeDelta: {x: 989.7728, y: 222.0972}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 175}
+  m_SizeDelta: {x: 602.0156, y: 126.7148}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6544570675597435582
 CanvasRenderer:

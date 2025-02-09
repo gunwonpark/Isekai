@@ -6,6 +6,7 @@ public class SpriteClickHandler : MonoBehaviour
 {
 	private void OnMouseDown()
 	{
-		Managers.UI.ShowPopupUI<UI_BookSelectPopup>();
+		//Managers.UI.ShowPopupUI<UI_BookSelectPopup>();
+		Managers.UI.MakeWorldSpaceUI<UI_BookSelectWorldSpace>();
 	}
 }
