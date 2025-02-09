@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4796472935688547246}
   - component: {fileID: 6630483555656791459}
+  - component: {fileID: 5816964239156602367}
   m_Layer: 0
   m_Name: "\uCC28\uC740\uC720-2"
   m_TagString: Untagged
@@ -52,7 +53,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,6 +85,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5816964239156602367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362378239766223943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59599af2bd40a234b85b187aaa34e0a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _material: {fileID: 0}
+  _floatingSpeed: 0.003
+  _playerController: {fileID: 0}
 --- !u!1 &2599248237384670007
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +194,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2475428302435984202}
   - component: {fileID: 3069586529585242808}
+  - component: {fileID: 2783283963374522917}
   m_Layer: 0
   m_Name: "\uCC28\uC740\uC720-3"
   m_TagString: Untagged
@@ -220,7 +237,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -252,6 +269,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2783283963374522917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4586793837318375480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccb716c45c511384abb2e3dfbb829019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _material: {fileID: 0}
+  _floatingSpeed: 0.03
 --- !u!1 &7446262903472291488
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,5 +400,5 @@ Transform:
   - {fileID: 4796472935688547246}
   - {fileID: 3980569005962552794}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

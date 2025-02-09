@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _material: {fileID: 0}
-  _floatingSpeed: 0.001
+  _floatingSpeed: 0.003
   _playerController: {fileID: 0}
 --- !u!1 &1645129000018848111
 GameObject:
@@ -258,7 +258,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -8
-  m_Sprite: {fileID: 21300000, guid: f32fdfceaa31b334aadf08980bb376ba, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ccd9ec629ecd06344a59ad677f4f5c3f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _material: {fileID: 0}
-  _floatingSpeed: 0.001
+  _floatingSpeed: 0.002
   _playerController: {fileID: 0}
 --- !u!1 &2038632808152048396
 GameObject:
@@ -417,7 +417,7 @@ Transform:
   - {fileID: 4668567537959510850}
   - {fileID: 7362758772855827646}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5312611452015532329
 GameObject:
