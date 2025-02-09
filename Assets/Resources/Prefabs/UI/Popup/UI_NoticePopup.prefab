@@ -69,9 +69,9 @@ MonoBehaviour:
   m_text: "\uC774 \uCC45\uC744 \uC77D\uC73C\uBA74 \uC5EC\uB7EC\uBD84\uC740 \uC7A0\uC2DC
     \uC774 \uC138\uACC4\uB97C \uB5A0\uB098\n\uC774\uC138\uACC4\uC758 \uC778\uBB3C\uC774
     \uB418\uC5B4 \uD589\uBCF5\uD55C \uC2DC\uAC04\uC744 \uBCF4\uB0B4\uC2E4 \uC218
-    \uC788\uC2B5\uB2C8\uB2E4. \r\n\n\n\n\uB2E4\uB9CC, \uC774\uC138\uACC4\uC5D0\uC11C\uC758
-    10\uBD84\uC740 \uC774 \uC138\uACC4\uC5D0\uC11C\n10\uC2DC\uAC04\uC774\uB2C8 \uC720\uC758\uD558\uC2DC\uAE38
-    \uBC14\uB78D\uB2C8\uB2E4."
+    \uC788\uC2B5\uB2C8\uB2E4. \r\n\n\uB2E4\uB9CC, <b><size=115%>\uC774\uC138\uACC4\uC5D0\uC11C\uC758
+    10\uBD84\uC740 \uC774 \uC138\uACC4\uC5D0\uC11C\n10\uC2DC\uAC04\uC774\uB2C8</size></b>
+    \uC720\uC758\uD558\uC2DC\uAE38 \uBC14\uB78D\uB2C8\uB2E4."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7ae0bed6483d5044a8a6c427cbafef38, type: 2}
   m_sharedMaterial: {fileID: -2473864810447096974, guid: 7ae0bed6483d5044a8a6c427cbafef38, type: 2}
@@ -105,12 +105,12 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 20
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -329,7 +329,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 311, y: -201}
+  m_AnchoredPosition: {x: 321, y: -232}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &538658499076482150
@@ -589,7 +589,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b7d5c2e26f45f447b6769b8be674f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playableDirector: {fileID: 0}
+  _playableDirector: {fileID: 0}
 --- !u!1 &6874876371997760753
 GameObject:
   m_ObjectHideFlags: 0

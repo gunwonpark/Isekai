@@ -42,7 +42,7 @@ public class LibraryTimeLineCallback : MonoBehaviour
 			spriteRenderers[2].enabled = !spriteRenderers[2].enabled;
 			spriteRenderers[3].enabled = !spriteRenderers[3].enabled;
 
-			yield return new WaitForSeconds(0.4f);
+			yield return new WaitForSeconds(0.8f);
 		}
 	}
 }
