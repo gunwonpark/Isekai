@@ -54,6 +54,7 @@ public class SoundManager
 			if (audioSource.isPlaying)
 				audioSource.Stop();
 
+			audioSource.time = 0f;
 			audioSource.pitch = pitch;
 			audioSource.clip = audioClip;
 			audioSource.Play();
@@ -66,7 +67,48 @@ public class SoundManager
 		}
 	}
 
-	AudioClip GetOrAddAudioClip(string path, Sound type = Sound.Effect)
+	public void PlayAt(string path, float startTime, Sound type = Sound.Effect, float pitch = 1.0f)
+	{
+        AudioClip audioClip = GetOrAddAudioClip(path, type);
+        PlayAt(audioClip, startTime, type, pitch);
+    }
+
+	public void PlayAt(AudioClip audioClip, float startTime, Sound type = Sound.Effect, float pitch = 1.0f)
+	{
+        if (audioClip == null)
+            return;
+        if (type == Sound.Bgm)
+        {
+            AudioSource audioSource = _audioSources[(int)Sound.Bgm];
+            if (audioSource.isPlaying)
+                audioSource.Stop();
+			
+            audioSource.pitch = pitch;
+            audioSource.clip = audioClip;
+            audioSource.time = startTime;
+            audioSource.Play();
+        }
+        else
+        {
+            AudioSource audioSource = _audioSources[(int)Sound.Effect];
+            audioSource.pitch = pitch;
+            audioSource.PlayOneShot(audioClip);
+        }
+    }
+
+	public void Stop(Sound type = Sound.Effect)
+	{
+		if (type == Sound.Bgm)
+		{
+			_audioSources[(int)Sound.Bgm].Stop();
+		}
+		else
+		{
+			_audioSources[(int)Sound.Effect].Stop();
+		}
+	}
+
+    AudioClip GetOrAddAudioClip(string path, Sound type = Sound.Effect)
 	{
 		if (path.Contains("Sounds/") == false)
 			path = $"Sounds/{path}";

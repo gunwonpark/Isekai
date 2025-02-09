@@ -8,6 +8,7 @@ public class UI_EndingScene : UI_Scene
 	[SerializeField] private TMP_Text _newsText;       // 뉴스 대사 텍스트
 	[SerializeField] private TMP_Text _titleText;      // 제목 텍스트
 
+	[SerializeField] private AudioSource _effect;
 	public override void Init()
 	{
 		base.Init();
@@ -15,13 +16,15 @@ public class UI_EndingScene : UI_Scene
 		_newsText.text = "";       // 뉴스 텍스트 초기화
 		_titleText.text = "";      // 제목 텍스트 초기화
 
-		StartCoroutine(PlayEndingSequence());
+        StartCoroutine(PlayEndingSequence());
 	}
 
 	private IEnumerator PlayEndingSequence()
 	{
-		// 뉴스 대사 타이핑 효과
-		string newsDialogue = "속보입니다.\n최근 '이세계'에 빠져 '이 세계'의 자신을 잃어가는\n사례가 급증하고 있다는 보고입니다.\n전문가들은 이러한 현상을 두고 \n'이세계 증후군'이라는 이름을 붙였습니다.";
+		yield return new WaitForSeconds(3f);
+        _effect.Play();
+        // 뉴스 대사 타이핑 효과
+        string newsDialogue = "속보입니다.\n최근 '이세계'에 빠져 '이 세계'의 자신을 잃어가는\n사례가 급증하고 있다는 보고입니다.\n전문가들은 이러한 현상을 두고 \n'이세계 증후군'이라는 이름을 붙였습니다.";
 		yield return StartCoroutine(TypeEffect(_newsText, newsDialogue, 0.05f));
 
 		// 대사 출력 완료 후 2초 대기
@@ -44,7 +47,8 @@ public class UI_EndingScene : UI_Scene
 			textComponent.text += c;
 			yield return new WaitForSeconds(typingSpeed);
 		}
-	}
+		_effect.Stop();
+    }
 
 	// 텍스트 페이드 효과
 	private IEnumerator FadeText(TMP_Text textComponent, float startAlpha, float endAlpha, float duration)

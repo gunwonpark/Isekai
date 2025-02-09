@@ -459,7 +459,7 @@ RectTransform:
   - {fileID: 3064813339359231114}
   - {fileID: 981760401571340959}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -511,7 +511,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 16
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &6088068851412760558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,8 +544,17 @@ MonoBehaviour:
   _bubbleImage: {fileID: 3421297205535423996}
   _bubbleText: {fileID: 8246742761711535414}
   _minigameGaugeBar: {fileID: 3852245650422302410}
+  _positionImage: {fileID: 0}
   _remainTimeText: {fileID: 3096670951526292238}
   _mosaicRemoveSpeed: 1
+  _maskCharacters:
+  - '#'
+  - '*'
+  - '@'
+  - $
+  - '%'
+  - '&'
+  - '!'
   CheetCode: 1
 --- !u!61 &5505001869256885618
 BoxCollider2D:
@@ -579,7 +588,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -3.19}
+  m_Offset: {x: -0.024170399, y: -1.65517}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -590,7 +599,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6.88, y: 1.27}
+  m_Size: {x: 9.10369, y: 5.3064814}
   m_EdgeRadius: 0
 --- !u!1 &4883271356879157668
 GameObject:

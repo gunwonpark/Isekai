@@ -14,6 +14,7 @@ public class UI_MiniGame : UI_Popup
     [SerializeField] private Image _bubbleImage;
     [SerializeField] private TextMeshProUGUI _bubbleText;
     [SerializeField] private Image _minigameGaugeBar;
+
     private string _originalText;
 
     private SpawnInfo _spawnInfo;
@@ -36,6 +37,7 @@ public class UI_MiniGame : UI_Popup
     private float _currentGauge;
 
     private List<KeyButton> _requiredKeys = new List<KeyButton>();
+
     int _keyCount = 0;
 
     public float CheetCode = 1f;
@@ -53,11 +55,9 @@ public class UI_MiniGame : UI_Popup
 
         SetKeyPressButton();
 
-
-
         _spawnInfo = spawnInfo;
 
-        if (_spawnInfo.isLeft)
+        if (!_spawnInfo.isLeft)
         {
             _bubbleImage.transform.Rotate(0, 180, 0);
         }
@@ -87,10 +87,19 @@ public class UI_MiniGame : UI_Popup
         // StringBuilder를 사용하여 효율적으로 텍스트 구성
         StringBuilder currentText = new StringBuilder(_bubbleText.text);
 
+        List<int> order = new List<int>();
         for (int i = 0; i < textLength; i++)
         {
+            order.Add(i);
+        }
+
+        order.Shuffle();
+
+        for (int i = 0; i < textLength; i++)
+        {
+            int index = order[i];
             // 원래 텍스트의 i번째 글자를 업데이트
-            currentText[i] = _originalText[i];
+            currentText[index] = _originalText[index];
 
             _bubbleText.text = currentText.ToString();
             yield return new WaitForSeconds(delayPerChar);
@@ -185,6 +194,7 @@ public class UI_MiniGame : UI_Popup
 
         // 시간 감소
         _remainingTime -= Time.deltaTime;
+
         if (_remainingTime <= 0)
         {
             EndMiniGame(false);
@@ -238,6 +248,7 @@ public class UI_MiniGame : UI_Popup
         if (_currentGauge < 0)
         {
             _currentGauge = 0;
+            EndMiniGame(false);
         }
 
         if (_currentGauge >= 100f)
@@ -250,6 +261,7 @@ public class UI_MiniGame : UI_Popup
     {
         _minigameGaugeBar.fillAmount = _currentGauge / 100f;
         _remainTimeText.text = $"남은 시간: {_remainingTime:F1}초";
+
     }
 
     private void EndMiniGame(bool isSuccess)

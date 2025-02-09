@@ -66,7 +66,7 @@ public class HappinessHUD : UI_Scene
 		if (_happinessSlider != null)
 			_happinessSlider.value = happiness / Managers.Happy.MaxHappiness;
 
-		Debug.Log($"Happiness Updated: {happiness}");
+		//Debug.Log($"Happiness Updated: {happiness}");
 	}
 
 	public void ChangeHappiness(float amount)

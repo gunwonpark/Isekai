@@ -22,6 +22,8 @@ public class RealGameScene : MonoBehaviour
     {
         _realGameFactory.Init(realWorldInfo);
         _realGameFactory.OnGameEnd += RealGameFactory_OnGameEnd;
+
+        Managers.Sound.Play("realWorldBgm", Sound.Bgm);
     }
 
     private void RealGameFactory_OnGameEnd(bool isWin)
@@ -73,6 +75,8 @@ public class RealGameScene : MonoBehaviour
             _fadeImage.color = color;
             yield return null;
         }
+
+        Managers.Scene.LoadScene(Scene.LibraryScene);
 
         yield return null;
     }

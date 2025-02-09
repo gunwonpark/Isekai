@@ -38,7 +38,7 @@ public class UI_GameOver : UI_Popup
         // 아무 공간이나 클릭하면 TestScene으로 이동
         if (Input.GetMouseButton(0))
         {
-            Managers.Scene.LoadScene(Scene.TestScene);
+            Managers.Scene.LoadScene(Scene.RealGameScene);
         }
     }
 

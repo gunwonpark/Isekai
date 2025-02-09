@@ -22,7 +22,7 @@ public class UI_Information : UI_Popup
         _yesTextEvent.OnPointerUpHandler += (PointerEventData data) => 
         { 
             //현실세계로 이동
-            Managers.Scene.LoadScene(Scene.TestScene);
+            Managers.Scene.LoadScene(Scene.RealGameScene);
             Managers.UI.ClosePopupUI(this); 
         };
 
