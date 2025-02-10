@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -56,4 +57,12 @@ public static class Extension
         result.Shuffle();
         return result.GetRange(0, n);
     }
+
+    // 시간적으로는 거의 n이 걸리지만 복잡한 문장에는 오류가 있을 수 있다
+    // ex '>' '<' 이 문자가 너무 무분별하거나 복잡하게 포합되어 있는 경우
+    public static string RemoveRichTextTags(this string input)
+    {
+        // <.*?> : <로 시작하고 >로 끝나는 모든 문자열
+        return Regex.Replace(input, "<.*?>", string.Empty);
+    }   
 }
