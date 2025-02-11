@@ -1,12 +1,16 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class HappinessHUD : UI_Scene
 {
 	[SerializeField] private Slider _happinessSlider;
 	[SerializeField] private Image _gaugeBarImage;
+	[SerializeField] private Volume _volume;
+    [SerializeField] private ColorAdjustments _color;
 
 	public static HappinessHUD Instance { get; private set; }
 
@@ -22,7 +26,8 @@ public class HappinessHUD : UI_Scene
 			Destroy(gameObject); // 이미 존재하면 중복 생성 방지
 			return;
 		}
-	}
+        _volume.profile.TryGet(out _color);
+    }
 
 	public override void Init()
 	{
@@ -66,11 +71,14 @@ public class HappinessHUD : UI_Scene
 		if (_happinessSlider != null)
 			_happinessSlider.value = happiness / Managers.Happy.MaxHappiness;
 
-		//Debug.Log($"Happiness Updated: {happiness}");
-	}
+        //Debug.Log($"Happiness Updated: {happiness}");
+        if (_color != null)
+            _color.saturation.Override(-(1f - Managers.Happy.Happiness / Managers.Happy.MaxHappiness) * 100);
 
-	public void ChangeHappiness(float amount)
+    }
+
+    public void ChangeHappiness(float amount)
 	{
 		Managers.Happy.ChangeHappiness(amount);
-	}
+    }
 }

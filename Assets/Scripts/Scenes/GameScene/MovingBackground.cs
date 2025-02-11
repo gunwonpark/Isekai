@@ -10,8 +10,7 @@ public class MovingBackground : MonoBehaviour
     [SerializeField] private PlayerController _playerController;
 
     private Vector2 _currentOffset = new Vector2(0,0);
-    // Update is called once per frame
-
+   
     private void Start()
     {
         _playerController = GameSceneEx.player.GetComponent<PlayerController>();

@@ -14,8 +14,8 @@ public class TwoKeyButton : KeyButton
         _secondImage.sprite = sceondSprite;
     }
     private void Update()
-    {
-        if(_canPressKey && Input.GetKeyDown(_keyCode) && Input.GetKeyDown(_secondKeyCode))
+    { 
+        if (_canPressKey && Input.GetKeyDown(_keyCode) && Input.GetKeyDown(_secondKeyCode))
         {
             OnkeyPressedEvent();
             Destroy(gameObject);

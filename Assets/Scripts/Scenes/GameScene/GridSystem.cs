@@ -104,7 +104,6 @@ public class GridSystem : MonoBehaviour
     public bool TryGetEmptyPosition(out Vector2 position)
     {
         int index = FindEmptyRandomIndex();
-        Debug.Log(index);
         if (index == -1)
         {
             Debug.Log("모든 공간이 찼습니다.");

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WorldManager
 {
-    private WorldType _currentWorldType = WorldType.Chaumm;
+    private WorldType _currentWorldType = WorldType.Gang;
     public List<bool> isWorldClear;
     public WorldType CurrentWorldType
     {

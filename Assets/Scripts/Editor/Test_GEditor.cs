@@ -16,9 +16,5 @@ public class Test_GEditor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        if (GUILayout.Button("Shake Camera"))
-        {
-            //testG.ShakeCamera();
-        }
     }
 }

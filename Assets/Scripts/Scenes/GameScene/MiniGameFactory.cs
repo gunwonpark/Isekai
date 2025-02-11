@@ -16,9 +16,9 @@ public struct MiniGameInfo
     public int runGauge;
     public int limitTime;
 
-    public List<KeyCode> requiredKeys;
-    public int requiredKeyCount;
-    public bool canPressConcurrent;
+    public List<KeyCode> requiredKeys; // 필요한 키 리스트
+    public int requiredKeyCount; // 필요한 키 개수
+    public bool canPressConcurrent; // 동시에 누를 수 있는지 여부
     public string dialog;
 }
 
@@ -114,7 +114,6 @@ public class MiniGameFactory : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log("CreateMiniGame");
             SpawnInfo spawnInfo = GetRandomPosition();
             UI_MiniGame miniGame = Instantiate(_miniGame, spawnInfo.position, Quaternion.identity);
             MiniGameInfo miniGameInfo = _worldInfo.GetRandomMiniGameInfo();
