@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -7,12 +8,15 @@ using UnityEngine.UI;
 
 public class HappinessHUD : UI_Scene
 {
-	[SerializeField] private Slider _happinessSlider;
 	[SerializeField] private Image _gaugeBarImage;
-	[SerializeField] private Volume _volume;
+	[SerializeField] private Image _happyImage;
+	[SerializeField] List<Sprite> _happySprites;
+    [SerializeField] private Volume _volume;
     [SerializeField] private ColorAdjustments _color;
 
 	public static HappinessHUD Instance { get; private set; }
+
+	private List<Color> _colors;
 
 	private void Awake()
 	{
@@ -33,7 +37,27 @@ public class HappinessHUD : UI_Scene
 	{
 		base.Init();
 
-		_happinessSlider.value = Managers.Happy.Happiness / Managers.Happy.MaxHappiness;
+		Canvas canvas = GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = Camera.main;
+		canvas.planeDistance = 1;
+
+        // not used
+        _colors = new List<Color>()
+		{
+			new Color32(254,215,0, 255),
+			new Color32(198,145,43,255),
+			new Color32(170, 120, 56, 255),
+			new Color32(142,100,62, 255),
+			new Color32(85,64,56,255),
+			new Color32(58,51,45,255),
+			new Color32(35,32,26,255),
+			new Color32(23,21,15,255),
+			new Color32(18,18,11,255),
+			new Color32(1, 0, 0, 255)
+		};
+		
+        _gaugeBarImage.fillAmount = Managers.Happy.Happiness / Managers.Happy.MaxHappiness;
 		UpdateHappinessUI(Managers.Happy.Happiness);		
 	}
 
@@ -49,30 +73,33 @@ public class HappinessHUD : UI_Scene
 
 	public void UpdateHappinessUI(float happiness)
 	{
-		if (happiness >= 90f && happiness <= 100f)
-			_gaugeBarImage.sprite = Resources.Load<Sprite>("Textures/Gauge/gauge_10");
-		else if (happiness >= 80f && happiness < 90f)
-			_gaugeBarImage.sprite = Resources.Load<Sprite>("Textures/Gauge/gauge_9");
-		else if (happiness >= 70f && happiness < 80f)
-			_gaugeBarImage.sprite = Resources.Load<Sprite>("Textures/Gauge/gauge_7");
-		else if (happiness >= 60f && happiness < 70f)
-			_gaugeBarImage.sprite = Resources.Load<Sprite>("Textures/Gauge/gauge_6");
-		else if (happiness >= 50f && happiness < 60f)
-			_gaugeBarImage.sprite = Resources.Load<Sprite>("Textures/Gauge/gauge_5");
-		else if (happiness >= 40f && happiness < 50f)
-			_gaugeBarImage.sprite = Resources.Load<Sprite>("Textures/Gauge/gauge_4");
-		else if (happiness >= 30f && happiness < 40f)
-			_gaugeBarImage.sprite = Resources.Load<Sprite>("Textures/Gauge/gauge_3");
-		else if (happiness >= 20f && happiness < 30f)
-			_gaugeBarImage.sprite = Resources.Load<Sprite>("Textures/Gauge/gauge_2");
-		else
-			_gaugeBarImage.sprite = Resources.Load<Sprite>("Textures/Gauge/gauge_1");
+        _gaugeBarImage.fillAmount = happiness / Managers.Happy.MaxHappiness;
 
-		if (_happinessSlider != null)
-			_happinessSlider.value = happiness / Managers.Happy.MaxHappiness;
+		
 
-        //Debug.Log($"Happiness Updated: {happiness}");
-        if (_color != null)
+		if (happiness >= 80f)
+		{
+			_happyImage.sprite = _happySprites[0];
+		}
+		else if(happiness >= 60f)
+        {
+            _happyImage.sprite = _happySprites[1];
+        }
+        else if (happiness >= 40f)
+        {
+            _happyImage.sprite = _happySprites[2];
+        }
+        else if (happiness >= 20f)
+        {
+            _happyImage.sprite = _happySprites[3];
+        }
+        else
+        {
+            _happyImage.sprite = _happySprites[4];
+        }
+
+
+		if (_color != null)
             _color.saturation.Override(-(1f - Managers.Happy.Happiness / Managers.Happy.MaxHappiness) * 100);
 
     }

@@ -24,10 +24,13 @@ public class RealGameScene : MonoBehaviour
         _realGameFactory.OnGameEnd += RealGameFactory_OnGameEnd;
 
         Managers.Sound.Play("realWorldBgm", Sound.Bgm);
+
+        Camera.main.GetComponent<FlowCamera>().StartFlow();
     }
 
     private void RealGameFactory_OnGameEnd(bool isWin)
     {
+        Camera.main.GetComponent<FlowCamera>().StopFlow();
         Debug.Log("EndGame");
         //주인공은 오른쪽으로 이동하고 카메라는 고정
         //화면은 천천히 faded out되고 fade in 되면서 도서관 씬으로 이동

@@ -30,6 +30,10 @@ public struct SpawnInfo
     public bool isLeft;
 }
 
+/// <summary>
+/// 미니게임 생성, 미니게임 종료 여부 판단을 담당합니다.
+/// </summary>
+
 public class MiniGameFactory : MonoBehaviour
 {
     [SerializeField] private UI_MiniGame _miniGame;
@@ -45,13 +49,13 @@ public class MiniGameFactory : MonoBehaviour
     [SerializeField] private Transform _leftPosition;
     [SerializeField] private Transform _rightPosition;
 
-    [SerializeField] private float _minY = -2f;
-    [SerializeField] private float _maxY = 2f;
+    [SerializeField] private float _minBubbleYPos = 0f;
+    [SerializeField] private float _maxBubbleYPos = 2f;
     [SerializeField] private float _spawnDelay = 4f;
 
-    private bool _isGameEnd = false;
-
     private Queue<UI_MiniGame> _miniGameQueue = new Queue<UI_MiniGame>();
+
+    private bool _isGameEnd = false;
 
     public event Action<bool> OnGameEnd;
 
@@ -59,11 +63,13 @@ public class MiniGameFactory : MonoBehaviour
     {
         SetWorld(worldType);
     
-        Managers.Happy.OnHappinessChanged += CreateControll;
+        Managers.Happy.OnHappinessChanged += CheckGameProgress;
 
+        // 키 스프라이트 매칭 작업
         _keySpriteFactory = new KeySpriteFactory();
         _keySpriteFactory.Init();
 
+        // 말풍선 위치 탐지 작업
         _gridSystem.Init(target);
 
         StartCoroutine(CreateMiniGame());
@@ -73,9 +79,9 @@ public class MiniGameFactory : MonoBehaviour
     {
         if(_gridSystem.IsBubbleEmpty)
         {
-            Debug.Log("IsBubbleEmpty");
             bool isLeft = false;
             bool isRight = false;
+
             foreach(UI_MiniGame _miniGame in _miniGameQueue)
             {
                 if(_miniGame.gameObject.activeSelf)
@@ -114,34 +120,43 @@ public class MiniGameFactory : MonoBehaviour
     {
         while (true)
         {
-            SpawnInfo spawnInfo = GetRandomPosition();
-            UI_MiniGame miniGame = Instantiate(_miniGame, spawnInfo.position, Quaternion.identity);
+            Vector2 randomPos = GetRandomPosition();
+            bool isLeftSide = randomPos.x < target.position.x;
+
+            SpawnInfo spawnInfo = new SpawnInfo
+            {
+                position = randomPos,
+                isLeft = isLeftSide
+            };
+
             MiniGameInfo miniGameInfo = _worldInfo.GetRandomMiniGameInfo();
+
+            UI_MiniGame miniGame = Instantiate(_miniGame, spawnInfo.position, Quaternion.identity);
             _miniGameQueue.Enqueue(miniGame);
+
             miniGame.Init(miniGameInfo, spawnInfo, _keySpriteFactory);
+
             yield return new WaitForSeconds(_spawnDelay);
         }
     }
 
     // target을 기준으로 일정 거리만큼 떨어진 곳에 생성
-    private SpawnInfo GetRandomPosition()
+    private Vector2 GetRandomPosition()
     {
-        float randomY = UnityEngine.Random.Range(_minY, _maxY);
+        float randomY = UnityEngine.Random.Range(_minBubbleYPos, _maxBubbleYPos);
 
-        if(_gridSystem.TryGetEmptyPosition(out Vector2 spawnPos))
+        if(_gridSystem.TryGetEmptyPosition(out Vector2 spawnPos) == false)
         {
+            Debug.Log("모든 공간이 찼습니다.");
         }
 
-        bool isLeft = spawnPos.x < target.position.x;
-
-        return new SpawnInfo() { position = spawnPos + new Vector2(0, randomY), isLeft = isLeft };
+        return spawnPos + new Vector2(0, randomY);
     }
 
     // 행복도에 따른 게임종료여부 판단
-    private void CreateControll(float happiness)
+    private void CheckGameProgress(float happiness)
     {
         if(_isGameEnd) return;
-
 
         if (happiness <= 0 || happiness >= 100)
         {
@@ -178,6 +193,6 @@ public class MiniGameFactory : MonoBehaviour
 
     private void OnDestroy()
     {
-        Managers.Happy.OnHappinessChanged -= CreateControll;
+        Managers.Happy.OnHappinessChanged -= CheckGameProgress;
     }
 }

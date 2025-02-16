@@ -603,8 +603,8 @@ MonoBehaviour:
     \uC774\uB7EC\uD55C \uD604\uC0C1\uC744 \uB450\uACE0 \\n<color=\"red\"><b>'\uC774\uC138\uACC4
     \uC99D\uD6C4\uAD70'</b></color>\uC774\uB77C\uB294 \uC774\uB984\uC744 \uBD99\uC600\uC2B5\uB2C8\uB2E4."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7ae0bed6483d5044a8a6c427cbafef38, type: 2}
-  m_sharedMaterial: {fileID: -2473864810447096974, guid: 7ae0bed6483d5044a8a6c427cbafef38, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fb10db488cf2a634a984678fd5e09aae, type: 2}
+  m_sharedMaterial: {fileID: -6534315385618460736, guid: fb10db488cf2a634a984678fd5e09aae, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

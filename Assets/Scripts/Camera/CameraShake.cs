@@ -23,7 +23,9 @@ public class CameraShake : MonoBehaviour
     {
         StopCoroutine("CoShake");
 
-        for(int i = 0; i < count; i++)
+        _initialPosition = transform.localPosition;
+
+        for (int i = 0; i < count; i++)
         {
             float x = UnityEngine.Random.Range(-1f, 1f) * magnitude * (1 - i / count);
             float y = UnityEngine.Random.Range(-1f, 1f) * magnitude * (1 - i / count);

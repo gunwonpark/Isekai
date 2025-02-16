@@ -7,6 +7,15 @@ public class TwoKeyButton : KeyButton
 {
     [SerializeField] protected KeyCode _secondKeyCode;
     [SerializeField] protected Image _secondImage;
+
+    public override float Width
+    {
+        get
+        {
+            return base.Width + _secondImage.rectTransform.sizeDelta.x + 0.5f;
+        }
+    }
+
     public void Init(KeyCode keyCode, KeyCode secondKeyCode, Sprite sprite, Sprite sceondSprite)
     {
         base.Init(keyCode, sprite);

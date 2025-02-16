@@ -2,16 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+using UnityEngine.UI;
 
 public class GameSceneEx : BaseScene
 {
 	// 이를 이용하는 것은 추후에 ObjectManager를 사용하며 player를 관리하게 만드는 것이 좋겠다.
 	public static Transform player;
+
 	[SerializeField] private MiniGameFactory _miniGameFactory;
 	[SerializeField] private Transform _player;
-	[SerializeField] private WorldType _worldType = WorldType.Gang;
+	
+	[SerializeField] private Image _fadeImage;
 
-	[SerializeField] private List<GameObject> _portalList;
+    [SerializeField] private WorldType _worldType = WorldType.Gang;
+
+	//[SerializeField] private List<GameObject> _portalList;
 	[SerializeField] private float _gameStartDelay = 1.0f;
     protected override void Init()
 	{
@@ -44,6 +51,8 @@ public class GameSceneEx : BaseScene
 			Vector3 newPosition = _player.position + new Vector3(8f, 0, 0);
             newPosition.y = -2.5f;
             go.transform.position = newPosition;
+
+			go.GetComponent<Portal>().onYesEvent += ClearEvent;
         }
 		else
 		{
@@ -52,7 +61,32 @@ public class GameSceneEx : BaseScene
         }
 	}
 
-	public override void Clear()
+	private void ClearEvent()
+	{
+        StartCoroutine(CoFadeOut());
+    }
+
+    private IEnumerator CoFadeOut()
+    {
+        float fadeOutTime = 3.0f;
+        float currentTime = 0.0f;
+        Color color = _fadeImage.color;
+
+        while (currentTime < fadeOutTime)
+        {
+            currentTime += Time.deltaTime;
+            color.a = Mathf.Lerp(0, 1, currentTime / fadeOutTime);
+            _fadeImage.color = color;
+            yield return null;
+        }
+
+        Managers.Scene.LoadScene(Scene.RealGameScene);
+
+        yield return null;
+    }
+
+
+    public override void Clear()
 	{
 
 	}

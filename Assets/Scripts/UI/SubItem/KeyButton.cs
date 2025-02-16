@@ -12,6 +12,15 @@ public class KeyButton : UI_Base
     [SerializeField] protected Image _image;
 
     protected bool _canPressKey = false;
+
+    public virtual float Width
+    {
+        get
+        {
+            return _image.rectTransform.sizeDelta.x;
+        }
+    }
+
     public void Init(KeyCode keyCode, Sprite sprite)
     {
         _keyCode = keyCode;
@@ -30,6 +39,11 @@ public class KeyButton : UI_Base
     public void EnableKeyPress()
     {
         _canPressKey = true;
+    }
+
+    public void DisableKeyPress()
+    {
+        _canPressKey = false;
     }
 
     protected void OnkeyPressedEvent()

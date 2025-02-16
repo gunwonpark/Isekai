@@ -10,7 +10,8 @@ using UnityEngine.UI;
 
 public class UI_MiniGame : UI_Popup
 {
-    
+    public float _keyGap = 0.1f;
+
     [SerializeField] private Image _bubbleImage;
     [SerializeField] private TextMeshProUGUI _bubbleText;
     [SerializeField] private Image _minigameGaugeBar;
@@ -47,6 +48,9 @@ public class UI_MiniGame : UI_Popup
     public int GaugePerDecrease = 5;
 
     private KeySpriteFactory _keySpriteFactory;
+
+    private bool _isTextShowed = false;
+
     public void Init(MiniGameInfo miniGameInfo, SpawnInfo spawnInfo, KeySpriteFactory keySpriteFactory)
     {
         SetMiniGameInfo(miniGameInfo);
@@ -61,9 +65,22 @@ public class UI_MiniGame : UI_Popup
         {
             _bubbleImage.transform.Rotate(0, 180, 0);
         }
+        
+        // 사이즈를 자동으로 조정해 준다.
+        FixBubbleSize();
 
         // 초기화
         UpdateUI();
+    }
+
+    private void FixBubbleSize()
+    {
+        float preferWidth = Mathf.Max(_bubbleText.preferredWidth + 2f, 10f);
+        float preferHeight = Mathf.Max(_bubbleText.preferredHeight + 1f, 2.2f);
+
+        Vector2 preferSize = new Vector2(preferWidth, preferHeight);
+
+        _bubbleImage.rectTransform.sizeDelta = preferSize;
     }
 
     private void SetMiniGameInfo(MiniGameInfo miniGameInfo)
@@ -89,6 +106,7 @@ public class UI_MiniGame : UI_Popup
     // 텍스트 효과 
     private IEnumerator ShowText()
     {
+        _isTextShowed = true;
 
         int textLength = _originalText.Length;
         float totalDuration = 1.0f; // 전체 변환 시간
@@ -157,7 +175,6 @@ public class UI_MiniGame : UI_Popup
 
         int randomKeyCount = UnityEngine.Random.Range(2, 4);
 
-
         if (randomKeyCount == 2)
         {
             for (int i = _miniGameInfo.requiredKeys.Count - 1; i >= _miniGameInfo.requiredKeys.Count - randomKeyCount; i--)
@@ -179,13 +196,24 @@ public class UI_MiniGame : UI_Popup
     {
         int keyCount = _requiredKeys.Count;
 
-        float length = _minigameGaugeBar.rectTransform.rect.width;
-        float gap = length / keyCount;
-        float startX = -length / 2 + gap / 2;
+        List<float> keyWidths = new List<float>();
+        float totalWidth = 0;
 
         for (int i = 0; i < keyCount; i++)
         {
-            _requiredKeys[i].transform.localPosition = new Vector3(startX + gap * i, 0, 0);
+            keyWidths.Add(_requiredKeys[i].Width);
+            totalWidth += keyWidths[i];
+        }
+
+        totalWidth += _keyGap * (keyCount - 1);
+
+        float startX = -totalWidth / 2;
+
+        for (int i = 0; i < keyCount; i++)
+        {
+            float posX = startX + keyWidths[i] / 2;
+            _requiredKeys[i].transform.localPosition = new Vector3(posX, 0, 0);
+            startX += keyWidths[i] + _keyGap;
         }
     }
 
@@ -213,6 +241,7 @@ public class UI_MiniGame : UI_Popup
 
         // 게이지 감소
         ChangeGauge(_miniGameInfo.perDecreaseGauge * Time.deltaTime);
+
         // 키 입력 처리
         HandleKeyPress();
 
@@ -282,12 +311,12 @@ public class UI_MiniGame : UI_Popup
 
         if (isSuccess)
         {
-            Debug.Log("미니게임 성공! 행복도가 상승합니다.");
+            //Debug.Log("미니게임 성공! 행복도가 상승합니다.");
             Managers.Happy.ChangeHappiness(_miniGameInfo.succedGauge + LeftTimeIncrease);
         }
         else
         {
-            Debug.Log("미니게임 실패! 행복도가 감소합니다.");
+            //Debug.Log("미니게임 실패! 행복도가 감소합니다.");
             Managers.Happy.ChangeHappiness(_miniGameInfo.failGauge - LeftTimeIncrease);
         }
 
@@ -307,7 +336,26 @@ public class UI_MiniGame : UI_Popup
             {
                 key.EnableKeyPress();
             }
-            StartCoroutine(ShowText());
+
+            if(_isTextShowed == false)
+            {
+                StartCoroutine(ShowText());
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!_isGameStart) return;
+
+        _isGameStart = false;
+
+        if (other.CompareTag("Player"))
+        {
+            foreach (var key in _requiredKeys)
+            {
+                key.DisableKeyPress();
+            }
         }
     }
 
