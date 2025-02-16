@@ -7,7 +7,7 @@ public class KeySpriteFactory
 {
     private Dictionary<KeyCode, Sprite> _keySprites;
 
-    public const string _keySpritePath = "Art/Keyboard/";
+    public const string _keySpritePath = "Keyboard/";
 
     public void Init()
     {

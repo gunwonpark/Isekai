@@ -312,7 +312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _material: {fileID: 0}
-  _floatingSpeed: 0.002
+  _floatingSpeed: 0.008
   _playerController: {fileID: 0}
 --- !u!1 &2976630656669693024
 GameObject:
@@ -433,7 +433,7 @@ Transform:
   - {fileID: 5792325533461391391}
   - {fileID: 7496112713495962372}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4435047620474264809
 GameObject:
@@ -617,5 +617,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _material: {fileID: 0}
-  _floatingSpeed: 0.001
+  _floatingSpeed: 0.006
   _playerController: {fileID: 0}

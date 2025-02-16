@@ -9,6 +9,8 @@ public class Portal : MonoBehaviour
 
     private UI_Information _information;
 
+    public event System.Action onYesEvent;
+
     private void Start()
     {
         FadeIn();
@@ -43,6 +45,12 @@ public class Portal : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             _information = Managers.UI.ShowPopupUI<UI_Information>();
+            _information.onYesEvent += OnYesEvent;
         }
+    }
+
+    private void OnYesEvent()
+    {
+        onYesEvent?.Invoke();
     }
 }

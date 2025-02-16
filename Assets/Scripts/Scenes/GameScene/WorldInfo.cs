@@ -5,16 +5,16 @@ public abstract class WorldInfo
 {
     public WorldType worldType;
 
-    public List<int> difficulty = new List<int>();
-    public List<int> startGauge = new List<int>();
-    public List<int> perDecreaseGauge = new List<int>();
-    public List<int> perIncreaseGauge = new List<int>();
-    public List<int> succedGauge = new List<int>();
-    public List<int> failGauge = new List<int>();
-    public List<int> runGauge = new List<int>();
-    public List<int> limitTime = new List<int>();
+    public List<int> difficulty = new List<int>(); // 0: Easy, 1: Normal, 2: Hard
+    public List<int> startGauge = new List<int>(); // 시작 게이지
+    public List<int> perDecreaseGauge = new List<int>(); // 게이지 감소량
+    public List<int> perIncreaseGauge = new List<int>(); // 게이지 증가량
+    public List<int> succedGauge = new List<int>(); // 성공시 증가 게이지
+    public List<int> failGauge = new List<int>(); // 실패시 감소 게이지
+    public List<int> runGauge = new List<int>(); // ???
+    public List<int> limitTime = new List<int>(); // 제한 시간
 
-    public readonly List<string> dialog = new List<string>();
+    public readonly List<string> dialog = new List<string>(); // 대사
 
     public WorldInfo(WorldType worldType)
     {

@@ -17,7 +17,12 @@ public class FloatingImage : MonoBehaviour
 
     private void Reset()
     {
+        // 서로 다른 오브젝트에서 다른 값을 적용하고싶을 때
         _material = GetComponent<SpriteRenderer>().material;
+
+        // 서로 다른 오브젝트에서 같은 값을 적용하고싶을 때
+        // _material = GetComponent<SpriteRenderer>().sharedMaterial;
+
         _material.SetTextureOffset("_MainTex", Vector2.zero);
     }
 }
