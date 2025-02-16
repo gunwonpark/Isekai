@@ -1,26 +1,31 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.U2D;
+using UnityEngine.Playables;
 
 public class LibraryEnter : MonoBehaviour
 {
-	public float zoomDuration = 2f;      
-	public float targetZoom = 4f;        
+	public float zoomDuration = 2f;
+	public float targetZoom = 4f;
+	public float delayBeforeLoad = 2f;
 
-	public float delayBeforeLoad = 2f;  
+	public PlayableDirector timeline;
+	private PlayerController playerController;
 
 	private Camera mainCamera;
 	private float originalZoom;
 
-	private Transform playerTransform;
+	// 트리거 충돌 시점의 플레이어 위치를 저장할 변수
+	private Vector3 triggerPlayerPosition;
 
 	private void Start()
 	{
 		mainCamera = Camera.main;
+		playerController = FindAnyObjectByType<PlayerController>();
+		timeline = FindAnyObjectByType<PlayableDirector>();
 		if (mainCamera != null)
 		{
 			mainCamera.orthographic = true;
-
 			originalZoom = mainCamera.orthographicSize;
 		}
 		else
@@ -33,43 +38,52 @@ public class LibraryEnter : MonoBehaviour
 	{
 		if (collision.CompareTag("Player"))
 		{
-			playerTransform = collision.transform;
+			// 트리거에 부딪힌 시점의 플레이어 위치 저장
+			triggerPlayerPosition = collision.transform.position;
+			playerController.isMoving = false;
+			Debug.Log(triggerPlayerPosition);
 			StartCoroutine(HandleSceneTransition());
 		}
 	}
 
 	private IEnumerator HandleSceneTransition()
 	{
-		if (mainCamera == null || playerTransform == null) yield break;
-
-		float elapsed = 0f;
+		if (timeline != null)
+		{
+			timeline.Play();
+			while (timeline.state == PlayState.Playing)
+			{
+				yield return null;
+			}
+		}
+		else
+		{
+			Debug.LogWarning("타임라인 참조가 없습니다.");
+		}
 
 		PixelPerfectCamera pixelPerfectCamera = mainCamera.GetComponent<PixelPerfectCamera>();
-		pixelPerfectCamera.enabled = false;
+		if (pixelPerfectCamera != null)
+			pixelPerfectCamera.enabled = false;
 
 		Vector3 startPos = mainCamera.transform.position;
-
 		float offsetX = 0f;
 		float offsetY = 1f;
 
+		// 저장된 충돌 시점의 플레이어 위치를 기준으로 endPos 계산
 		Vector3 endPos = new Vector3(
-			playerTransform.position.x + offsetX,
-			playerTransform.position.y + offsetY,
+			triggerPlayerPosition.x + offsetX,
+			triggerPlayerPosition.y + offsetY,
 			startPos.z
 		);
 
 		float startZoom = originalZoom;
+		float elapsed = 0f;
 
 		while (elapsed < zoomDuration)
 		{
 			float t = elapsed / zoomDuration;
-
 			mainCamera.transform.position = Vector3.Lerp(startPos, endPos, t);
-
 			mainCamera.orthographicSize = Mathf.Lerp(startZoom, targetZoom, t);
-
-			Debug.Log($"[Zooming] Elapsed: {elapsed:F2}, Size: {mainCamera.orthographicSize:F2}");
-
 			elapsed += Time.deltaTime;
 			yield return null;
 		}

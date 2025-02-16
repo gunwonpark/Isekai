@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class SpriteClickHandler : MonoBehaviour
 {
+	private bool _isClicked;
+
+	private void OnEnable()
+	{
+		_isClicked = false;
+	}
+
 	private void OnMouseDown()
 	{
-		//Managers.UI.ShowPopupUI<UI_BookSelectPopup>();
-		Managers.UI.MakeWorldSpaceUI<UI_BookSelectWorldSpace>();
+		if (!_isClicked)
+		{
+			Managers.UI.MakeWorldSpaceUI<UI_BookSelectWorldSpace>();
+			_isClicked = true;
+		}		
 	}
 }

@@ -10,11 +10,19 @@ public class UI_BookPopup : UI_Popup
     [SerializeField] private TMP_Text _letterText;
 	[SerializeField] private TMP_Text _TitleText;
 	[SerializeField] private Button _AnyClick;
+	[SerializeField] Material[] _material;
+	private MeshRenderer _meshRenderer;
+	private GameObject _book;
 
 	public override void Init()
 	{
 		base.Init();
 		SetText();
+
+		_meshRenderer = GameObject.Find("Quad").GetComponent<MeshRenderer>();
+		_meshRenderer.material = _material[0];
+		_book = GameObject.FindGameObjectWithTag("Book");
+		_book.SetActive(false);
 	}
 
 	public void ClosePopup()
@@ -65,5 +73,11 @@ public class UI_BookPopup : UI_Popup
 	{
 		_TitleText.text = "Title\r\n\r\n펠마누스";
 		_letterText.text = "그가 태어난 순간, 세상은 경외심으로 물들었다. 그는 죽어가는 사람조차 살려낼 수 있는 신비로운 능력을 지니고 있어, 수많은 이들이 그의 이름을 외우며 숭배했다.";
+	}
+
+	private void OnDestroy()
+	{
+		_meshRenderer.material = _material[1];
+		_book.SetActive(true);
 	}
 }
