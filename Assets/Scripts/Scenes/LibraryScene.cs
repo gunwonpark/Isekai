@@ -10,7 +10,7 @@ public class LibraryScene : BaseScene
 
 		SceneType = Scene.LibraryScene;
 		//Managers.UI.ShowPopupUI<UI_BookPopup>();
-		Managers.World.CurrentWorldType = WorldType.Vinter;
+		//Managers.World.CurrentWorldType = WorldType.Vinter;
 	}
 
 	public override void Clear()

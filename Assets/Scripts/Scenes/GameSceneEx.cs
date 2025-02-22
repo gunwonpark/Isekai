@@ -16,7 +16,7 @@ public class GameSceneEx : BaseScene
 	
 	[SerializeField] private Image _fadeImage;
 
-    [SerializeField] private WorldType _worldType = WorldType.Gang;
+    [SerializeField] private WorldType _worldType = WorldType.Pelmanus;
 
 	//[SerializeField] private List<GameObject> _portalList;
 	[SerializeField] private float _gameStartDelay = 1.0f;

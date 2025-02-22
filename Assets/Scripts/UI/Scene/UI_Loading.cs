@@ -54,6 +54,7 @@ public class UI_Loading : MonoBehaviour
 
     IEnumerator FadeIn()
     {
+        yield return new WaitForSeconds(2.0f);
         float timer = 0.0f;
         float timeToWait = 2.0f;
         Color color = _fadeImage.color;

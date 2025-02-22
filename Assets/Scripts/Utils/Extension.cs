@@ -64,5 +64,21 @@ public static class Extension
     {
         // <.*?> : <로 시작하고 >로 끝나는 모든 문자열
         return Regex.Replace(input, "<.*?>", string.Empty);
-    }   
+    }
+
+    public static IEnumerator CoFadeOut(this UnityEngine.UI.Image image, float fadeTime, float waitTimeAfterfade = 0f)
+    {
+        Color color = image.color;
+        float curTime = 0;
+
+        while (curTime < fadeTime)
+        {
+            curTime += Time.deltaTime;
+            color.a = Mathf.Lerp(0, 1, curTime / fadeTime);
+            image.color = color;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(waitTimeAfterfade);
+    }
 }

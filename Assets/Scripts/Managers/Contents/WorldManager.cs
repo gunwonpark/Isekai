@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WorldManager
 {
-    private WorldType _currentWorldType = WorldType.Vinter;
+    private WorldType _currentWorldType = WorldType.Pelmanus;
     public List<bool> isWorldClear;
     public WorldType CurrentWorldType
     {
@@ -20,5 +20,10 @@ public class WorldManager
         {
             isWorldClear.Add(false);
         }
+    }
+
+    public void WorldClear()
+    {
+        isWorldClear[(int)CurrentWorldType] = true;
     }
 }

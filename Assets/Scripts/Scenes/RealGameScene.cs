@@ -79,8 +79,17 @@ public class RealGameScene : MonoBehaviour
             yield return null;
         }
 
+        WorldType nextWorld = Managers.World.CurrentWorldType + 1;
+        Managers.World.CurrentWorldType = nextWorld;
+
         Managers.Scene.LoadScene(Scene.LibraryScene);
 
         yield return null;
+    }
+
+    [ContextMenu("EndGame")]
+    public void EndGame()
+    {
+        RealGameFactory_OnGameEnd(true);
     }
 }

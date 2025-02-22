@@ -19,7 +19,6 @@ public class LibraryTimeLineEndCallback : MonoBehaviour
 
 	public void EnterGameScene(PlayableDirector director)
 	{
-        Managers.World.CurrentWorldType = WorldType.Gang;
         Managers.Scene.LoadScene(Scene.GameScene);
     }
 

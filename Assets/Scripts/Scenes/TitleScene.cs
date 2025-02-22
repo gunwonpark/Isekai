@@ -9,11 +9,10 @@ public class TitleScene : BaseScene
 		base.Init();
 
 		SceneType = Scene.TitleScene;
-		Managers.UI.ShowSceneUI<UI_TitleScene>();
 	}
 
 	public override void Clear()
 	{
-		Debug.Log("LoginScene Clear!");
+		Debug.Log("TitleScene Clear!");
 	}
 }
