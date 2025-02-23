@@ -13,13 +13,18 @@ public class RealGameScene : MonoBehaviour
     [SerializeField] private PlayableDirector _enterTimeline;
     [SerializeField] private Transform _player;
     [SerializeField] private Image _fadeImage;
+    [SerializeField] private TMPro.TMP_Text _warningText;
 
     private IEnumerator Start()
     {
         Managers.Sound.Play("realWorldBgm", Sound.Bgm);
-        yield return PlayEnterTimeline();  
-        yield return new WaitForSeconds(3f); // 3초 대기
+        yield return PlayEnterTimeline();
 
+        yield return new WaitForSeconds(0.3f);
+
+        yield return _warningText.BlinkTipText(3, 0.5f);
+
+        yield return new WaitForSeconds(0.5f);
         // 게임시작
         RealWorldInfo realWorldInfo = new FirstWorldInfo();
         Init(realWorldInfo);
@@ -39,7 +44,6 @@ public class RealGameScene : MonoBehaviour
         _realGameFactory.OnGameEnd += RealGameFactory_OnGameEnd;
 
        
-
         RealGameSceneData realGameSceneData = Managers.DB.GetRealGameSceneData(Managers.World.CurrentWorldType);
 
         Camera.main.GetComponent<FlowCamera>().SetFollowSpeed(realGameSceneData.cameraSpeed);

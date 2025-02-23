@@ -40,17 +40,26 @@ public class GameSceneEx : BaseScene
 
 		SceneType = Scene.GameScene;
 
-		//미니게임 공장 초기화
-		_miniGameFactory.Init(_worldType);
-        _miniGameFactory.OnGameEnd += GameOver;
-
 		GameObject background = Managers.Resource.Instantiate($"Background/{_worldType.ToString()}World");
-        //배경음악 재생
-        Managers.Sound.Play("anotherWorldBgm", Sound.Bgm);
+
+        StartCoroutine(GameStart());
+        
 	}
 
-	//게임 종료시
-	public void GameOver(bool isWin)
+    private IEnumerator GameStart()
+    {
+        yield return StartCoroutine(_fadeImage.CoFadeIn(_fadeTime, _waitTimeAfterFade));
+
+        //배경음악 재생
+        Managers.Sound.Play("anotherWorldBgm", Sound.Bgm);
+
+        //미니게임 공장 초기화
+        _miniGameFactory.Init(_worldType);
+        _miniGameFactory.OnGameEnd += GameOver;
+    }
+
+    //게임 종료시
+    public void GameOver(bool isWin)
 	{
 		if (isWin)
         { 

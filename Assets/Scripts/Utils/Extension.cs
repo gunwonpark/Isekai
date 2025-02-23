@@ -51,6 +51,40 @@ public static class Extension
         return Regex.Replace(input, "<.*?>", string.Empty);
     }
 
+    public static IEnumerator CoFadeOut(this TMP_Text text, float fadeTime, float waitTimeAfterFade = 0f, float waitTimeBeforeFade = 0f)
+    {
+        if (waitTimeBeforeFade > 0f) yield return new WaitForSeconds(waitTimeBeforeFade);
+        Color color = text.color;
+        float curTime = 0;
+
+        while (curTime <= fadeTime)
+        {
+            curTime += Time.deltaTime;
+            color.a = Mathf.Lerp(0, 1, curTime / fadeTime);
+            text.color = color;
+            yield return null;
+        }
+
+        if (waitTimeAfterFade > 0f) yield return new WaitForSeconds(waitTimeAfterFade);
+    }
+
+    public static IEnumerator CoFadeIn(this TMP_Text text, float fadeTime, float waitTimeAfterFade = 0f, float waitTimeBeforeFade = 0f)
+    {
+        if (waitTimeBeforeFade > 0f) yield return new WaitForSeconds(waitTimeBeforeFade);
+        Color color = text.color;
+        float curTime = 0;
+
+        while (curTime <= fadeTime)
+        {
+            curTime += Time.deltaTime;
+            color.a = Mathf.Lerp(1, 0, curTime / fadeTime);
+            text.color = color;
+            yield return null;
+        }
+
+        if (waitTimeAfterFade > 0f) yield return new WaitForSeconds(waitTimeAfterFade);
+    }
+
     public static IEnumerator CoFadeOut(this UnityEngine.UI.Image image, float fadeTime, float waitTimeAfterFade = 0f, float waitTimeBeforeFade = 0f)
     {
         if (waitTimeBeforeFade > 0f) yield return new WaitForSeconds(waitTimeBeforeFade);
@@ -60,7 +94,7 @@ public static class Extension
         while (curTime <= fadeTime)
         {
             curTime += Time.deltaTime;
-            color.a = Mathf.Lerp(0, 1, curTime / fadeTime);
+            color.a = Mathf.SmoothStep(0, 1, curTime / fadeTime);
             image.color = color;
             yield return null;
         }
@@ -104,10 +138,26 @@ public static class Extension
     {
         for (int i = 0; i < blinkCount; i++)
         {
-            text.color = new Color(text.color.r, text.color.g, text.color.b, 0f);
-            yield return new WaitForSeconds(perTime);
-            text.color = new Color(text.color.r, text.color.g, text.color.b, 1f);
-            yield return new WaitForSeconds(perTime);
+            Color color = text.color;
+            float curTime = 0;
+
+            while (curTime <= perTime)
+            {
+                curTime += Time.deltaTime;
+                color.a = Mathf.Lerp(1, 0, curTime / perTime);
+                text.color = color;
+                yield return null;
+            }
+
+            curTime = 0;
+
+            while (curTime <= perTime)
+            {
+                curTime += Time.deltaTime;
+                color.a = Mathf.Lerp(1, 0, curTime / perTime);
+                text.color = color;
+                yield return null;
+            }
         }
     }
 

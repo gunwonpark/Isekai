@@ -53,6 +53,8 @@ public class MiniGameFactory : MonoBehaviour
     [SerializeField] private float _maxBubbleYPos = 2f;
     [SerializeField] private float _spawnDelay = 4f;
 
+    [SerializeField] private float _waitBeforeGameStartTime = 1f;
+
     private Queue<UI_MiniGame> _miniGameQueue = new Queue<UI_MiniGame>();
 
     private bool _isGameEnd = false;
@@ -118,6 +120,8 @@ public class MiniGameFactory : MonoBehaviour
 
     public IEnumerator CreateMiniGame()
     {
+        yield return new WaitForSeconds(_waitBeforeGameStartTime);
+
         while (true)
         {
             Vector2 randomPos = GetRandomPosition();
