@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -21,25 +24,7 @@ public static class Extension
 	{
 		return go != null && go.activeSelf;
 	}
-
-	public static IEnumerator CoTypingAndWait(this TMPro.TextMeshProUGUI text, string targetString, float duration)
-    {
-		foreach(var c in targetString)
-		{
-			text.text += c;
-            yield return new WaitForSeconds(duration);
-        }
-    }
-
-    public static IEnumerator CoTypingAndWait(this TMPro.TMP_Text text, string targetString, float duration)
-    {
-        foreach (var c in targetString)
-        {
-            text.text += c;
-            yield return new WaitForSeconds(duration);
-        }
-    }
-
+    
 	public static void Shuffle<T>(this List<T> list)
 	{
 		System.Random rand = new System.Random();
@@ -66,12 +51,13 @@ public static class Extension
         return Regex.Replace(input, "<.*?>", string.Empty);
     }
 
-    public static IEnumerator CoFadeOut(this UnityEngine.UI.Image image, float fadeTime, float waitTimeAfterfade = 0f)
+    public static IEnumerator CoFadeOut(this UnityEngine.UI.Image image, float fadeTime, float waitTimeAfterFade = 0f, float waitTimeBeforeFade = 0f)
     {
+        if (waitTimeBeforeFade > 0f) yield return new WaitForSeconds(waitTimeBeforeFade);
         Color color = image.color;
         float curTime = 0;
 
-        while (curTime < fadeTime)
+        while (curTime <= fadeTime)
         {
             curTime += Time.deltaTime;
             color.a = Mathf.Lerp(0, 1, curTime / fadeTime);
@@ -79,6 +65,119 @@ public static class Extension
             yield return null;
         }
 
-        yield return new WaitForSeconds(waitTimeAfterfade);
+        if (waitTimeAfterFade > 0f) yield return new WaitForSeconds(waitTimeAfterFade);
+    }
+
+    public static IEnumerator CoFadeIn(this UnityEngine.UI.Image image, float fadeTime, float waitTimeAfterFade = 0f, float waitTimeBeforeFade = 0f)
+    {
+        if(waitTimeBeforeFade > 0f) yield return new WaitForSeconds(waitTimeBeforeFade);
+        Color color = image.color;
+        float curTime = 0;
+
+        while (curTime <= fadeTime)
+        {
+            curTime += Time.deltaTime;
+            color.a = Mathf.Lerp(1, 0, curTime / fadeTime);
+            image.color = color;
+            yield return null;
+        }
+
+        if(waitTimeAfterFade > 0f) yield return new WaitForSeconds(waitTimeAfterFade);
+    }
+
+    public static IEnumerator CoFillImage(this UnityEngine.UI.Image image, float targetFill, float duration)
+    {
+        float startFill = image.fillAmount;
+        float time = 0f;
+
+        while (time <= duration)
+        {
+            time += Time.deltaTime;
+            image.fillAmount = Mathf.Lerp(startFill, targetFill, time / duration);
+            yield return null;
+        }
+
+        image.fillAmount = targetFill; // 정확한 목표 값 보정
+    }
+
+    public static IEnumerator BlinkTipText(this TMP_Text text, float blinkCount, float perTime)
+    {
+        for (int i = 0; i < blinkCount; i++)
+        {
+            text.color = new Color(text.color.r, text.color.g, text.color.b, 0f);
+            yield return new WaitForSeconds(perTime);
+            text.color = new Color(text.color.r, text.color.g, text.color.b, 1f);
+            yield return new WaitForSeconds(perTime);
+        }
+    }
+
+    public static IEnumerator CoTypeingEffect(this TMP_Text text, string message, float typingSpeed)
+    {
+        text.text = "";
+
+        foreach (char letter in message)
+        {
+            text.text += letter;
+            yield return new WaitForSeconds(typingSpeed);
+        }
+    }
+
+    public static IEnumerator CoTypeingEffect(this TextMeshProUGUI text, string message, float typingSpeed)
+    {
+        text.text = "";
+
+        foreach (char letter in message)
+        {
+            text.text += letter;
+            yield return new WaitForSeconds(typingSpeed);
+        }
+    }
+
+    public static string GetRandomMaskedText(this string text, int length, string maskCharacters = "#*@$%&!")
+    {
+        StringBuilder randomText = new StringBuilder(length);
+
+        // 랜덤 문자 배열 생성
+        for (int i = 0; i < length; i++)
+        {
+            // maskCharacters 배열에서 랜덤으로 선택된 문자 추가
+            randomText.Append(maskCharacters[UnityEngine.Random.Range(0, maskCharacters.Length)]);
+        }
+
+        text = randomText.ToString();
+        return text;
+    }
+
+    public static string GetRandomMaskedText(this string text, string maskCharacters = "#*@$%&!")
+    {
+        int length = text.Length;
+        StringBuilder randomText = new StringBuilder(length);
+
+        // 랜덤 문자 배열 생성
+        for (int i = 0; i < length; i++)
+        {
+            // maskCharacters 배열에서 랜덤으로 선택된 문자 추가
+            randomText.Append(maskCharacters[UnityEngine.Random.Range(0, maskCharacters.Length)]);
+        }
+
+        return randomText.ToString();
+    }
+
+    public static string GetNRandomMaskedText(this string text, int n, string maskCharacters = "#*@$%&!")
+    {
+        StringBuilder stringBuilder = new StringBuilder(text);
+        int length = text.Length;
+
+        List<int> randomIndex = Enumerable.Range(0, length).ToList();
+
+        randomIndex.Shuffle();
+
+        // 랜덤 문자 배열 생성
+        for (int i = 0; i < n; i++)
+        {
+            stringBuilder[randomIndex[i]] = maskCharacters[UnityEngine.Random.Range(0, maskCharacters.Length)];
+        }
+
+        return stringBuilder.ToString();
     }
 }

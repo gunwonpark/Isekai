@@ -26,4 +26,9 @@ public class WorldManager
     {
         isWorldClear[(int)CurrentWorldType] = true;
     }
+
+    public void MoveNextWorld()
+    {
+        CurrentWorldType++;
+    }
 }

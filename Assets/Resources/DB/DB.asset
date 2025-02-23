@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9cd27aea2dca1044b44a55dcb8eb5c0, type: 3}
+  m_Name: DB
+  m_EditorClassIdentifier: 
+  loadingTipDataList:
+  - name: "\uBE48\uD130\uBC1C\uD2B8\uC758 \uC138\uACC4"
+    worldType: 0
+    tip: "\uC774\uC138\uACC4 \uC548\uC5D0\uC11C\uB294 \uB2F9\uC2E0\uC744 \uCE6D\uCC2C\uD558\uB294
+      \uB9D0\uB4E4\uB85C \uAC00\uB4DD\uD574\uC694!"
+  - name: "\uCC28\uC740\uC720\uC758 \uC138\uACC4"
+    worldType: 1
+    tip: "\uD574\uCE58\uC6B0\uACE0 \uD589\uBCF5\uD574\uC838 \uBD10\uC694."
+  - name: "\uAC31\uADF8\uB9B4\uC758 \uC138\uACC4"
+    worldType: 2
+    tip: "\uC9C0\uAE08\uC740 0\uB144 0\uC6D4 0\uC77C\uC785\uB2C8\uB2E4."
+  - name: "\uD3A0\uB9C8\uB204\uC2A4\uC758 \uC138\uACC4"
+    worldType: 3
+    tip: "\uAC70\uAE30\uC11C \uB2F9\uC7A5 \uB098\uC640"

@@ -9,9 +9,11 @@ public class Managers : MonoBehaviour
 	GameManagerEx _game = new GameManagerEx();
 	HappinessManager _happy = new HappinessManager();
 	WorldManager _world = new WorldManager();
-	public static GameManagerEx Game { get { return Instance._game; } }
+	DB _db;
+    public static GameManagerEx Game { get { return Instance._game; } }
 	public static HappinessManager Happy { get { return Instance._happy; } }
 	public static WorldManager World { get { return Instance._world; } }
+	public static DB DB { get { return Instance._db; } }
     #endregion
 
     #region Core
@@ -42,6 +44,11 @@ public class Managers : MonoBehaviour
 			s_instance._sound.Init();
 			s_instance._happy.Init();
             s_instance._world.Init();
+			if(s_instance._db == null)
+			{
+				s_instance._db = s_instance._resource.Load<DB>("DB/DB");
+            }
+            s_instance._db.Init();
         }
 	}
 
