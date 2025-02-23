@@ -10,11 +10,21 @@ public struct LoadingSceneData
     public string tip;
 }
 
+[System.Serializable]
+public struct RealGameSceneData
+{
+    public WorldType worldType;
+    public float cameraSpeed;
+}
+
 [CreateAssetMenu(fileName = "DB", menuName = "ScriptableObject/DB", order = 0)]
 public class DB : ScriptableObject
 {
     [SerializeField] private List<LoadingSceneData> loadingTipDataList = new();
     private Dictionary<WorldType, LoadingSceneData> loadingTipDataDic = new();
+
+    [SerializeField] private List<RealGameSceneData> realGameSceneDataList = new();
+    private Dictionary<WorldType, RealGameSceneData> realGameSceneDataDic = new(); 
 
     public void Init()
     {
@@ -22,6 +32,12 @@ public class DB : ScriptableObject
         foreach (var data in loadingTipDataList)
         {
             loadingTipDataDic.Add(data.worldType, data);
+        }
+
+        realGameSceneDataDic.Clear();
+        foreach (var data in realGameSceneDataList)
+        {
+            realGameSceneDataDic.Add(data.worldType, data);
         }
     }
 
@@ -33,6 +49,15 @@ public class DB : ScriptableObject
         }
 
         return new LoadingSceneData();
+    }
+
+    public RealGameSceneData GetRealGameSceneData(WorldType worldType)
+    {
+        if (realGameSceneDataDic.TryGetValue(worldType, out RealGameSceneData data))
+        {
+            return data;
+        }
+        return new RealGameSceneData();
     }
 
 }

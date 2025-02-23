@@ -19,7 +19,7 @@ public class LibraryTimeLineEndCallback : MonoBehaviour
 
 	public void EnterGameScene(PlayableDirector director)
 	{
-        Managers.Scene.LoadScene(Scene.GameScene);
+        Managers.Scene.LoadScene(Scene.LoadingScene);
     }
 
 }

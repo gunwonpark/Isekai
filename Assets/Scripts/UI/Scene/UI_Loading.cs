@@ -26,24 +26,29 @@ public class UI_Loading : MonoBehaviour
     [SerializeField] private TMP_Text _warningText;
 
     private LoadingSceneData _loadingSceneData;
-    private void Start()
+
+    private IEnumerator Start()
     {
+        _worldText.text = "";
+        _tipText.text = "";
+
         _loadingSceneData = Managers.DB.GetLoadingSceneData(Managers.World.CurrentWorldType);
         
        
-
         if(_loadingSceneData.worldType == WorldType.Gang)
         {
-            StartCoroutine(GangrilLoadingSequence());
+            yield return StartCoroutine(GangrilLoadingSequence());
         }
         else if (_loadingSceneData.worldType == WorldType.Pelmanus)
         {
-            StartCoroutine(PelmanusLoadingSequence());
+            yield return StartCoroutine(PelmanusLoadingSequence());
         }
         else
         {
-            StartCoroutine(LoadingSequence());
+            yield return StartCoroutine(LoadingSequence());
         }
+
+        Managers.Scene.LoadScene(Scene.GameScene);
     }
 
     private IEnumerator LoadingSequence()
@@ -51,8 +56,11 @@ public class UI_Loading : MonoBehaviour
         _tipText.text = $"{_loadingSceneData.tip}";
         _worldText.text = $"[{_loadingSceneData.name}]";
 
-        yield return null;
+        yield return StartCoroutine(_progressBar.CoFillImage(0.8f, 2));
+        yield return StartCoroutine(_progressBar.CoFillImage(1f, 2));
+        
     }
+
     private IEnumerator PelmanusLoadingSequence()
     {
         // 게이지가 0 인상태에서 화면 노이즈는 4초간 지속된다
@@ -68,11 +76,10 @@ public class UI_Loading : MonoBehaviour
         _glitchPanel.gameObject.SetActive(false);
         _fadeImage.color = new Color(_fadeImage.color.r, _fadeImage.color.g, _fadeImage.color.b, 1f);
 
-        yield return StartCoroutine(_warningText.CoTypeingEffect(_loadingSceneData.tip, 0.7f));
+        yield return StartCoroutine(_warningText.CoTypeingEffect(_loadingSceneData.tip, 0.5f));
         yield return new WaitForSeconds(2f);
 
-        // 그 뒤 펠마누스 세계로 진입한다
-        Managers.Scene.LoadScene(Scene.GameScene);
+      
     }
 
    
@@ -91,12 +98,11 @@ public class UI_Loading : MonoBehaviour
         // 노이즈 효과 + 씬전환
         yield return StartCoroutine(NoiseEffect());
 
-        Managers.Scene.LoadScene(Scene.GameScene);
     }
 
     private IEnumerator NoiseEffect()
     {
-        yield return null;
+        yield return new WaitForSeconds(2f);
 
     }
 }

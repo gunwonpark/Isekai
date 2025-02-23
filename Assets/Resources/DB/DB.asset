@@ -26,3 +26,12 @@ MonoBehaviour:
   - name: "\uD3A0\uB9C8\uB204\uC2A4\uC758 \uC138\uACC4"
     worldType: 3
     tip: "\uAC70\uAE30\uC11C \uB2F9\uC7A5 \uB098\uC640"
+  realGameSceneDataList:
+  - worldType: 0
+    cameraSpeed: 1
+  - worldType: 1
+    cameraSpeed: 2
+  - worldType: 2
+    cameraSpeed: 3
+  - worldType: 3
+    cameraSpeed: 3.5

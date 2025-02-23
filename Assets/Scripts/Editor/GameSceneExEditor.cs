@@ -19,6 +19,11 @@ public class GameSceneExEditor : Editor
         {
             _gameSceneEx.GameOver(true);
         }
+
+        if (GUILayout.Button("GameOver"))
+        {
+            _gameSceneEx.GameOver(false);
+        }
     }
 
 }

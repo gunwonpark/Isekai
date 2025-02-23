@@ -21,4 +21,9 @@ public class FlowCamera : MonoBehaviour
     {
         canMove = false;
     }
+
+    public void SetFollowSpeed(float _speed)
+    {
+        _flowSpeed = _speed;
+    }
 }

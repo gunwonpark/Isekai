@@ -35,10 +35,10 @@ public class UI_GameOver : UI_Popup
     {
         if (!_canPassOver) return;
 
-        // 아무 공간이나 클릭하면 TestScene으로 이동
+        // 아무 공간이나 클릭하면 자신의 씬 다시시작 이동
         if (Input.GetMouseButton(0))
         {
-            Managers.Scene.LoadScene(Scene.RealGameScene);
+            Managers.Scene.LoadScene(Scene.GameScene);
         }
     }
 

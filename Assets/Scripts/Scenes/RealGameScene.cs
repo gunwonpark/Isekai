@@ -10,21 +10,39 @@ public class RealGameScene : MonoBehaviour
 {
     [SerializeField] private RealGameFactory _realGameFactory;
     [SerializeField] private PlayableDirector _timeline;
+    [SerializeField] private PlayableDirector _enterTimeline;
     [SerializeField] private Transform _player;
     [SerializeField] private Image _fadeImage;
 
-    private void Start()
+    private IEnumerator Start()
     {
+        Managers.Sound.Play("realWorldBgm", Sound.Bgm);
+        yield return PlayEnterTimeline();  
+        yield return new WaitForSeconds(3f); // 3초 대기
+
+        // 게임시작
         RealWorldInfo realWorldInfo = new FirstWorldInfo();
         Init(realWorldInfo);
+    }
+
+    private IEnumerator PlayEnterTimeline()
+    {
+        if (_enterTimeline != null)
+        {
+            _enterTimeline.Play();
+            yield return new WaitUntil(() => _enterTimeline.state != PlayState.Playing);
+        }
     }
     public void Init(RealWorldInfo realWorldInfo)
     {
         _realGameFactory.Init(realWorldInfo);
         _realGameFactory.OnGameEnd += RealGameFactory_OnGameEnd;
 
-        Managers.Sound.Play("realWorldBgm", Sound.Bgm);
+       
 
+        RealGameSceneData realGameSceneData = Managers.DB.GetRealGameSceneData(Managers.World.CurrentWorldType);
+
+        Camera.main.GetComponent<FlowCamera>().SetFollowSpeed(realGameSceneData.cameraSpeed);
         Camera.main.GetComponent<FlowCamera>().StartFlow();
     }
 
@@ -79,8 +97,7 @@ public class RealGameScene : MonoBehaviour
             yield return null;
         }
 
-        WorldType nextWorld = Managers.World.CurrentWorldType + 1;
-        Managers.World.CurrentWorldType = nextWorld;
+        Managers.World.MoveNextWorld();
 
         Managers.Scene.LoadScene(Scene.LibraryScene);
 

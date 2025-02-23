@@ -27,7 +27,7 @@ public class MovementRigidbody2D : MonoBehaviour
 
 	public void MoveTo(float x)
 	{
-		if (Managers.Happy.Happiness > 0 && Managers.Happy.Happiness <= 20)
+		if (Managers.Happy.Happiness >= 0 && Managers.Happy.Happiness <= 20)
 		{
 			_moveSpeed = 3.0f;
 		}

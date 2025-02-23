@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -20,6 +21,13 @@ public class GameSceneEx : BaseScene
 
 	//[SerializeField] private List<GameObject> _portalList;
 	[SerializeField] private float _gameStartDelay = 1.0f;
+
+
+    [Tooltip("FadeInfo")]
+
+    [SerializeField] private float _fadeTime = 3f;
+    [SerializeField] private float _waitTimeAfterFade = 0f;
+    [SerializeField] private float _waitTimeBeforeFade = 0f;
     protected override void Init()
 	{
 		base.Init();
@@ -45,7 +53,13 @@ public class GameSceneEx : BaseScene
 	public void GameOver(bool isWin)
 	{
 		if (isWin)
-		{
+        { 
+            if(Managers.World.CurrentWorldType == WorldType.Pelmanus)
+            {
+                StartCoroutine(EnterEndingScene());
+                return;
+            }
+
 			// 현실세계로 이동하는 포탈이 생성된다
 			GameObject go = Managers.Resource.Instantiate("Item/Portal");
 			Vector3 newPosition = _player.position + new Vector3(8f, 0, 0);
@@ -61,7 +75,14 @@ public class GameSceneEx : BaseScene
         }
 	}
 
-	private void ClearEvent()
+    private IEnumerator EnterEndingScene()
+    {
+        yield return StartCoroutine(_fadeImage.CoFadeOut(_fadeTime, _waitTimeAfterFade, _waitTimeBeforeFade));
+
+        Managers.Scene.LoadScene(Scene.EndingScene);
+    }
+
+    private void ClearEvent()
 	{
         StartCoroutine(CoFadeOut());
     }
