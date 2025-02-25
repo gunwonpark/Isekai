@@ -42,10 +42,10 @@ public class UI_MiniGame : UI_Popup
 
     int _keyCount = 0;
 
-    public float LeftTimeIncrease = 4f;
-    public float StartGaugeIncrease = 10f;
-    public int GaugePerIncrease = 10;
-    public int GaugePerDecrease = 5;
+    public float LeftTimeIncrease = 5f;
+    public float StartGaugeIncrease = 40f;
+    public int GaugePerIncrease = 50;
+    public int GaugePerDecrease = 7;
 
     private KeySpriteFactory _keySpriteFactory;
 
@@ -91,6 +91,7 @@ public class UI_MiniGame : UI_Popup
         _currentGaugeValue = _miniGameInfo.startGauge + StartGaugeIncrease;
         _remainingTime = _miniGameInfo.limitTime + LeftTimeIncrease;
         _miniGameInfo.perDecreaseGauge += GaugePerDecrease;
+        _miniGameInfo.perIncreaseGauge += GaugePerIncrease;
     }
 
     private string GetRandomMaskedText(int length)

@@ -14,22 +14,11 @@ public class HappinessHUD : UI_Scene
     [SerializeField] private Volume _volume;
     [SerializeField] private ColorAdjustments _color;
 
-	public static HappinessHUD Instance { get; private set; }
 
 	private List<Color> _colors;
 
 	private void Awake()
 	{
-		if (Instance == null)
-		{
-			Instance = this;
-			DontDestroyOnLoad(gameObject); // 씬 전환 시에도 유지
-		}
-		else
-		{
-			Destroy(gameObject); // 이미 존재하면 중복 생성 방지
-			return;
-		}
         _volume.profile.TryGet(out _color);
     }
 

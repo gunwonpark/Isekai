@@ -9,41 +9,37 @@ using UnityEngine.UI;
 
 public class GameSceneEx : BaseScene
 {
+    [SerializeField] private WorldType _worldType = WorldType.Pelmanus;
+
 	// 이를 이용하는 것은 추후에 ObjectManager를 사용하며 player를 관리하게 만드는 것이 좋겠다.
 	public static Transform player;
 
+    // 미니게임을 제조한다
 	[SerializeField] private MiniGameFactory _miniGameFactory;
+
 	[SerializeField] private Transform _player;
-	
+
+    [Header("UI")]
 	[SerializeField] private Image _fadeImage;
 
-    [SerializeField] private WorldType _worldType = WorldType.Pelmanus;
-
-	//[SerializeField] private List<GameObject> _portalList;
-	[SerializeField] private float _gameStartDelay = 1.0f;
-
-
-    [Tooltip("FadeInfo")]
-
+    [Header("밸런스")]
     [SerializeField] private float _fadeTime = 3f;
     [SerializeField] private float _waitTimeAfterFade = 0f;
     [SerializeField] private float _waitTimeBeforeFade = 0f;
+
+    [SerializeField] private float _potalSpawnOffsetX = 8f;
+    [SerializeField] private float _potalSpawnOffsetY = -2.5f;
     protected override void Init()
 	{
 		base.Init();
+		SceneType = Scene.GameScene;
 
         _worldType = Managers.World.CurrentWorldType;
         GameSceneEx.player = _player;
 
-        Debug.Log($"CurrentWorld is : {_worldType}");
-		Debug.Log("GameSceneEx Init");
-
-		SceneType = Scene.GameScene;
-
-		GameObject background = Managers.Resource.Instantiate($"Background/{_worldType.ToString()}World");
+		Managers.Resource.Instantiate($"Background/{_worldType.ToString()}World");
 
         StartCoroutine(GameStart());
-        
 	}
 
     private IEnumerator GameStart()
@@ -53,7 +49,6 @@ public class GameSceneEx : BaseScene
         //배경음악 재생
         Managers.Sound.Play("anotherWorldBgm", Sound.Bgm);
 
-        //미니게임 공장 초기화
         _miniGameFactory.Init(_worldType);
         _miniGameFactory.OnGameEnd += GameOver;
     }
@@ -71,11 +66,9 @@ public class GameSceneEx : BaseScene
 
 			// 현실세계로 이동하는 포탈이 생성된다
 			GameObject go = Managers.Resource.Instantiate("Item/Portal");
-			Vector3 newPosition = _player.position + new Vector3(8f, 0, 0);
-            newPosition.y = -2.5f;
+			Vector3 newPosition = _player.position + new Vector3(_potalSpawnOffsetX, _potalSpawnOffsetY, 0);
             go.transform.position = newPosition;
-
-			go.GetComponent<Portal>().onYesEvent += ClearEvent;
+			go.GetComponent<Portal>().onEnterEvent += ClearEvent;
         }
 		else
 		{

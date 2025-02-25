@@ -24,7 +24,10 @@ public class DB : ScriptableObject
     private Dictionary<WorldType, LoadingSceneData> loadingTipDataDic = new();
 
     [SerializeField] private List<RealGameSceneData> realGameSceneDataList = new();
-    private Dictionary<WorldType, RealGameSceneData> realGameSceneDataDic = new(); 
+    private Dictionary<WorldType, RealGameSceneData> realGameSceneDataDic = new();
+
+    [SerializeField] private List<WorldInfo> worldInfos = new();
+    private Dictionary<WorldType, WorldInfo> worldInfoDic = new();
 
     public void Init()
     {
@@ -39,6 +42,25 @@ public class DB : ScriptableObject
         {
             realGameSceneDataDic.Add(data.worldType, data);
         }
+
+        foreach (WorldType type in System.Enum.GetValues(typeof(WorldType)))
+        {
+            switch (type)
+            {
+                case WorldType.Vinter:
+                    worldInfos.Add(new VinterWorldInfo());
+                    break;
+                case WorldType.Gang:
+                    worldInfos.Add(new GangWorldInfo());
+                    break;
+                case WorldType.Pelmanus:
+                    worldInfos.Add(new PelmanusWorldInfo());
+                    break;
+                case WorldType.Chaumm:
+                    worldInfos.Add(new ChaummWorldInfo());
+                    break;
+            }
+        }
     }
 
     public LoadingSceneData GetLoadingSceneData(WorldType worldType)
@@ -49,7 +71,7 @@ public class DB : ScriptableObject
         }
 
         return new LoadingSceneData();
-    }
+    } 
 
     public RealGameSceneData GetRealGameSceneData(WorldType worldType)
     {
@@ -59,5 +81,4 @@ public class DB : ScriptableObject
         }
         return new RealGameSceneData();
     }
-
 }

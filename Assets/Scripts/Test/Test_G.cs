@@ -2,17 +2,10 @@ using UnityEngine;
 
 public class Test_G : MonoBehaviour
 {
-    public Vector3 movementScale = Vector3.one;
+   public TMPro.TextMeshProUGUI m_TextMeshPro;
 
-    Transform _camera;
-
-    void Awake()
+    private void Start()
     {
-        _camera = Camera.main.transform;
-    }
-
-    void LateUpdate()
-    {
-        transform.position = Vector3.Scale(_camera.position, movementScale);
+        StartCoroutine(m_TextMeshPro.CoBlinkText(3, 0.3f));
     }
 }

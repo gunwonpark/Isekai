@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 193371317702169316}
   - component: {fileID: 8491426995470297933}
   - component: {fileID: 8249181084419351533}
+  - component: {fileID: 6586216041713773207}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -189,6 +190,19 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &6586216041713773207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048817460995011894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc33a39070010f94fb1c2dd721c1286d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showHtmlElement: 0
 --- !u!1 &1924724520725136289
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,8 +550,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7ae0bed6483d5044a8a6c427cbafef38, type: 2}
-  m_sharedMaterial: {fileID: -2473864810447096974, guid: 7ae0bed6483d5044a8a6c427cbafef38, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fb10db488cf2a634a984678fd5e09aae, type: 2}
+  m_sharedMaterial: {fileID: -6534315385618460736, guid: fb10db488cf2a634a984678fd5e09aae, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -672,8 +686,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7ae0bed6483d5044a8a6c427cbafef38, type: 2}
-  m_sharedMaterial: {fileID: -2473864810447096974, guid: 7ae0bed6483d5044a8a6c427cbafef38, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fb10db488cf2a634a984678fd5e09aae, type: 2}
+  m_sharedMaterial: {fileID: -6534315385618460736, guid: fb10db488cf2a634a984678fd5e09aae, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

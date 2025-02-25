@@ -22,7 +22,7 @@ public class RealGameScene : MonoBehaviour
 
         yield return new WaitForSeconds(0.3f);
 
-        yield return _warningText.BlinkTipText(3, 0.5f);
+        yield return _warningText.CoBlinkText(3, 0.5f);
 
         yield return new WaitForSeconds(0.5f);
         // 게임시작

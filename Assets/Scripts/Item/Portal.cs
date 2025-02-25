@@ -9,7 +9,7 @@ public class Portal : MonoBehaviour
 
     private UI_Information _information;
 
-    public event System.Action onYesEvent;
+    public event System.Action onEnterEvent;
 
     private void Start()
     {
@@ -45,12 +45,12 @@ public class Portal : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             _information = Managers.UI.ShowPopupUI<UI_Information>();
-            _information.onYesEvent += OnYesEvent;
+            _information.onYesEvent += OnEnterEvent;
         }
     }
 
-    private void OnYesEvent()
+    private void OnEnterEvent()
     {
-        onYesEvent?.Invoke();
+        onEnterEvent?.Invoke();
     }
 }

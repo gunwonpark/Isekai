@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class LoadingScene : BaseScene
 {
+    private void Start()
+    {
+    }
 
     public override void Clear()
     {

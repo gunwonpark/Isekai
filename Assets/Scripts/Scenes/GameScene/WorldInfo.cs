@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class WorldInfo
+[System.Serializable]
+public class WorldInfo
 {
     public WorldType worldType;
 
