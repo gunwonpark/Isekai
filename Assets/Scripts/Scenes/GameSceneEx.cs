@@ -7,6 +7,9 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
 
+/// <summary>
+/// 게임 시작과 게임 종료 게임 정보를 저장하고 있는 클래스
+/// </summary>
 public class GameSceneEx : BaseScene
 {
     [SerializeField] private WorldType _worldType = WorldType.Pelmanus;
@@ -38,6 +41,7 @@ public class GameSceneEx : BaseScene
         GameSceneEx.player = _player;
 
 		Managers.Resource.Instantiate($"Background/{_worldType.ToString()}World");
+        Managers.Happy.ChangeHappiness(20f);
 
         StartCoroutine(GameStart());
 	}
@@ -49,7 +53,7 @@ public class GameSceneEx : BaseScene
         //배경음악 재생
         Managers.Sound.Play("anotherWorldBgm", Sound.Bgm);
 
-        _miniGameFactory.Init(_worldType);
+        _miniGameFactory.Init();
         _miniGameFactory.OnGameEnd += GameOver;
     }
 
@@ -68,7 +72,10 @@ public class GameSceneEx : BaseScene
 			GameObject go = Managers.Resource.Instantiate("Item/Portal");
 			Vector3 newPosition = _player.position + new Vector3(_potalSpawnOffsetX, _potalSpawnOffsetY, 0);
             go.transform.position = newPosition;
-			go.GetComponent<Portal>().onEnterEvent += ClearEvent;
+
+            Portal portal = go.GetComponent<Portal>();
+            portal.SetPortalPosition(Scene.RealGameScene);
+            portal.onEnterEvent += ClearEvent;
         }
 		else
 		{
@@ -86,27 +93,9 @@ public class GameSceneEx : BaseScene
 
     private void ClearEvent()
 	{
-        StartCoroutine(CoFadeOut());
+        StartCoroutine(_fadeImage.CoFadeOut(3f));
     }
 
-    private IEnumerator CoFadeOut()
-    {
-        float fadeOutTime = 3.0f;
-        float currentTime = 0.0f;
-        Color color = _fadeImage.color;
-
-        while (currentTime < fadeOutTime)
-        {
-            currentTime += Time.deltaTime;
-            color.a = Mathf.Lerp(0, 1, currentTime / fadeOutTime);
-            _fadeImage.color = color;
-            yield return null;
-        }
-
-        Managers.Scene.LoadScene(Scene.RealGameScene);
-
-        yield return null;
-    }
 
 
     public override void Clear()

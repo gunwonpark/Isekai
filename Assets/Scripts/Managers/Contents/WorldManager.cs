@@ -31,4 +31,29 @@ public class WorldManager
     {
         CurrentWorldType++;
     }
+
+    public WorldInfo GetWorldInfo()
+    {
+        WorldInfo worldInfo = null;
+
+        switch (_currentWorldType)
+        {
+            case WorldType.Pelmanus:
+                worldInfo = Managers.DB.GetGameSceneData(WorldType.Pelmanus) as PelmanusWorldInfo;
+                break;
+            case WorldType.Vinter:
+                worldInfo = Managers.DB.GetGameSceneData(WorldType.Vinter) as VinterWorldInfo;
+                break;
+            case WorldType.Chaumm:
+                worldInfo = Managers.DB.GetGameSceneData(WorldType.Chaumm) as ChaummWorldInfo;
+                break;
+            case WorldType.Gang:
+                worldInfo = Managers.DB.GetGameSceneData(WorldType.Gang) as GangWorldInfo;
+                break;
+            default:
+                break;
+        }
+
+        return worldInfo;
+    }
 }

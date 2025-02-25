@@ -18,12 +18,6 @@ public class HappinessManager
 			UpdateHappinessEffects();
 
 			OnHappinessChanged?.Invoke(_happiness);
-			//Debug.Log($"Happiness: {_happiness}");
-
-			//if (_happiness <= 100)
-			//{
-			//	Managers.Scene.LoadScene(Scene.EndingScene);
-			//}
 		}
 	}
 	public float MaxHappiness { get { return _maxHappiness; } }

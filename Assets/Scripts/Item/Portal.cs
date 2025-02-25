@@ -5,11 +5,13 @@ using UnityEngine;
 public class Portal : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private float _fadeDuration = 1f;
+    [SerializeField] private float _fadeTime = 1f;
 
     private UI_Information _information;
 
     public event System.Action onEnterEvent;
+
+    private Scene _nextScene = Scene.RealGameScene;
 
     private void Start()
     {
@@ -18,29 +20,12 @@ public class Portal : MonoBehaviour
 
     public void FadeIn()
     {
-        StartCoroutine(CoFadeIn());
-    }
-
-    private IEnumerator CoFadeIn()
-    {
-        Color color = _spriteRenderer.color;
-        float alpha = 0f;
-        while (alpha < 1f)
-        {
-            alpha += _fadeDuration * Time.deltaTime;
-            color.a = alpha;
-            _spriteRenderer.color = color;
-            yield return null;
-        }
-
-        color.a = 1f;
-        _spriteRenderer.color = color;
-        yield return null;
+        StartCoroutine(_spriteRenderer.CoFadeIn(_fadeTime));
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_information != null) return;
+        if (_information != null || _information.gameObject.activeInHierarchy == false) return;
 
         if (collision.CompareTag("Player"))
         {
@@ -52,5 +37,11 @@ public class Portal : MonoBehaviour
     private void OnEnterEvent()
     {
         onEnterEvent?.Invoke();
+        Managers.Scene.LoadScene(_nextScene);
+    }
+
+    public void SetPortalPosition(Scene targetScene)
+    {
+        _nextScene = targetScene;
     }
 }

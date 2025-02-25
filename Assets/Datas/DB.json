@@ -1,0 +1,314 @@
+{
+    "loadingTipDataList": [
+        {
+            "name": "빈터발트의 세계",
+            "worldType": 0,
+            "tip": "이세계 안에서는 당신을 칭찬하는 말들로 가득해요!"
+        },
+        {
+            "name": "차은유의 세계",
+            "worldType": 1,
+            "tip": "해치우고 행복해져 봐요."
+        },
+        {
+            "name": "갱그릴의 세계",
+            "worldType": 2,
+            "tip": "지금은 0년 0월 0일입니다."
+        },
+        {
+            "name": "펠마누스의 세계",
+            "worldType": 3,
+            "tip": "거기서 당장 나와"
+        }
+    ],
+    "realGameSceneDataList": [
+        {
+            "worldType": 0,
+            "cameraSpeed": 1.0
+        },
+        {
+            "worldType": 1,
+            "cameraSpeed": 2.0
+        },
+        {
+            "worldType": 2,
+            "cameraSpeed": 3.0
+        },
+        {
+            "worldType": 3,
+            "cameraSpeed": 3.5
+        }
+    ],
+    "gameSceneDataList": [
+        {
+            "worldType": 0,
+            "difficulty": [
+                6,
+                0,
+                0
+            ],
+            "startGauge": [
+                50,
+                50,
+                50
+            ],
+            "perDecreaseGauge": [
+                -10,
+                -10,
+                -10
+            ],
+            "perIncreaseGauge": [
+                3,
+                3,
+                3
+            ],
+            "succedGauge": [
+                40,
+                40,
+                40
+            ],
+            "failGauge": [
+                -10,
+                -10,
+                -10
+            ],
+            "runGauge": [
+                -20,
+                -20,
+                -20
+            ],
+            "limitTime": [
+                4,
+                4,
+                4
+            ],
+            "dialog": [
+                "역시 명문 가문의 품격을 갖춘 완벽한 인물이셔!",
+                "공작님의 재능은 신이 내리신 선물이야.",
+                "공작님의 외모는 신이 내리신 예술 작품 같아.",
+                "공작님을 칭송하는 것만으로도 영광이야!",
+                "그의 존재 자체가 이 국가에 큰 축복이지.",
+                "모든 영애가 공작님의 외모만 보면 눈물을 흘린다지?"
+            ],
+            "requireKeys": [],
+            "requiredKeyCount": [],
+            "canPressConcurrent": []
+        },
+        {
+            "worldType": 1,
+            "difficulty": [
+                3,
+                4,
+                0
+            ],
+            "startGauge": [
+                50,
+                40,
+                50
+            ],
+            "perDecreaseGauge": [
+                -10,
+                -10,
+                -10
+            ],
+            "perIncreaseGauge": [
+                5,
+                5,
+                3
+            ],
+            "succedGauge": [
+                30,
+                30,
+                40
+            ],
+            "failGauge": [
+                -10,
+                -10,
+                -10
+            ],
+            "runGauge": [
+                -20,
+                -20,
+                -20
+            ],
+            "limitTime": [
+                4,
+                4,
+                4
+            ],
+            "dialog": [
+                "왜 아직 너를 위한 나라가 없는거야!!",
+                "김 묻었어. 잘생김.",
+                "내면의 아름다움이란 얼마나 하찮은 것인가...",
+                "너는 린스 안써도 되겠다.. 나만의 프린스니까 ><",
+                "은유만 보면 후광이 보여!!",
+                "제발 나를 가져요 엉엉",
+                "단신 자체가 내 삶이야"
+            ],
+            "requireKeys": [
+                113,
+                119,
+                101,
+                97,
+                115,
+                100
+            ],
+            "requiredKeyCount": [
+                0,
+                3,
+                0
+            ],
+            "canPressConcurrent": [
+                false,
+                false,
+                false
+            ]
+        },
+        {
+            "worldType": 2,
+            "difficulty": [
+                0,
+                6,
+                3
+            ],
+            "startGauge": [
+                0,
+                50,
+                40
+            ],
+            "perDecreaseGauge": [
+                0,
+                -15,
+                -20
+            ],
+            "perIncreaseGauge": [
+                0,
+                3,
+                2
+            ],
+            "succedGauge": [
+                0,
+                20,
+                10
+            ],
+            "failGauge": [
+                0,
+                -5,
+                -5
+            ],
+            "runGauge": [
+                0,
+                -10,
+                -10
+            ],
+            "limitTime": [
+                0,
+                4,
+                3
+            ],
+            "dialog": [
+                "너의 지혜와 재치는 그 누구도 따라올 수 없을 거야!",
+                "영리함이 너의 가장 큰 매력이야.",
+                "너는 사람들 사이에서도 두각을 드러내는 특별한 존재야.",
+                "함께 있으면 즐거워 !!",
+                "너의 긍정적 에너지가 나에게 많은 힘이 돼.",
+                "너는 참 믿음직스러워.",
+                "너의 적응력은 정말 대단해.",
+                "너는 뭐든지 해낼 수 있는 존재야!",
+                "나도 너처럼 되고 싶어"
+            ],
+            "requireKeys": [
+                113,
+                119,
+                101,
+                97,
+                115,
+                100
+            ],
+            "requiredKeyCount": [
+                0,
+                4,
+                3
+            ],
+            "canPressConcurrent": [
+                false,
+                false,
+                true
+            ]
+        },
+        {
+            "worldType": 3,
+            "difficulty": [
+                0,
+                3,
+                6
+            ],
+            "startGauge": [
+                0,
+                40,
+                40
+            ],
+            "perDecreaseGauge": [
+                0,
+                -10,
+                -20
+            ],
+            "perIncreaseGauge": [
+                0,
+                3,
+                3
+            ],
+            "succedGauge": [
+                0,
+                1,
+                1
+            ],
+            "failGauge": [
+                0,
+                -5,
+                -5
+            ],
+            "runGauge": [
+                0,
+                -10,
+                -10
+            ],
+            "limitTime": [
+                0,
+                4,
+                3
+            ],
+            "dialog": [
+                "너의 존재만으로도 세상이 축복받은 것 같아.",
+                "그는 희망을 불어넣는 빛과 같은 존재야!!",
+                "너의 곁에는 항상 평화와 경의심이 가득해.",
+                "정말 성스러움이 느껴져.",
+                "그의 손길은 기적을 일으켜.",
+                "바라보기만 해도 경이로워.",
+                "그의 존재는 인간에게 있어 가장 큰 선물이야.",
+                "당신을 바라보기만 해도 행복해.",
+                "나도 너처럼 행복해지고 싶어."
+            ],
+            "requireKeys": [
+                113,
+                119,
+                101,
+                97,
+                115,
+                100,
+                102,
+                114
+            ],
+            "requiredKeyCount": [
+                0,
+                4,
+                3
+            ],
+            "canPressConcurrent": [
+                false,
+                false,
+                false
+            ]
+        }
+    ]
+}

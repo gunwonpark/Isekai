@@ -21,14 +21,13 @@ public struct MiniGameInfo
     public bool canPressConcurrent; // 동시에 누를 수 있는지 여부
     public string dialog;
 }
-
-#endregion
-
 public struct SpawnInfo
 {
     public Vector2 position;
     public bool isLeft;
 }
+#endregion
+
 
 /// <summary>
 /// 미니게임 생성, 미니게임 종료 여부 판단을 담당합니다.
@@ -38,17 +37,16 @@ public class MiniGameFactory : MonoBehaviour
 {
     [SerializeField] private UI_MiniGame _miniGame;
     [SerializeField] private WorldInfo _worldInfo;
-    [SerializeField] private GridSystem _gridSystem;
 
+    [SerializeField] private GridSystem _gridSystem;
+    [SerializeField] private KeySpriteFactory _keySpriteFactory;
+
+    [Header("플레이어 정보")]
+    [SerializeField] private Transform _target;
     [SerializeField] private GameObject _leftExclamation;
     [SerializeField] private GameObject _rightExclamation;
 
-    [SerializeField] private KeySpriteFactory _keySpriteFactory;
-
-    [SerializeField] private Transform target;
-    [SerializeField] private Transform _leftPosition;
-    [SerializeField] private Transform _rightPosition;
-
+    [Header("미니게임 정보")]
     [SerializeField] private float _minBubbleYPos = 0f;
     [SerializeField] private float _maxBubbleYPos = 2f;
     [SerializeField] private float _spawnDelay = 4f;
@@ -61,10 +59,9 @@ public class MiniGameFactory : MonoBehaviour
 
     public event Action<bool> OnGameEnd;
 
-    public void Init(WorldType worldType)
+    public void Init()
     {
-        SetWorld(worldType);
-    
+        _worldInfo = Managers.World.GetWorldInfo();
         Managers.Happy.OnHappinessChanged += CheckGameProgress;
 
         // 키 스프라이트 매칭 작업
@@ -72,7 +69,7 @@ public class MiniGameFactory : MonoBehaviour
         _keySpriteFactory.Init();
 
         // 말풍선 위치 탐지 작업
-        _gridSystem.Init(target);
+        _gridSystem.Init(_target);
 
         StartCoroutine(CreateMiniGame());
     }
@@ -88,8 +85,8 @@ public class MiniGameFactory : MonoBehaviour
             {
                 if(_miniGame.gameObject.activeSelf)
                 {
-                    isLeft = _miniGame.transform.position.x < target.position.x;
-                    isRight = _miniGame.transform.position.x > target.position.x;
+                    isLeft = _miniGame.transform.position.x < _target.position.x;
+                    isRight = _miniGame.transform.position.x > _target.position.x;
                 }
             }
 
@@ -125,7 +122,7 @@ public class MiniGameFactory : MonoBehaviour
         while (true)
         {
             Vector2 randomPos = GetRandomPosition();
-            bool isLeftSide = randomPos.x < target.position.x;
+            bool isLeftSide = randomPos.x < _target.position.x;
 
             SpawnInfo spawnInfo = new SpawnInfo
             {
@@ -172,26 +169,6 @@ public class MiniGameFactory : MonoBehaviour
             }
 
             OnGameEnd?.Invoke(happiness >= 100);
-        }
-    }
-
-    // 월드 정보 설정
-    private void SetWorld(WorldType worldType)
-    {
-        switch (worldType)
-        {
-            case WorldType.Vinter:
-                _worldInfo = new VinterWorldInfo();
-                break;
-            case WorldType.Chaumm:
-                _worldInfo = new ChaummWorldInfo();
-                break;
-            case WorldType.Gang:
-                _worldInfo = new GangWorldInfo();
-                break;
-            case WorldType.Pelmanus:
-                _worldInfo = new PelmanusWorldInfo();
-                break;
         }
     }
 

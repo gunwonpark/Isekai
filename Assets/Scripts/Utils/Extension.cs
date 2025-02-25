@@ -113,6 +113,52 @@ public static class Extension
         if (waitAfter > 0f) yield return WaitForSecondsCache.Get(waitAfter);
     }
 
+    public static IEnumerator CoFadeIn(this SpriteRenderer sprite, float fadeTime, float waitBefore = 0f, float waitAfter = 0f)
+    {
+        if (waitBefore > 0f) yield return WaitForSecondsCache.Get(waitBefore);
+
+        Color color = sprite.color;
+        float startAlpha = 1;
+        float targetAlpha = 0;
+        float elapsedTime = 0;
+
+        while (elapsedTime < fadeTime)
+        {
+            elapsedTime += Time.deltaTime;
+            color.a = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeTime);
+            sprite.color = color;
+            yield return null;
+        }
+
+        color.a = targetAlpha;
+        sprite.color = color;
+
+        if (waitAfter > 0f) yield return WaitForSecondsCache.Get(waitAfter);
+    }
+    public static IEnumerator CoFadeOut(this SpriteRenderer sprite, float fadeTime, float waitBefore = 0f, float waitAfter = 0f)
+    {
+        if (waitBefore > 0f) yield return WaitForSecondsCache.Get(waitBefore);
+
+        Color color = sprite.color;
+        float startAlpha = 1;
+        float targetAlpha = 0;
+        float elapsedTime = 0;
+
+        while (elapsedTime < fadeTime)
+        {
+            elapsedTime += Time.deltaTime;
+            color.a = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeTime);
+            sprite.color = color;
+            yield return null;
+        }
+
+        color.a = targetAlpha;
+        sprite.color = color;
+
+        if (waitAfter > 0f) yield return WaitForSecondsCache.Get(waitAfter);
+    }
+
+
     public static IEnumerator CoFillImage(this Image image, float targetFill, float duration)
     {
         float startFill = image.fillAmount;

@@ -406,12 +406,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _miniGame: {fileID: 7239389962711676317, guid: c3d6d2b36a95c4d4bbca1a853e8aaa56, type: 3}
+  _worldInfo:
+    worldType: 0
+    difficulty: 
+    startGauge: 
+    perDecreaseGauge: 
+    perIncreaseGauge: 
+    succedGauge: 
+    failGauge: 
+    runGauge: 
+    limitTime: 
   _gridSystem: {fileID: 184603175}
+  _target: {fileID: 1786195230}
   _leftExclamation: {fileID: 1363547730}
   _rightExclamation: {fileID: 1456325254}
-  target: {fileID: 1786195230}
-  _leftPosition: {fileID: 1363547731}
-  _rightPosition: {fileID: 1456325255}
   _minBubbleYPos: 0
   _maxBubbleYPos: 2
   _spawnDelay: 4

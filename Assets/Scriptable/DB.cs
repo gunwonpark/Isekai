@@ -17,6 +17,24 @@ public struct RealGameSceneData
     public float cameraSpeed;
 }
 
+[System.Serializable]
+public struct GameSceneData
+{
+    public WorldType worldType;
+    public List<int> difficulty;
+    public List<int> startGauge;
+    public List<int> perDecreaseGauge;
+    public List<int> perIncreaseGauge;
+    public List<int> succedGauge;
+    public List<int> failGauge;
+    public List<int> runGauge;
+    public List<int> limitTime;
+    public List<string> dialog;
+    public List<KeyCode> requireKeys;
+    public List<int> requiredKeyCount;
+    public List<bool> canPressConcurrent;
+}
+
 [CreateAssetMenu(fileName = "DB", menuName = "ScriptableObject/DB", order = 0)]
 public class DB : ScriptableObject
 {
@@ -26,8 +44,8 @@ public class DB : ScriptableObject
     [SerializeField] private List<RealGameSceneData> realGameSceneDataList = new();
     private Dictionary<WorldType, RealGameSceneData> realGameSceneDataDic = new();
 
-    [SerializeField] private List<WorldInfo> worldInfos = new();
-    private Dictionary<WorldType, WorldInfo> worldInfoDic = new();
+    [SerializeField] private List<GameSceneData> gameSceneDataList = new();
+    private Dictionary<WorldType, WorldInfo> gameSceneDataDic = new();
 
     public void Init()
     {
@@ -43,21 +61,22 @@ public class DB : ScriptableObject
             realGameSceneDataDic.Add(data.worldType, data);
         }
 
-        foreach (WorldType type in System.Enum.GetValues(typeof(WorldType)))
+        gameSceneDataDic.Clear();
+        foreach (var data in gameSceneDataList)
         {
-            switch (type)
+            switch (data.worldType)
             {
-                case WorldType.Vinter:
-                    worldInfos.Add(new VinterWorldInfo());
-                    break;
-                case WorldType.Gang:
-                    worldInfos.Add(new GangWorldInfo());
-                    break;
                 case WorldType.Pelmanus:
-                    worldInfos.Add(new PelmanusWorldInfo());
+                    gameSceneDataDic.Add(data.worldType, new PelmanusWorldInfo(data));
+                    break;
+                case WorldType.Vinter:
+                    gameSceneDataDic.Add(data.worldType, new VinterWorldInfo(data));
                     break;
                 case WorldType.Chaumm:
-                    worldInfos.Add(new ChaummWorldInfo());
+                    gameSceneDataDic.Add(data.worldType, new ChaummWorldInfo(data));
+                    break;
+                case WorldType.Gang:
+                    gameSceneDataDic.Add(data.worldType, new GangWorldInfo(data));
                     break;
             }
         }
@@ -65,13 +84,13 @@ public class DB : ScriptableObject
 
     public LoadingSceneData GetLoadingSceneData(WorldType worldType)
     {
-        if(loadingTipDataDic.TryGetValue(worldType, out LoadingSceneData data))
+        if (loadingTipDataDic.TryGetValue(worldType, out LoadingSceneData data))
         {
             return data;
         }
 
         return new LoadingSceneData();
-    } 
+    }
 
     public RealGameSceneData GetRealGameSceneData(WorldType worldType)
     {
@@ -80,5 +99,15 @@ public class DB : ScriptableObject
             return data;
         }
         return new RealGameSceneData();
+    }
+
+    public WorldInfo GetGameSceneData(WorldType worldType)
+    {
+        if (gameSceneDataDic.TryGetValue(worldType, out WorldInfo data))
+        {
+            return data;
+        }
+
+        return null;
     }
 }
