@@ -35,6 +35,12 @@ public struct GameSceneData
     public List<bool> canPressConcurrent;
 }
 
+[System.Serializable]
+public struct PlayerData
+{
+    public List<float> moveSpeed;
+}
+
 [CreateAssetMenu(fileName = "DB", menuName = "ScriptableObject/DB", order = 0)]
 public class DB : ScriptableObject
 {
@@ -47,8 +53,18 @@ public class DB : ScriptableObject
     [SerializeField] private List<GameSceneData> gameSceneDataList = new();
     private Dictionary<WorldType, WorldInfo> gameSceneDataDic = new();
 
+    [SerializeField] private PlayerData playerData = new();
+
     public void Init()
     {
+        #region 치트수정 방지용
+        string savePath = Application.dataPath + "/Datas";
+        string path = System.IO.Path.Combine(savePath, "DB.json");
+        string json = System.IO.File.ReadAllText(path);
+
+        JsonUtility.FromJsonOverwrite(json, this); 
+        #endregion
+
         loadingTipDataDic.Clear();
         foreach (var data in loadingTipDataList)
         {
@@ -109,5 +125,36 @@ public class DB : ScriptableObject
         }
 
         return null;
+    }
+
+    public PlayerData GetPlayerData()
+    {
+        return playerData;
+    }
+
+
+    // For Test
+    public void SetGameSceneData(WorldType worldType, GameSceneData data)
+    {
+        switch (data.worldType)
+        {
+            case WorldType.Pelmanus:
+                gameSceneDataDic[worldType] = new PelmanusWorldInfo(data);
+                break;
+            case WorldType.Vinter:
+                gameSceneDataDic[worldType] = new VinterWorldInfo(data);
+                break;
+            case WorldType.Chaumm:
+                gameSceneDataDic[worldType] = new ChaummWorldInfo(data);
+                break;
+            case WorldType.Gang:
+                gameSceneDataDic[worldType] = new GangWorldInfo(data);
+                break;
+        }
+    }
+
+    public void SetPlayerData(PlayerData data)
+    {
+        playerData = data;
     }
 }

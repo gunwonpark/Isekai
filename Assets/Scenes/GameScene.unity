@@ -416,6 +416,10 @@ MonoBehaviour:
     failGauge: 
     runGauge: 
     limitTime: 
+    dialog: []
+    requireKeys: 
+    requiredKeyCount: 
+    canPressConcurrent: 
   _gridSystem: {fileID: 184603175}
   _target: {fileID: 1786195230}
   _leftExclamation: {fileID: 1363547730}
@@ -823,7 +827,7 @@ MonoBehaviour:
   _waitTimeAfterFade: 0
   _waitTimeBeforeFade: 0
   _potalSpawnOffsetX: 8
-  _potalSpawnOffsetY: -2.5
+  _potalSpawnOffsetY: 2.4
 --- !u!1 &1331672445
 GameObject:
   m_ObjectHideFlags: 0

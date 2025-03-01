@@ -7,26 +7,43 @@ using UnityEngine.UI;
 using TMPro;
 public class CheatManager : MonoBehaviour
 {
-    public TMP_Dropdown _sceneDropdown;
-    public TMP_Dropdown _sceneType;
+    public TMP_Dropdown sceneDropdown;
+    public TMP_Dropdown sceneType;
     public Button SetWorldButton;
+    
+    public float playerSpeed = 10f;
+
+    public GameObject cheatUI;
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);  
     }
 
     private void Start()
-    {
+    {        
         SetWorldButton.onClick.AddListener(SetWorld);
-        _sceneDropdown.ClearOptions();
-        _sceneType.ClearOptions();
-        _sceneDropdown.AddOptions(Enum.GetNames(typeof(WorldType)).ToList());
-        _sceneType.AddOptions(Enum.GetNames(typeof(Scene)).ToList());
+        sceneDropdown.ClearOptions();
+        sceneType.ClearOptions();
+        sceneDropdown.AddOptions(Enum.GetNames(typeof(WorldType)).ToList());
+        sceneType.AddOptions(Enum.GetNames(typeof(Scene)).ToList());
+
+        cheatUI.SetActive(false);
     }
 
     private void SetWorld()
     {
-        Managers.World.CurrentWorldType = (WorldType)_sceneDropdown.value;
-        Managers.Scene.LoadScene((Scene)_sceneType.value);
+        Managers.World.CurrentWorldType = (WorldType)sceneDropdown.value;
+        Managers.Scene.LoadScene((Scene)sceneType.value);
+    }
+
+    
+
+    public void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            cheatUI.SetActive(!cheatUI.activeSelf);
+        }
     }
 }

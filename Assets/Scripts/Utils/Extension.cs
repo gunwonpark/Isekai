@@ -95,8 +95,8 @@ public static class Extension
         if (waitBefore > 0f) yield return WaitForSecondsCache.Get(waitBefore);
 
         Color color = graphic.color;
-        float startAlpha = 1;
-        float targetAlpha = 0;
+        float startAlpha = 0;
+        float targetAlpha = 1;
         float elapsedTime = 0;
 
         while (elapsedTime < fadeTime)
@@ -140,8 +140,8 @@ public static class Extension
         if (waitBefore > 0f) yield return WaitForSecondsCache.Get(waitBefore);
 
         Color color = sprite.color;
-        float startAlpha = 1;
-        float targetAlpha = 0;
+        float startAlpha = 0;
+        float targetAlpha = 1;
         float elapsedTime = 0;
 
         while (elapsedTime < fadeTime)

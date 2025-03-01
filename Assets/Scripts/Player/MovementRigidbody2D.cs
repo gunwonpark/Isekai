@@ -29,16 +29,16 @@ public class MovementRigidbody2D : MonoBehaviour
 	{
 		if (Managers.Happy.Happiness >= 0 && Managers.Happy.Happiness <= 20)
 		{
-			_moveSpeed = 3.0f;
+			_moveSpeed = Managers.DB.GetPlayerData().moveSpeed[0];
 		}
 		else if (Managers.Happy.Happiness > 20 && Managers.Happy.Happiness <= 50)
 		{
-			_moveSpeed = 5.0f;
-		}
+			_moveSpeed = Managers.DB.GetPlayerData().moveSpeed[1];
+        }
 		else
 		{
-			_moveSpeed = 8.0f;
-		}
+			_moveSpeed = Managers.DB.GetPlayerData().moveSpeed[2];
+        }
 
 		if (x != 0) x = Mathf.Sign(x);
 

@@ -59,6 +59,21 @@ public class MiniGameFactory : MonoBehaviour
 
     public event Action<bool> OnGameEnd;
 
+    private bool isBubbleEmptyCached = false;
+    private bool lastBubbleState = false;
+
+    public bool IsBubbleEmpty
+    {
+        get
+        {
+            float height = Camera.main.orthographicSize * 2f;
+            float width = height * Camera.main.aspect;
+
+            Collider2D col = Physics2D.OverlapBox(Camera.main.transform.position, new Vector2(width, height), 0, LayerMask.GetMask("UI"));
+            return col == null;
+        }
+    }
+
     public void Init()
     {
         _worldInfo = Managers.World.GetWorldInfo();
@@ -76,36 +91,23 @@ public class MiniGameFactory : MonoBehaviour
 
     private void Update()
     {
-        if(_gridSystem.IsBubbleEmpty)
-        {
-            bool isLeft = false;
-            bool isRight = false;
+        bool isLeft = false;
+        bool isRight = false;
 
-            foreach(UI_MiniGame _miniGame in _miniGameQueue)
+        if (IsBubbleEmpty)
+        {
+            // 활성화된 게임 오브젝트에 대해서만 처리
+            foreach (UI_MiniGame _miniGame in _miniGameQueue)
             {
-                if(_miniGame.gameObject.activeSelf)
+                if (_miniGame.gameObject.activeSelf)
                 {
-                    isLeft = _miniGame.transform.position.x < _target.position.x;
-                    isRight = _miniGame.transform.position.x > _target.position.x;
+                    isLeft |= _miniGame.transform.position.x < _target.position.x;
+                    isRight |= _miniGame.transform.position.x > _target.position.x;
                 }
             }
 
-            if (isLeft)
-            {
-                _leftExclamation.SetActive(true);
-            }
-            else
-            {
-                _leftExclamation.SetActive(false);
-            }
-            if (isRight)
-            {
-                _rightExclamation.SetActive(true);
-            }
-            else
-            {
-                _rightExclamation.SetActive(false);
-            }
+            _leftExclamation.SetActive(isLeft);
+            _rightExclamation.SetActive(isRight);
         }
         else
         {

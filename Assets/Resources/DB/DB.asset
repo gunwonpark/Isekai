@@ -35,3 +35,107 @@ MonoBehaviour:
     cameraSpeed: 3
   - worldType: 3
     cameraSpeed: 3.5
+  gameSceneDataList:
+  - worldType: 0
+    difficulty: 060000000000000000000000
+    startGauge: 320000003200000032000000
+    perDecreaseGauge: f6fffffff6fffffff6ffffff
+    perIncreaseGauge: 030000000300000003000000
+    succedGauge: 280000002800000028000000
+    failGauge: f6fffffff6fffffff6ffffff
+    runGauge: ecffffffecffffffecffffff
+    limitTime: 040000000400000004000000
+    dialog:
+    - "\uC5ED\uC2DC \uBA85\uBB38 \uAC00\uBB38\uC758 \uD488\uACA9\uC744 \uAC16\uCD98
+      \uC644\uBCBD\uD55C \uC778\uBB3C\uC774\uC154!"
+    - "\uACF5\uC791\uB2D8\uC758 \uC7AC\uB2A5\uC740 \uC2E0\uC774 \uB0B4\uB9AC\uC2E0
+      \uC120\uBB3C\uC774\uC57C."
+    - "\uACF5\uC791\uB2D8\uC758 \uC678\uBAA8\uB294 \uC2E0\uC774 \uB0B4\uB9AC\uC2E0
+      \uC608\uC220 \uC791\uD488 \uAC19\uC544."
+    - "\uACF5\uC791\uB2D8\uC744 \uCE6D\uC1A1\uD558\uB294 \uAC83\uB9CC\uC73C\uB85C\uB3C4
+      \uC601\uAD11\uC774\uC57C!"
+    - "\uADF8\uC758 \uC874\uC7AC \uC790\uCCB4\uAC00 \uC774 \uAD6D\uAC00\uC5D0 \uD070
+      \uCD95\uBCF5\uC774\uC9C0."
+    - "\uBAA8\uB4E0 \uC601\uC560\uAC00 \uACF5\uC791\uB2D8\uC758 \uC678\uBAA8\uB9CC
+      \uBCF4\uBA74 \uB208\uBB3C\uC744 \uD758\uB9B0\uB2E4\uC9C0?"
+    requireKeys: 
+    requiredKeyCount: 
+    canPressConcurrent: 
+  - worldType: 1
+    difficulty: 030000000400000000000000
+    startGauge: 320000002800000032000000
+    perDecreaseGauge: f6fffffff6fffffff6ffffff
+    perIncreaseGauge: 050000000500000003000000
+    succedGauge: 1e0000001e00000028000000
+    failGauge: f6fffffff6fffffff6ffffff
+    runGauge: ecffffffecffffffecffffff
+    limitTime: 040000000400000004000000
+    dialog:
+    - "\uC65C \uC544\uC9C1 \uB108\uB97C \uC704\uD55C \uB098\uB77C\uAC00 \uC5C6\uB294\uAC70\uC57C!!"
+    - "\uAE40 \uBB3B\uC5C8\uC5B4. \uC798\uC0DD\uAE40."
+    - "\uB0B4\uBA74\uC758 \uC544\uB984\uB2E4\uC6C0\uC774\uB780 \uC5BC\uB9C8\uB098
+      \uD558\uCC2E\uC740 \uAC83\uC778\uAC00..."
+    - "\uB108\uB294 \uB9B0\uC2A4 \uC548\uC368\uB3C4 \uB418\uACA0\uB2E4.. \uB098\uB9CC\uC758
+      \uD504\uB9B0\uC2A4\uB2C8\uAE4C ><"
+    - "\uC740\uC720\uB9CC \uBCF4\uBA74 \uD6C4\uAD11\uC774 \uBCF4\uC5EC!!"
+    - "\uC81C\uBC1C \uB098\uB97C \uAC00\uC838\uC694 \uC5C9\uC5C9"
+    - "\uB2E8\uC2E0 \uC790\uCCB4\uAC00 \uB0B4 \uC0B6\uC774\uC57C"
+    requireKeys: 710000007700000065000000610000007300000064000000
+    requiredKeyCount: 000000000300000000000000
+    canPressConcurrent: 000000
+  - worldType: 2
+    difficulty: 000000000600000003000000
+    startGauge: 000000003200000028000000
+    perDecreaseGauge: 00000000f1ffffffecffffff
+    perIncreaseGauge: 000000000300000002000000
+    succedGauge: 00000000140000000a000000
+    failGauge: 00000000fbfffffffbffffff
+    runGauge: 00000000f6fffffff6ffffff
+    limitTime: 000000000400000003000000
+    dialog:
+    - "\uB108\uC758 \uC9C0\uD61C\uC640 \uC7AC\uCE58\uB294 \uADF8 \uB204\uAD6C\uB3C4
+      \uB530\uB77C\uC62C \uC218 \uC5C6\uC744 \uAC70\uC57C!"
+    - "\uC601\uB9AC\uD568\uC774 \uB108\uC758 \uAC00\uC7A5 \uD070 \uB9E4\uB825\uC774\uC57C."
+    - "\uB108\uB294 \uC0AC\uB78C\uB4E4 \uC0AC\uC774\uC5D0\uC11C\uB3C4 \uB450\uAC01\uC744
+      \uB4DC\uB7EC\uB0B4\uB294 \uD2B9\uBCC4\uD55C \uC874\uC7AC\uC57C."
+    - "\uD568\uAED8 \uC788\uC73C\uBA74 \uC990\uAC70\uC6CC !!"
+    - "\uB108\uC758 \uAE0D\uC815\uC801 \uC5D0\uB108\uC9C0\uAC00 \uB098\uC5D0\uAC8C
+      \uB9CE\uC740 \uD798\uC774 \uB3FC."
+    - "\uB108\uB294 \uCC38 \uBBFF\uC74C\uC9C1\uC2A4\uB7EC\uC6CC."
+    - "\uB108\uC758 \uC801\uC751\uB825\uC740 \uC815\uB9D0 \uB300\uB2E8\uD574."
+    - "\uB108\uB294 \uBB50\uB4E0\uC9C0 \uD574\uB0BC \uC218 \uC788\uB294 \uC874\uC7AC\uC57C!"
+    - "\uB098\uB3C4 \uB108\uCC98\uB7FC \uB418\uACE0 \uC2F6\uC5B4"
+    requireKeys: 710000007700000065000000610000007300000064000000
+    requiredKeyCount: 000000000400000003000000
+    canPressConcurrent: 000001
+  - worldType: 3
+    difficulty: 000000000300000006000000
+    startGauge: 000000002800000028000000
+    perDecreaseGauge: 00000000f6ffffffecffffff
+    perIncreaseGauge: 000000000300000003000000
+    succedGauge: 000000000100000001000000
+    failGauge: 00000000fbfffffffbffffff
+    runGauge: 00000000f6fffffff6ffffff
+    limitTime: 000000000400000003000000
+    dialog:
+    - "\uB108\uC758 \uC874\uC7AC\uB9CC\uC73C\uB85C\uB3C4 \uC138\uC0C1\uC774 \uCD95\uBCF5\uBC1B\uC740
+      \uAC83 \uAC19\uC544."
+    - "\uADF8\uB294 \uD76C\uB9DD\uC744 \uBD88\uC5B4\uB123\uB294 \uBE5B\uACFC \uAC19\uC740
+      \uC874\uC7AC\uC57C!!"
+    - "\uB108\uC758 \uACC1\uC5D0\uB294 \uD56D\uC0C1 \uD3C9\uD654\uC640 \uACBD\uC758\uC2EC\uC774
+      \uAC00\uB4DD\uD574."
+    - "\uC815\uB9D0 \uC131\uC2A4\uB7EC\uC6C0\uC774 \uB290\uAEF4\uC838."
+    - "\uADF8\uC758 \uC190\uAE38\uC740 \uAE30\uC801\uC744 \uC77C\uC73C\uCF1C."
+    - "\uBC14\uB77C\uBCF4\uAE30\uB9CC \uD574\uB3C4 \uACBD\uC774\uB85C\uC6CC."
+    - "\uADF8\uC758 \uC874\uC7AC\uB294 \uC778\uAC04\uC5D0\uAC8C \uC788\uC5B4 \uAC00\uC7A5
+      \uD070 \uC120\uBB3C\uC774\uC57C."
+    - "\uB2F9\uC2E0\uC744 \uBC14\uB77C\uBCF4\uAE30\uB9CC \uD574\uB3C4 \uD589\uBCF5\uD574."
+    - "\uB098\uB3C4 \uB108\uCC98\uB7FC \uD589\uBCF5\uD574\uC9C0\uACE0 \uC2F6\uC5B4."
+    requireKeys: 7100000077000000650000006100000073000000640000006600000072000000
+    requiredKeyCount: 000000000400000003000000
+    canPressConcurrent: 000000
+  playerData:
+    moveSpeed:
+    - 2
+    - 3
+    - 7

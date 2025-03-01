@@ -20,12 +20,12 @@ public class Portal : MonoBehaviour
 
     public void FadeIn()
     {
-        StartCoroutine(_spriteRenderer.CoFadeIn(_fadeTime));
+        StartCoroutine(_spriteRenderer.CoFadeOut(_fadeTime));
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_information != null || _information.gameObject.activeInHierarchy == false) return;
+        if (_information != null) return;
 
         if (collision.CompareTag("Player"))
         {

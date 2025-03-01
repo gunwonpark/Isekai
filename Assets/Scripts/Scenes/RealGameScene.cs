@@ -26,8 +26,23 @@ public class RealGameScene : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
         // 게임시작
-        RealWorldInfo realWorldInfo = new FirstWorldInfo();
+        RealWorldInfo realWorldInfo = GetRealWorldInfo();
         Init(realWorldInfo);
+    }
+
+    private RealWorldInfo GetRealWorldInfo()
+    {
+        switch(Managers.World.CurrentWorldType)
+        {
+            case WorldType.Gang:
+                return new SecondWorldInfo();
+            case WorldType.Vinter:
+                return new FirstWorldInfo();
+            case WorldType.Chaumm:
+                return new ThirdWorldInfo();
+            default:
+                return new FirstWorldInfo();
+        }
     }
 
     private IEnumerator PlayEnterTimeline()

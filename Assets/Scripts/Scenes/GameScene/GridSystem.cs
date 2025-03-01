@@ -34,19 +34,6 @@ public class GridSystem : MonoBehaviour
     public List<GridInfo> gridInfos = new List<GridInfo>();
     public List<int> randomIndexList = new List<int>();
 
-    // 카메라 공간상 오브젝트가 있는지 확인
-    public bool IsBubbleEmpty
-    {
-        get
-        {
-            float height = Camera.main.orthographicSize * 2f;  
-            float width = height * Camera.main.aspect;         
-
-            Collider2D col = Physics2D.OverlapBox(Camera.main.transform.position, new Vector2(width, height), 0, LayerMask.GetMask("UI"));
-            return col == null;
-        }
-    }
-
     [ContextMenu("Test")]
     public void Test()
     {

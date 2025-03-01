@@ -54,7 +54,7 @@ public class UI_Loading : MonoBehaviour
         SetLoadingTexts();
         yield return FillProgressBar(0.8f, 2f);
         yield return FillProgressBar(1f, 2f);
-        yield return StartCoroutine(_fadeImage.CoFadeOut(_fadeTime));
+        yield return StartCoroutine(_fadeImage.CoFadeIn(_fadeTime));
     }
 
     private IEnumerator PelmanusLoadingSequence()
@@ -63,7 +63,7 @@ public class UI_Loading : MonoBehaviour
         _worldText.text = $"[{_loadingSceneData.name.GetNRandomMaskedText(3)}]";
         _tipText.text = _loadingSceneData.tip.GetRandomMaskedText();
 
-        yield return StartCoroutine(_fadeImage.CoFadeIn(_fadeTime));
+        yield return StartCoroutine(_fadeImage.CoFadeOut(_fadeTime));
         yield return new WaitForSeconds(4f);
 
         _glitchPanel.gameObject.SetActive(false);

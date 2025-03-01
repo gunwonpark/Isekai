@@ -25,11 +25,12 @@ public class GameSceneEx : BaseScene
     [Header("UI")]
 	[SerializeField] private Image _fadeImage;
 
-    [Header("밸런스")]
+    [Header("페이드 시간")]
     [SerializeField] private float _fadeTime = 3f;
     [SerializeField] private float _waitTimeAfterFade = 0f;
     [SerializeField] private float _waitTimeBeforeFade = 0f;
 
+    [Header("포탈 위치")]
     [SerializeField] private float _potalSpawnOffsetX = 8f;
     [SerializeField] private float _potalSpawnOffsetY = -2.5f;
     protected override void Init()

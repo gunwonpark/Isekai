@@ -10,46 +10,39 @@ using UnityEngine.UI;
 
 public class UI_MiniGame : UI_Popup
 {
-    public float _keyGap = 0.1f;
 
     [SerializeField] private Image _bubbleImage;
     [SerializeField] private TextMeshProUGUI _bubbleText;
     [SerializeField] private Image _minigameGaugeBar;
     [SerializeField] private Transform _keyBoardTransform;
 
-    private string _originalText;
-
     private SpawnInfo _spawnInfo;
 
-    [Tooltip("미니게임 정보")]
+    [Header("미니게임 정보")]
     [SerializeField] private MiniGameInfo _miniGameInfo;
 
-    [Tooltip("타이머 텍스트")]
+    [Header("타이머 텍스트")]
     [SerializeField] private TextMeshProUGUI _remainTimeText;
 
+    [Header("미니게임 설정")]
+    [SerializeField] private float _keyPositionGap = 0.1f;
     [SerializeField] private float _mosaicRemoveSpeed = 1.0f;
-
-    [SerializeField] private string[] _maskCharacters = { "#", "*", "@", "$", "%", "&", "!" }; // 특수문자 집합
 
     private bool _isGameEnd = false;
     private bool _isGameStart = false;
-    private bool _canPressKey = true;  
+    private bool _canKeyPress = true;  
 
-    private float _remainingTime;
+    private float _remainTime;
     private float _currentGaugeValue;
 
+    private string _originalText;
+
     private List<KeyButton> _requiredKeys = new List<KeyButton>();
-
-    int _keyCount = 0;
-
-    public float LeftTimeIncrease = 5f;
-    public float StartGaugeIncrease = 40f;
-    public int GaugePerIncrease = 50;
-    public int GaugePerDecrease = 7;
 
     private KeySpriteFactory _keySpriteFactory;
 
     private bool _isTextShowed = false;
+    int _leftKeyCount = 0;
 
     public void Init(MiniGameInfo miniGameInfo, SpawnInfo spawnInfo, KeySpriteFactory keySpriteFactory)
     {
@@ -87,21 +80,9 @@ public class UI_MiniGame : UI_Popup
     {
         _miniGameInfo = miniGameInfo;
         _originalText = _miniGameInfo.dialog;
-        _bubbleText.text = GetRandomMaskedText(_miniGameInfo.dialog.Length);
-        _currentGaugeValue = _miniGameInfo.startGauge + StartGaugeIncrease;
-        _remainingTime = _miniGameInfo.limitTime + LeftTimeIncrease;
-        _miniGameInfo.perDecreaseGauge += GaugePerDecrease;
-        _miniGameInfo.perIncreaseGauge += GaugePerIncrease;
-    }
-
-    private string GetRandomMaskedText(int length)
-    {
-        StringBuilder randomText = new StringBuilder(length);
-        for (int i = 0; i < length; i++)
-        {
-            randomText.Append(_maskCharacters[UnityEngine.Random.Range(0, _maskCharacters.Length)]);
-        }
-        return randomText.ToString();
+        _bubbleText.text = _miniGameInfo.dialog.GetRandomMaskedText();
+        _currentGaugeValue = _miniGameInfo.startGauge;
+        _remainTime = _miniGameInfo.limitTime;
     }
 
     // 텍스트 효과 
@@ -143,15 +124,16 @@ public class UI_MiniGame : UI_Popup
 
         int requiredKeyCount = _miniGameInfo.requiredKeyCount;
 
-        int adder = 0;
+        int hasConcurrentKey = 0;
+
         // 동시 입력이 가능할 경우
         // 50% 확률로 2개의 키를 동시에 눌러야 하는 미니게임
         if (_miniGameInfo.canPressConcurrent)
         {
-            adder = MakeConcurrenceButton();
+            hasConcurrentKey = MakeConcurrenceButton(2, 2, 50f);
         }
 
-        for (int i = 0; i < requiredKeyCount - adder; i++)
+        for (int i = 0; i < requiredKeyCount - hasConcurrentKey; i++)
         {
             // KeyButton 생성
             KeyButton keyButton = Managers.UI.MakeSubItem<KeyButton>(_keyBoardTransform, "KeyButton");
@@ -163,34 +145,36 @@ public class UI_MiniGame : UI_Popup
 
         if (requiredKeyCount > 0)
         {
-            _canPressKey = false; // Space 비활성화
-            _keyCount = _requiredKeys.Count;
+            _canKeyPress = false; // Space 비활성화
+            _leftKeyCount = _requiredKeys.Count;
             SetKeyButtonPosition();
         }
     }
 
-    private int MakeConcurrenceButton()
+    // 현재 동시에 누를 수 있는 키는 2개 한정으로 추후 수정이 필요할 수 있다
+
+    private int MakeConcurrenceButton(int minKeyCount, int maxKeyCount, float spawnPercent)
     {
-        int adder = 0;
-        List<KeyCode> keyCode = new List<KeyCode>();
-
-        int randomKeyCount = UnityEngine.Random.Range(2, 4);
-
-        if (randomKeyCount == 2)
+        if(UnityEngine.Random.Range(0, 100) > spawnPercent)
         {
-            for (int i = _miniGameInfo.requiredKeys.Count - 1; i >= _miniGameInfo.requiredKeys.Count - randomKeyCount; i--)
-            {
-                keyCode.Add(_miniGameInfo.requiredKeys[i]);
-            }
-            // KeyButton 생성
-            TwoKeyButton keyButton = Managers.UI.MakeSubItem<TwoKeyButton>(_keyBoardTransform, "TwoKeyButton");
-            keyButton.OnKeyPressed += OnKeyPressed; // 입력 이벤트 연결
-            keyButton.Init(keyCode[0], keyCode[1], _keySpriteFactory.GetKeySprite(keyCode[0]), _keySpriteFactory.GetKeySprite(keyCode[1])); // KeyCode 설정
-            _requiredKeys.Add(keyButton); // 리스트에 추가
-            adder = 1;
+            return 0;
         }
 
-        return adder;
+        List<KeyCode> keyCode = new List<KeyCode>();
+        
+        int randomKeyCount = UnityEngine.Random.Range(minKeyCount, maxKeyCount + 1);
+
+        for (int i = _miniGameInfo.requiredKeys.Count - 1; i >= _miniGameInfo.requiredKeys.Count - randomKeyCount; i--)
+        {
+            keyCode.Add(_miniGameInfo.requiredKeys[i]);
+        }
+        // KeyButton 생성
+        TwoKeyButton keyButton = Managers.UI.MakeSubItem<TwoKeyButton>(_keyBoardTransform, "TwoKeyButton");
+        keyButton.OnKeyPressed += OnKeyPressed; // 입력 이벤트 연결
+        keyButton.Init(keyCode[0], keyCode[1], _keySpriteFactory.GetKeySprite(keyCode[0]), _keySpriteFactory.GetKeySprite(keyCode[1])); // KeyCode 설정
+        _requiredKeys.Add(keyButton); // 리스트에 추가
+        
+        return 1;
     }
 
     private void SetKeyButtonPosition()
@@ -206,7 +190,7 @@ public class UI_MiniGame : UI_Popup
             totalWidth += keyWidths[i];
         }
 
-        totalWidth += _keyGap * (keyCount - 1);
+        totalWidth += _keyPositionGap * (keyCount - 1);
 
         float startX = -totalWidth / 2;
 
@@ -214,16 +198,16 @@ public class UI_MiniGame : UI_Popup
         {
             float posX = startX + keyWidths[i] / 2;
             _requiredKeys[i].transform.localPosition = new Vector3(posX, 0, 0);
-            startX += keyWidths[i] + _keyGap;
+            startX += keyWidths[i] + _keyPositionGap;
         }
     }
 
     private void OnKeyPressed()
     {
-        _keyCount--;
-        if(_keyCount == 0)
+        _leftKeyCount--;
+        if(_leftKeyCount == 0)
         {
-            _canPressKey = true;
+            _canKeyPress = true;
         }
     }
 
@@ -232,9 +216,9 @@ public class UI_MiniGame : UI_Popup
         if (_isGameEnd) return;
 
         // 시간 감소
-        _remainingTime -= Time.deltaTime;
+        _remainTime -= Time.deltaTime;
 
-        if (_remainingTime <= 0)
+        if (_remainTime <= 0)
         {
             EndMiniGame(false);
             return;
@@ -266,7 +250,7 @@ public class UI_MiniGame : UI_Popup
         else if (_miniGameInfo.difficulty == MiniGameDifficulty.Normal)
         {
             // 모든 키를 누른 후 스페이스바를 누르는 난이도
-            if (_canPressKey && Input.GetKeyDown(KeyCode.Space))
+            if (_canKeyPress && Input.GetKeyDown(KeyCode.Space))
             {
                 ChangeGauge(_miniGameInfo.perIncreaseGauge);
             }
@@ -274,7 +258,7 @@ public class UI_MiniGame : UI_Popup
         else if (_miniGameInfo.difficulty == MiniGameDifficulty.Hard)
         {
             // 동시에 특정 키를 누르는 난이도
-            if (_canPressKey && Input.GetKeyDown(KeyCode.Space))
+            if (_canKeyPress && Input.GetKeyDown(KeyCode.Space))
             {
                 ChangeGauge(_miniGameInfo.perIncreaseGauge);
             }
@@ -300,7 +284,7 @@ public class UI_MiniGame : UI_Popup
     private void UpdateUI()
     {
         _minigameGaugeBar.fillAmount = _currentGaugeValue / 100f;
-        _remainTimeText.text = $"남은 시간: {_remainingTime:F1}초";
+        _remainTimeText.text = $"남은 시간: {_remainTime:F1}초";
 
     }
 
@@ -313,12 +297,12 @@ public class UI_MiniGame : UI_Popup
         if (isSuccess)
         {
             //Debug.Log("미니게임 성공! 행복도가 상승합니다.");
-            Managers.Happy.ChangeHappiness(_miniGameInfo.succedGauge + LeftTimeIncrease);
+            Managers.Happy.ChangeHappiness(_miniGameInfo.succedGauge);
         }
         else
         {
             //Debug.Log("미니게임 실패! 행복도가 감소합니다.");
-            Managers.Happy.ChangeHappiness(_miniGameInfo.failGauge - LeftTimeIncrease);
+            Managers.Happy.ChangeHappiness(_miniGameInfo.failGauge);
         }
 
         // 게임 종료 로직
