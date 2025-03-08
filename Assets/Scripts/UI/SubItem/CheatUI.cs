@@ -83,7 +83,7 @@ public class CheatUI : MonoBehaviour
 
     public int FailValue
     {
-        get => _failValue;
+        get => -_failValue;
         set
         {
             _failValue = value;

@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class KeyButton : UI_Base
 {
     public event Action OnKeyPressed;
+    public event Action OnKeyMissed;
+
     [SerializeField] protected KeyCode _keyCode;
     [SerializeField] protected Image _image;
 
@@ -30,9 +32,16 @@ public class KeyButton : UI_Base
 
     private void Update()
     {
-        if (_canPressKey && Input.GetKeyDown(_keyCode)){
-            OnkeyPressedEvent();
-            Destroy(gameObject);
+        if (Input.GetKeyDown(_keyCode)){
+            if (_canPressKey)
+            {
+                OnkeyPressedEvent();
+                Destroy(gameObject);
+            }
+            else
+            {
+                OnKeyMissedEvent();
+            }
         }
     }
 
@@ -49,6 +58,11 @@ public class KeyButton : UI_Base
     protected void OnkeyPressedEvent()
     {
         OnKeyPressed?.Invoke();
+    }
+
+    protected void OnKeyMissedEvent()
+    {
+        OnKeyMissed?.Invoke();
     }
 
     public override void Init()

@@ -42,7 +42,7 @@ public class UI_MiniGame : UI_Popup
     private KeySpriteFactory _keySpriteFactory;
 
     private bool _isTextShowed = false;
-    int _leftKeyCount = 0;
+    int _pressedKeyCount = 0;
 
     public void Init(MiniGameInfo miniGameInfo, SpawnInfo spawnInfo, KeySpriteFactory keySpriteFactory)
     {
@@ -66,9 +66,11 @@ public class UI_MiniGame : UI_Popup
         UpdateUI();
     }
 
+    [ContextMenu("FixBubbleSize")]
+
     private void FixBubbleSize()
     {
-        float preferWidth = Mathf.Max(_bubbleText.preferredWidth + 2f, 10f);
+        float preferWidth = Mathf.Max(_bubbleText.preferredWidth + 3f, 10f);
         float preferHeight = Mathf.Max(_bubbleText.preferredHeight + 1f, 2.2f);
 
         Vector2 preferSize = new Vector2(preferWidth, preferHeight);
@@ -137,7 +139,6 @@ public class UI_MiniGame : UI_Popup
         {
             // KeyButton 생성
             KeyButton keyButton = Managers.UI.MakeSubItem<KeyButton>(_keyBoardTransform, "KeyButton");
-            keyButton.OnKeyPressed += OnKeyPressed; // 입력 이벤트 연결
             KeyCode keyCode = _miniGameInfo.requiredKeys[i];
             keyButton.Init(keyCode, _keySpriteFactory.GetKeySprite(keyCode)); // KeyCode 설정
             _requiredKeys.Add(keyButton); // 리스트에 추가
@@ -145,9 +146,15 @@ public class UI_MiniGame : UI_Popup
 
         if (requiredKeyCount > 0)
         {
-            _canKeyPress = false; // Space 비활성화
-            _leftKeyCount = _requiredKeys.Count;
+            _canKeyPress = false; // Space 비활성화 
             SetKeyButtonPosition();
+        }
+
+        // key클리어 이벤트 연결
+        for(int i = 0; i < _requiredKeys.Count; i++)
+        {
+            _requiredKeys[i].OnKeyPressed += OnKeyPressed;
+            _requiredKeys[i].OnKeyMissed += () => EndMiniGame(false);
         }
     }
 
@@ -204,11 +211,15 @@ public class UI_MiniGame : UI_Popup
 
     private void OnKeyPressed()
     {
-        _leftKeyCount--;
-        if(_leftKeyCount == 0)
+        _pressedKeyCount++;
+
+        if (_pressedKeyCount == _requiredKeys.Count)
         {
             _canKeyPress = true;
+            return;
         }
+
+        _requiredKeys[_pressedKeyCount].EnableKeyPress();
     }
 
     private void Update()
@@ -317,14 +328,24 @@ public class UI_MiniGame : UI_Popup
 
         if (collision.CompareTag("Player"))
         {
-            foreach (var key in _requiredKeys)
-            {
-                key.EnableKeyPress();
-            }
+            MiniGameStart();
 
             if(_isTextShowed == false)
             {
                 StartCoroutine(ShowText());
+            }
+        }
+    }
+
+    // 처음 키를 스타트 지점으로 설정
+    private void MiniGameStart()
+    {
+        foreach (KeyButton key in _requiredKeys)
+        {
+            if(key != null)
+            {
+                key.EnableKeyPress();
+                return;
             }
         }
     }
@@ -337,7 +358,16 @@ public class UI_MiniGame : UI_Popup
 
         if (other.CompareTag("Player"))
         {
-            foreach (var key in _requiredKeys)
+            MiniGameStop();
+        }
+    }
+
+    // 키 입력을 중지
+    private void MiniGameStop()
+    {
+        foreach (KeyButton key in _requiredKeys)
+        {
+            if (key != null)
             {
                 key.DisableKeyPress();
             }
