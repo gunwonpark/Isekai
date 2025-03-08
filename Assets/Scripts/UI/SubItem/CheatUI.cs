@@ -15,7 +15,7 @@ public class CheatUI : MonoBehaviour
         get => playerSpeed.value * 10f;
         set
         {
-            playerSpeedText.text = (value * 10).ToString();
+            playerSpeedText.text = (value * 10).ToString("F2");
         }
     }
 
@@ -23,11 +23,14 @@ public class CheatUI : MonoBehaviour
     public Slider perDecreaseGauge;
     public Slider perIncreaseGauge;
     public Slider LimitTime;
+    public Slider Success;
+    public Slider Fail;
 
     public TextMeshProUGUI perDecreaseGaugeText;
     public TextMeshProUGUI perIncreaseGaugeText;
     public TextMeshProUGUI LimitTimeText;
-
+    public TextMeshProUGUI SuccessText;
+    public TextMeshProUGUI FailText;
 
     private int _perDecreaseGaugeValue;
 
@@ -64,7 +67,30 @@ public class CheatUI : MonoBehaviour
         }
     }
 
-    private void Start()
+    private int _successValue;
+
+    public int SuccessValue
+    {
+        get => _successValue;
+        set
+        {
+            _successValue = value;
+            SuccessText.text = _successValue.ToString();
+        }
+    }
+
+    private int _failValue;
+
+    public int FailValue
+    {
+        get => _failValue;
+        set
+        {
+            _failValue = value;
+            FailText.text = _failValue.ToString();
+        }
+    }
+    private void Awake()
     {
         DontDestroyOnLoad(gameObject);
         playerSet.onClick.AddListener(SetPlayerSpeed);
@@ -74,6 +100,8 @@ public class CheatUI : MonoBehaviour
         perDecreaseGauge.onValueChanged.AddListener((value) => perDecreaseGaugeValue = Mathf.RoundToInt(value * 30));
         perIncreaseGauge.onValueChanged.AddListener((value) => perIncreaseGaugeValue = Mathf.RoundToInt(value * 30));
         LimitTime.onValueChanged.AddListener((value) => LimitTimeValue = Mathf.RoundToInt(value * 20));
+        Success.onValueChanged.AddListener((value) => SuccessValue = Mathf.RoundToInt(value * 50));
+        Fail.onValueChanged.AddListener((value) => FailValue = Mathf.RoundToInt(value * 50));
     }
 
     private void SetStageData()
@@ -86,8 +114,8 @@ public class CheatUI : MonoBehaviour
             startGauge = worldInfo.startGauge,
             perDecreaseGauge = new List<int> { perDecreaseGaugeValue, perDecreaseGaugeValue, perDecreaseGaugeValue },
             perIncreaseGauge = new List<int> { perIncreaseGaugeValue, perIncreaseGaugeValue, perIncreaseGaugeValue },
-            succedGauge = worldInfo.succedGauge,
-            failGauge = worldInfo.failGauge,
+            succedGauge = new List<int> { SuccessValue, SuccessValue, SuccessValue },
+            failGauge = new List<int> { FailValue, FailValue, FailValue },
             runGauge = worldInfo.runGauge,
             limitTime = new List<int> { LimitTimeValue, LimitTimeValue, LimitTimeValue },
             dialog = worldInfo.dialog,

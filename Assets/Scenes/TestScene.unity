@@ -2456,9 +2456,13 @@ MonoBehaviour:
   perDecreaseGauge: {fileID: 181872630}
   perIncreaseGauge: {fileID: 593126210}
   LimitTime: {fileID: 394753655}
+  Success: {fileID: 0}
+  Fail: {fileID: 0}
   perDecreaseGaugeText: {fileID: 1109328973}
   perIncreaseGaugeText: {fileID: 779783678}
   LimitTimeText: {fileID: 875164124}
+  SuccessText: {fileID: 0}
+  FailText: {fileID: 0}
 --- !u!1 &875164122
 GameObject:
   m_ObjectHideFlags: 0

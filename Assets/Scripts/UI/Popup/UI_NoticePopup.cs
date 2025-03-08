@@ -6,7 +6,7 @@ public class UI_NoticePopup : UI_Popup
 	[SerializeField] private PlayableDirector _playableDirector;
 	[SerializeField] private Material[] _material;
 	private MeshRenderer _meshRenderer;
-	private GameObject _book;
+	private SpriteClickHandler _book;
 
 	public override void Init()
 	{
@@ -14,11 +14,24 @@ public class UI_NoticePopup : UI_Popup
 		_playableDirector = GameObject.Find("TimeLineEnd").GetComponent<PlayableDirector>();
 		_meshRenderer = GameObject.Find("Quad").GetComponent<MeshRenderer>();
 		_meshRenderer.material = _material[0];
-		_book = GameObject.FindGameObjectWithTag("Book");
-		_book.SetActive(false);
 	}
 
-	public void CheckNotice(bool isOn)
+	public void Init(SpriteClickHandler book)
+	{
+		_book = book;
+	}
+
+    private void Update()
+    {
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+            _book.SetCanClicked();
+            _book.StartBlink();
+            Managers.UI.ClosePopupUI(this);
+        }
+    }
+
+    public void CheckNotice(bool isOn)
 	{
 		_playableDirector.Play();
 		Managers.UI.ClosePopupUI(this);
@@ -27,6 +40,5 @@ public class UI_NoticePopup : UI_Popup
 	private void OnDestroy()
 	{
 		_meshRenderer.material = _material[1];
-		_book.SetActive(true);
 	}
 }

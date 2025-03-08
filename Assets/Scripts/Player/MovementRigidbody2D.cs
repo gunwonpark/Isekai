@@ -23,7 +23,7 @@ public class MovementRigidbody2D : MonoBehaviour
 		_rigid2D = GetComponent<Rigidbody2D>();
 		_collider2D = GetComponent<Collider2D>();
 		_rigid2D.gravityScale = _gravityScale;
-	}
+    }
 
 	public void MoveTo(float x)
 	{

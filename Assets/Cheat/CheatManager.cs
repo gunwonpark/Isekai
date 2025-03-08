@@ -17,11 +17,8 @@ public class CheatManager : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);  
-    }
+        DontDestroyOnLoad(gameObject);
 
-    private void Start()
-    {        
         SetWorldButton.onClick.AddListener(SetWorld);
         sceneDropdown.ClearOptions();
         sceneType.ClearOptions();

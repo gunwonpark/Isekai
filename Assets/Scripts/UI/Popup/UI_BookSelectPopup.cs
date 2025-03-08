@@ -20,10 +20,9 @@ public class UI_BookSelectWorldSpace : UI_Base, IPointerEnterHandler, IPointerEx
 	//private Vector3 defalultScale1;
 	//private Vector3 defalultScale2;
 
-	public override void Init()
+	private SpriteClickHandler _book;
+    public override void Init()
 	{
-		bookTransform = GameObject.FindGameObjectWithTag("Book");
-		bookTransform.transform.GetChild(0).gameObject.SetActive(false);
 		_selectImage1.gameObject.BindEvent(OnClickOpenBook);
 		_selectImage2.gameObject.BindEvent(OnClickdecision);
 
@@ -36,16 +35,33 @@ public class UI_BookSelectWorldSpace : UI_Base, IPointerEnterHandler, IPointerEx
 		SetTransform();
 	}
 
-	private void OnClickOpenBook(PointerEventData eventData)
+	public void Init(SpriteClickHandler book)
+	{
+		bookTransform = book.gameObject;
+		_book = book;
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+			_book.SetCanClicked();
+			_book.StartBlink();
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnClickOpenBook(PointerEventData eventData)
 	{
 		Destroy(gameObject);
-		Managers.UI.ShowPopupUI<UI_BookPopup>();
+		var ui = Managers.UI.ShowPopupUI<UI_BookPopup>();
+		ui.Init(_book);
 	}
 
 	private void OnClickdecision(PointerEventData eventData)
 	{
 		Destroy(gameObject);
-		Managers.UI.ShowPopupUI<UI_NoticePopup>();
+		var ui = Managers.UI.ShowPopupUI<UI_NoticePopup>();
+		ui.Init(_book);
 	}
 
 	private void SetTransform()
@@ -67,11 +83,6 @@ public class UI_BookSelectWorldSpace : UI_Base, IPointerEnterHandler, IPointerEx
 				transform.position = bookTransform.transform.position + new Vector3(2f, -0.4f, 0f);
 				break;
 		}
-	}
-
-	private void OnDestroy()
-	{
-		bookTransform.transform.GetChild(0).gameObject.SetActive(true);
 	}
 
 	public void OnPointerEnter(PointerEventData eventData)

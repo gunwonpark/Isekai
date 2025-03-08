@@ -124,7 +124,6 @@ MonoBehaviour:
   _material:
   - {fileID: 2100000, guid: 7753fb339cd31bf44b2947e8138e0187, type: 2}
   - {fileID: 2100000, guid: 1cd5f32dbb975f440b8e9f0ad1147046, type: 2}
-  _meshRenderer: {fileID: 0}
 --- !u!1 &3150726990844768608
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,8 +192,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7ae0bed6483d5044a8a6c427cbafef38, type: 2}
-  m_sharedMaterial: {fileID: -2473864810447096974, guid: 7ae0bed6483d5044a8a6c427cbafef38, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fb10db488cf2a634a984678fd5e09aae, type: 2}
+  m_sharedMaterial: {fileID: -6534315385618460736, guid: fb10db488cf2a634a984678fd5e09aae, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -454,7 +453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.84400004, g: 0.84400004, b: 0.84400004, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -571,7 +570,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0

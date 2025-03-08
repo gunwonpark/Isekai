@@ -54,16 +54,18 @@ public class DB : ScriptableObject
     private Dictionary<WorldType, WorldInfo> gameSceneDataDic = new();
 
     [SerializeField] private PlayerData playerData = new();
-
+    private PlayerData _sudoPlayerData = new();
     public void Init()
     {
-        #region 치트수정 방지용
-        string savePath = Application.dataPath + "/Datas";
-        string path = System.IO.Path.Combine(savePath, "DB.json");
-        string json = System.IO.File.ReadAllText(path);
+//        #region 치트수정 방지용
+//#if Unity_Editor
+//        string savePath = Application.dataPath + "/Datas";
+//        string path = System.IO.Path.Combine(savePath, "DB.json");
+//        string json = System.IO.File.ReadAllText(path);
 
-        JsonUtility.FromJsonOverwrite(json, this); 
-        #endregion
+//        JsonUtility.FromJsonOverwrite(json, this);
+//#endif
+//        #endregion
 
         loadingTipDataDic.Clear();
         foreach (var data in loadingTipDataList)
@@ -96,6 +98,9 @@ public class DB : ScriptableObject
                     break;
             }
         }
+
+        // 데이터 참조지역 추후 초기화
+        _sudoPlayerData = playerData;
     }
 
     public LoadingSceneData GetLoadingSceneData(WorldType worldType)
@@ -129,7 +134,7 @@ public class DB : ScriptableObject
 
     public PlayerData GetPlayerData()
     {
-        return playerData;
+        return _sudoPlayerData;
     }
 
 
@@ -155,6 +160,11 @@ public class DB : ScriptableObject
 
     public void SetPlayerData(PlayerData data)
     {
-        playerData = data;
+        _sudoPlayerData = data;
+    }
+
+    public void ResetPlayerData()
+    {
+        _sudoPlayerData = playerData;
     }
 }

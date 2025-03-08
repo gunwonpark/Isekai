@@ -277,8 +277,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b2daea7b6ff43d342baa7e7f8b67e576, type: 2}
-  m_sharedMaterial: {fileID: 5088249501435898093, guid: b2daea7b6ff43d342baa7e7f8b67e576, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fb10db488cf2a634a984678fd5e09aae, type: 2}
+  m_sharedMaterial: {fileID: -6534315385618460736, guid: fb10db488cf2a634a984678fd5e09aae, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -547,7 +547,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 16
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &6088068851412760558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -577,25 +577,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97838ceefaee935439d457d85358840f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _keyGap: 0.4
   _bubbleImage: {fileID: 3421297205535423996}
   _bubbleText: {fileID: 8246742761711535414}
   _minigameGaugeBar: {fileID: 3852245650422302410}
   _keyBoardTransform: {fileID: 3801208920577190320}
   _remainTimeText: {fileID: 3096670951526292238}
+  _keyPositionGap: 0.1
   _mosaicRemoveSpeed: 1
-  _maskCharacters:
-  - '#'
-  - '*'
-  - '@'
-  - $
-  - '%'
-  - '&'
-  - '!'
-  LeftTimeIncrease: 4
-  StartGaugeIncrease: 30
-  GaugePerIncrease: 20
-  GaugePerDecrease: 7
 --- !u!61 &5505001869256885618
 BoxCollider2D:
   m_ObjectHideFlags: 0

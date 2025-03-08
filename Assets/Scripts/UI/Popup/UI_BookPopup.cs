@@ -12,7 +12,7 @@ public class UI_BookPopup : UI_Popup
 	[SerializeField] private Button _AnyClick;
 	[SerializeField] Material[] _material;
 	private MeshRenderer _meshRenderer;
-	private GameObject _book;
+	private SpriteClickHandler _book;
 
 	public override void Init()
 	{
@@ -21,16 +21,29 @@ public class UI_BookPopup : UI_Popup
 
 		_meshRenderer = GameObject.Find("Quad").GetComponent<MeshRenderer>();
 		_meshRenderer.material = _material[0];
-		_book = GameObject.FindGameObjectWithTag("Book");
-		_book.SetActive(false);
 	}
+
+	public void Init(SpriteClickHandler book)
+	{
+        _book = book;
+    }
 
 	public void ClosePopup()
 	{
-		Managers.UI.ClosePopupUI(this);
+        _book.SetCanClicked();
+		_book.StartBlink();
+        Managers.UI.ClosePopupUI(this);
 	}
 
-	private void SetText()
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ClosePopup();
+        }
+    }
+
+    private void SetText()
 	{
 		WorldType currentWorldType = Managers.World.CurrentWorldType;
 
@@ -77,7 +90,6 @@ public class UI_BookPopup : UI_Popup
 
 	private void OnDestroy()
 	{
-		_meshRenderer.material = _material[1];
-		_book.SetActive(true);
+		_meshRenderer.material = _material[1];		
 	}
 }

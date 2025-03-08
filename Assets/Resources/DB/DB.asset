@@ -39,12 +39,12 @@ MonoBehaviour:
   - worldType: 0
     difficulty: 060000000000000000000000
     startGauge: 320000003200000032000000
-    perDecreaseGauge: f6fffffff6fffffff6ffffff
-    perIncreaseGauge: 030000000300000003000000
-    succedGauge: 280000002800000028000000
-    failGauge: f6fffffff6fffffff6ffffff
+    perDecreaseGauge: fafffffffafffffffaffffff
+    perIncreaseGauge: 0a0000000a0000000a000000
+    succedGauge: 0f0000000f0000000f000000
+    failGauge: fbfffffffbfffffffbffffff
     runGauge: ecffffffecffffffecffffff
-    limitTime: 040000000400000004000000
+    limitTime: 060000000600000006000000
     dialog:
     - "\uC5ED\uC2DC \uBA85\uBB38 \uAC00\uBB38\uC758 \uD488\uACA9\uC744 \uAC16\uCD98
       \uC644\uBCBD\uD55C \uC778\uBB3C\uC774\uC154!"
@@ -64,12 +64,12 @@ MonoBehaviour:
   - worldType: 1
     difficulty: 030000000400000000000000
     startGauge: 320000002800000032000000
-    perDecreaseGauge: f6fffffff6fffffff6ffffff
-    perIncreaseGauge: 050000000500000003000000
-    succedGauge: 1e0000001e00000028000000
-    failGauge: f6fffffff6fffffff6ffffff
+    perDecreaseGauge: f8fffffff8fffffff8ffffff
+    perIncreaseGauge: 080000000800000008000000
+    succedGauge: 0f0000000f0000000f000000
+    failGauge: f9fffffff9fffffff9ffffff
     runGauge: ecffffffecffffffecffffff
-    limitTime: 040000000400000004000000
+    limitTime: 080000000800000008000000
     dialog:
     - "\uC65C \uC544\uC9C1 \uB108\uB97C \uC704\uD55C \uB098\uB77C\uAC00 \uC5C6\uB294\uAC70\uC57C!!"
     - "\uAE40 \uBB3B\uC5C8\uC5B4. \uC798\uC0DD\uAE40."
@@ -86,12 +86,12 @@ MonoBehaviour:
   - worldType: 2
     difficulty: 000000000600000003000000
     startGauge: 000000003200000028000000
-    perDecreaseGauge: 00000000f1ffffffecffffff
-    perIncreaseGauge: 000000000300000002000000
-    succedGauge: 00000000140000000a000000
-    failGauge: 00000000fbfffffffbffffff
+    perDecreaseGauge: f9fffffff9fffffff9ffffff
+    perIncreaseGauge: 060000000600000006000000
+    succedGauge: 0a0000000a0000000a000000
+    failGauge: f6fffffff6fffffff6ffffff
     runGauge: 00000000f6fffffff6ffffff
-    limitTime: 000000000400000003000000
+    limitTime: 090000000900000009000000
     dialog:
     - "\uB108\uC758 \uC9C0\uD61C\uC640 \uC7AC\uCE58\uB294 \uADF8 \uB204\uAD6C\uB3C4
       \uB530\uB77C\uC62C \uC218 \uC5C6\uC744 \uAC70\uC57C!"
@@ -111,12 +111,12 @@ MonoBehaviour:
   - worldType: 3
     difficulty: 000000000300000006000000
     startGauge: 000000002800000028000000
-    perDecreaseGauge: 00000000f6ffffffecffffff
-    perIncreaseGauge: 000000000300000003000000
-    succedGauge: 000000000100000001000000
-    failGauge: 00000000fbfffffffbffffff
+    perDecreaseGauge: f8fffffff8fffffff8ffffff
+    perIncreaseGauge: 050000000500000005000000
+    succedGauge: 020000000200000002000000
+    failGauge: f6fffffff6fffffff6ffffff
     runGauge: 00000000f6fffffff6ffffff
-    limitTime: 000000000400000003000000
+    limitTime: 080000000800000008000000
     dialog:
     - "\uB108\uC758 \uC874\uC7AC\uB9CC\uC73C\uB85C\uB3C4 \uC138\uC0C1\uC774 \uCD95\uBCF5\uBC1B\uC740
       \uAC83 \uAC19\uC544."

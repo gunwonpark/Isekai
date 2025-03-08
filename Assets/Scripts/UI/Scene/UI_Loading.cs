@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UI_Loading : MonoBehaviour
 {
-    [SerializeField] private float _fadeTime = 2f;
+    [SerializeField] private float _fadeTime = 3f;
     [SerializeField] private float _waitTimeAfterFade = 1f;
     [SerializeField] private float _waitTimeBeforeFade = 1f;
 
@@ -54,7 +54,7 @@ public class UI_Loading : MonoBehaviour
         SetLoadingTexts();
         yield return FillProgressBar(0.8f, 2f);
         yield return FillProgressBar(1f, 2f);
-        yield return StartCoroutine(_fadeImage.CoFadeIn(_fadeTime));
+        yield return StartCoroutine(_fadeImage.CoFadeOut(_fadeTime));
     }
 
     private IEnumerator PelmanusLoadingSequence()
