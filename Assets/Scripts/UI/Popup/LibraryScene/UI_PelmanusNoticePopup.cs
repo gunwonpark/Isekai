@@ -2,6 +2,8 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class UI_PelmanusNoticePopup : UI_NoticePopup
@@ -28,6 +30,7 @@ public class UI_PelmanusNoticePopup : UI_NoticePopup
     {
         if (_popupIndex == 2)
         {
+            _volume.profile.TryGet(out _noticePopupVolume);
             MakeInfinityPopup(_position);
         }
         else
@@ -109,9 +112,8 @@ public class UI_PelmanusNoticePopup : UI_NoticePopup
 
         while (true)
         {
-            LibraryScene scene = Managers.Scene.CurrentScene as LibraryScene;
-            scene.StopColorConversion();
-            scene.ColorConversion(Mathf.Max(currentSpawnTime * 0.5f, 0.15f));
+            StopColorConversion();
+            ColorConversion(Mathf.Max(currentSpawnTime * 0.5f, 0.15f));
             SpawnPopup();
 
             yield return new WaitForSeconds(currentSpawnTime);
@@ -181,5 +183,38 @@ public class UI_PelmanusNoticePopup : UI_NoticePopup
     {
         _checkToggle.onValueChanged.RemoveAllListeners();
         _checkToggle.isOn = true;
+    }
+
+
+    [SerializeField] private Volume _volume;
+    [SerializeField] private ColorAdjustments _noticePopupVolume;
+
+    private Coroutine _colorConversionCoroutine;
+    public void ColorConversion(float blinkTime)
+    {
+        _colorConversionCoroutine = StartCoroutine(CoColorConversion(blinkTime));
+    }
+
+    public void StopColorConversion()
+    {
+        if (_colorConversionCoroutine != null)
+        {
+            _noticePopupVolume.colorFilter.value = originColor;
+            StopCoroutine(_colorConversionCoroutine);
+            _colorConversionCoroutine = null;
+        }
+    }
+
+    private Color originColor = new Color(1f, 1f, 1f);
+    private IEnumerator CoColorConversion(float blinkTime)
+    {
+
+        Color targetColor = new Color(140 / 255f, 0f, 0f);
+        Color originColor = _noticePopupVolume.colorFilter.value;
+
+        _noticePopupVolume.colorFilter.value = targetColor;
+        yield return WaitForSecondsCache.Get(blinkTime);
+        _noticePopupVolume.colorFilter.value = originColor;
+        yield return WaitForSecondsCache.Get(blinkTime);
     }
 }

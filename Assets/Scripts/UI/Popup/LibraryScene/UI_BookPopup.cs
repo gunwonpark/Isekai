@@ -12,18 +12,17 @@ public class UI_BookPopup : UI_Popup
 	[SerializeField] private Button _AnyClick;
 	[SerializeField] Material[] _material;
 
-	private MeshRenderer _meshRenderer;
 	private LibraryBook _book;
+	private LibraryScene _libraryScene;
 
-	public override void Init()
+    public override void Init()
 	{
 		base.Init();
 		SetText();
 
-		// LibraryScene에서 관리 예정
-		_meshRenderer = GameObject.Find("BG").GetComponent<MeshRenderer>();
-		_meshRenderer.material = _material[0];
-	}
+        _libraryScene = Managers.Scene.CurrentScene as LibraryScene;
+		_libraryScene.SetLightOff();
+    }
 
 	public void Init(LibraryBook book)
 	{
@@ -34,6 +33,7 @@ public class UI_BookPopup : UI_Popup
 	{
         _book.SetCanClicked();
 		_book.StartFingerBlink();
+        _libraryScene.SetLightOn();
         Managers.UI.ClosePopupUI(this);
 	}
 
@@ -89,9 +89,4 @@ public class UI_BookPopup : UI_Popup
 		_TitleText.text = "Title\r\n\r\n펠마누스";
 		_letterText.text = "그가 태어난 순간, 세상은 경외심으로 물들었다. 그는 죽어가는 사람조차 살려낼 수 있는 신비로운 능력을 지니고 있어, 수많은 이들이 그의 이름을 외우며 숭배했다.";
 	}
-
-	private void OnDestroy()
-	{
-		_meshRenderer.material = _material[1];
-    }
 }

@@ -14,31 +14,27 @@ using UnityEngine.Rendering.Universal;
 /// </summary>
 public class LibraryScene : BaseScene
 {
-    // 책 관리
+    [Header("Book")]
     [SerializeField] private GameObject _bookParent;
     [SerializeField] private GameObject[] _books;
 
-    // 타임라인 관리
-	[SerializeField] private PlayableDirector _startTimeLine;
+    [Header("TimeLine")]
+    [SerializeField] private PlayableDirector _startTimeLine;
     [SerializeField] private PlayableDirector _endTimeLine;
     public event Action onStartTimeLineEnd;
     public event Action onEndTimeLineEnd;
 
-    // 배경 관리
-    // [SerializeField] private GameObject _background;
-    // [SerializeField] private Material[] _backgroundMaterials;
+    [Header("Background")]
+    [SerializeField] private MeshRenderer _background;
+    [SerializeField] private Material _lightOn;
+    [SerializeField] private Material _lightOff;
 
-    // 이동 예정
-    [SerializeField] private Volume _volume;
-    [SerializeField] private ColorAdjustments _noticePopupVolume;
 
     protected override void Init()
 	{
 		base.Init();
 
 		SceneType = Scene.LibraryScene;
-
-        _volume.profile.TryGet(out _noticePopupVolume);
 
         // 도서관에서의 플레이어 이동속도 설정
 		Managers.DB.SetPlayerData(
@@ -100,6 +96,17 @@ public class LibraryScene : BaseScene
     }
     #endregion
 
+    #region BackgroundMethod
+    public void SetLightOn()
+    {
+        _background.material = _lightOn;
+    }
+
+    public void SetLightOff()
+    {
+        _background.material = _lightOff;
+    }
+    #endregion
     public override void Clear()
 	{
         // 플레이어 이동속도 초기화
@@ -107,38 +114,5 @@ public class LibraryScene : BaseScene
 
         _startTimeLine.stopped -= OnStartTimeLineEnd;
         _endTimeLine.stopped -= OnEndTimeLineEnd;
-    }
-
-
-    /// <summary>
-    /// Gangril 월드에서 noticepopup의 깜빡임 효과 주기
-    /// </summary>
-    private Coroutine _colorConversionCoroutine;
-    public void ColorConversion(float blinkTime)
-    {
-        _colorConversionCoroutine =  StartCoroutine(CoColorConversion(blinkTime));
-    }
-
-    public void StopColorConversion()
-    {
-        if (_colorConversionCoroutine != null)
-        {
-            _noticePopupVolume.colorFilter.value = originColor;
-            StopCoroutine(_colorConversionCoroutine);
-            _colorConversionCoroutine = null;
-        }
-    }
-
-    private Color originColor = new Color(1f, 1f, 1f);
-    private IEnumerator CoColorConversion(float blinkTime)
-    {
-
-        Color targetColor = new Color(140/255f, 0f, 0f);
-        Color originColor = _noticePopupVolume.colorFilter.value;
-      
-        _noticePopupVolume.colorFilter.value = targetColor;
-        yield return WaitForSecondsCache.Get(blinkTime);
-        _noticePopupVolume.colorFilter.value = originColor;
-        yield return WaitForSecondsCache.Get(blinkTime);
     }
 }
