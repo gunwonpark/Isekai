@@ -71,7 +71,7 @@ public class HappinessHUD : UI_Scene
             _happyImage.sprite = _happySprites[4];
         }
 
-
+		// 점점 회색빛으로 변경
 		if (_color != null)
             _color.saturation.Override(-(1f - Managers.Happy.Happiness / Managers.Happy.MaxHappiness) * 100);
 

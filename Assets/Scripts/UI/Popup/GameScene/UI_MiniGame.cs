@@ -7,19 +7,22 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
+/// <summary>
+/// 1. 미니게임의 시작은 플레이어와의 충돌을 통해 시작된다.
+/// 2. 기본적으로 스페이스바 입력을 통해 게임을 제거한다
+/// 3. 키 입력이 있는 경우 순차적으로 키를 입력해야 하며 그렇지 않은 경우 미니게임이 실패한다
+/// </summary>
 
 public class UI_MiniGame : UI_Popup
 {
 
-    [SerializeField] private Image _bubbleImage;
-    [SerializeField] private TextMeshProUGUI _bubbleText;
-    [SerializeField] private Image _minigameGaugeBar;
-    [SerializeField] private Transform _keyBoardTransform;
+    [Header("말풍선")]
+    [SerializeField] private Image _bubbleImage;            // 말풍선 이미지
+    [SerializeField] private TextMeshProUGUI _bubbleText;   // 말풍선 텍스트
 
-    private SpawnInfo _spawnInfo;
 
-    [Header("미니게임 정보")]
-    [SerializeField] private MiniGameInfo _miniGameInfo;
+    [SerializeField] private Image _minigameGaugeBar;       // 게임 게이지바
+    [SerializeField] private Transform _keyBoardTransform;  // 키입력 생성 위치
 
     [Header("타이머 텍스트")]
     [SerializeField] private TextMeshProUGUI _remainTimeText;
@@ -28,18 +31,43 @@ public class UI_MiniGame : UI_Popup
     [SerializeField] private float _keyPositionGap = 0.1f;
     [SerializeField] private float _mosaicRemoveSpeed = 1.0f;
 
-    private bool _isGameEnd = false;
+
+    private bool _isGameEnd = false;                        
     private bool _isGameStart = false;
     private bool _canKeyPress = true;  
 
     private float _remainTime;
     private float _currentGaugeValue;
 
+    public float CurrentGaugeValue
+    {
+        get { return _currentGaugeValue; }
+        private set
+        {
+            _currentGaugeValue = value;
+
+            if (_currentGaugeValue < 0)
+            {
+                _currentGaugeValue = 0;
+                EndMiniGame(false);
+            }
+
+            if (_currentGaugeValue >= 100f)
+            {
+                EndMiniGame(true);
+                onMiniGameSucced?.Invoke();
+            }
+        }
+    }
+
     private string _originalText;
 
     private List<KeyButton> _requiredKeys = new List<KeyButton>();
 
+    // 캐싱
     private KeySpriteFactory _keySpriteFactory;
+    private SpawnInfo _spawnInfo;              
+    private MiniGameInfo _miniGameInfo;
 
     private bool _isTextShowed = false;
     int _pressedKeyCount = 0;
@@ -49,11 +77,9 @@ public class UI_MiniGame : UI_Popup
     public void Init(MiniGameInfo miniGameInfo, SpawnInfo spawnInfo, KeySpriteFactory keySpriteFactory)
     {
         SetMiniGameInfo(miniGameInfo);
-
-        _keySpriteFactory = keySpriteFactory;
-
         SetKeyPressButton();
 
+        _keySpriteFactory = keySpriteFactory;
         _spawnInfo = spawnInfo;
 
         if (!_spawnInfo.isLeft)
@@ -64,12 +90,10 @@ public class UI_MiniGame : UI_Popup
         // 사이즈를 자동으로 조정해 준다.
         FixBubbleSize();
 
-        // 초기화
         UpdateUI();
     }
 
     [ContextMenu("FixBubbleSize")]
-
     private void FixBubbleSize()
     {
         float preferWidth = Mathf.Max(_bubbleText.preferredWidth + 3f, 10f);
@@ -79,7 +103,14 @@ public class UI_MiniGame : UI_Popup
 
         _bubbleImage.rectTransform.sizeDelta = preferSize;
     }
+    // 남은시간표기 및 게이지바 업데이트
+    private void UpdateUI()
+    {
+        _minigameGaugeBar.fillAmount = _currentGaugeValue / 100f;
+        _remainTimeText.text = $"남은 시간: {_remainTime:F1}초";
+    }
 
+    #region Init
     private void SetMiniGameInfo(MiniGameInfo miniGameInfo)
     {
         _miniGameInfo = miniGameInfo;
@@ -88,38 +119,7 @@ public class UI_MiniGame : UI_Popup
         _currentGaugeValue = _miniGameInfo.startGauge;
         _remainTime = _miniGameInfo.limitTime;
     }
-
-    // 텍스트 효과 
-    private IEnumerator ShowText()
-    {
-        _isTextShowed = true;
-
-        int textLength = _originalText.Length;
-        float totalDuration = 1.0f; // 전체 변환 시간
-        float delayPerChar = totalDuration / textLength; // 각 글자당 딜레이
-
-        // StringBuilder를 사용하여 효율적으로 텍스트 구성
-        StringBuilder currentText = new StringBuilder(_bubbleText.text);
-
-        List<int> order = new List<int>();
-        for (int i = 0; i < textLength; i++)
-        {
-            order.Add(i);
-        }
-
-        order.Shuffle();
-
-        for (int i = 0; i < textLength; i++)
-        {
-            int index = order[i];
-            // 원래 텍스트의 i번째 글자를 업데이트
-            currentText[index] = _originalText[index];
-
-            _bubbleText.text = currentText.ToString();
-            yield return new WaitForSeconds(delayPerChar);
-        }
-    }
-
+   
     private void SetKeyPressButton()
     {
         if (_miniGameInfo.requiredKeys == null) return;
@@ -161,7 +161,6 @@ public class UI_MiniGame : UI_Popup
     }
 
     // 현재 동시에 누를 수 있는 키는 2개 한정으로 추후 수정이 필요할 수 있다
-
     private int MakeConcurrenceButton(int minKeyCount, int maxKeyCount, float spawnPercent)
     {
         if(UnityEngine.Random.Range(0, 100) > spawnPercent)
@@ -210,7 +209,7 @@ public class UI_MiniGame : UI_Popup
             startX += keyWidths[i] + _keyPositionGap;
         }
     }
-
+    #endregion
     private void OnKeyPressed()
     {
         _pressedKeyCount++;
@@ -277,31 +276,10 @@ public class UI_MiniGame : UI_Popup
             }
         }
     }
-
     private void ChangeGauge(float amount)
     {
-        _currentGaugeValue += amount;
-
-        if (_currentGaugeValue < 0)
-        {
-            _currentGaugeValue = 0;
-            EndMiniGame(false);
-        }
-
-        if (_currentGaugeValue >= 100f)
-        {
-            EndMiniGame(true);
-            onMiniGameSucced?.Invoke();
-        }
+        CurrentGaugeValue += amount;
     }
-
-    private void UpdateUI()
-    {
-        _minigameGaugeBar.fillAmount = _currentGaugeValue / 100f;
-        _remainTimeText.text = $"남은 시간: {_remainTime:F1}초";
-
-    }
-
     private void EndMiniGame(bool isSuccess)
     {
         if (_isGameEnd) return;
@@ -332,11 +310,37 @@ public class UI_MiniGame : UI_Popup
         if (collision.CompareTag("Player"))
         {
             MiniGameStart();
+        }
+    }
+    /// <summary>
+    /// 마스크된 텍스트를 랜덤 인덱스 순으로 원래 텍스트로 변환한다
+    /// </summary>
+    private IEnumerator ShowText()
+    {
+        _isTextShowed = true;
 
-            if(_isTextShowed == false)
-            {
-                StartCoroutine(ShowText());
-            }
+        int textLength = _originalText.Length;
+        float totalDuration = 1.0f; // 전체 변환 시간
+        float delayPerChar = totalDuration / textLength; // 각 글자당 딜레이
+
+        StringBuilder currentText = new StringBuilder(_bubbleText.text);
+
+        List<int> order = new List<int>();
+        for (int i = 0; i < textLength; i++)
+        {
+            order.Add(i);
+        }
+
+        order.Shuffle();
+
+        for (int i = 0; i < textLength; i++)
+        {
+            int index = order[i];
+            // 원래 텍스트의 i번째 글자를 업데이트
+            currentText[index] = _originalText[index];
+
+            _bubbleText.text = currentText.ToString();
+            yield return WaitForSecondsCache.Get(delayPerChar);
         }
     }
 
@@ -348,8 +352,13 @@ public class UI_MiniGame : UI_Popup
             if(key != null)
             {
                 key.EnableKeyPress();
-                return;
+                break;
             }
+        }
+
+        if (_isTextShowed == false)
+        {
+            StartCoroutine(ShowText());
         }
     }
 

@@ -5,6 +5,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 자신의 키에대한 입력을 기다린다.
+/// </summary>
 public class KeyButton : UI_Base
 {
     public event Action OnKeyPressed;

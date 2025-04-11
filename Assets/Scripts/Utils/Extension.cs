@@ -59,8 +59,6 @@ public static class Extension
     /// <summary>
     /// 리스트를 랜덤으로 섞는다
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="list"></param>
     public static void Shuffle<T>(this List<T> list)
 	{
 		System.Random rand = new System.Random();

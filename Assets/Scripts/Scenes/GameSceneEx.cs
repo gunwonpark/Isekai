@@ -10,19 +10,22 @@ using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 /// <summary>
-/// 게임 시작과 게임 종료 게임 정보를 저장하고 있는 클래스
+/// 1. 현재 월드 생성
+/// 2. 게임 시작시 이벤트
+///     음악재생
+///     페이드인
+/// 3. 게임 종료시 이벤트
+///     포탈생성
+/// 4. postprocessing을 통한 효과 적용  
+/// 5. 엔딩 씬으로 이동시 이벤트
 /// </summary>
 public class GameSceneEx : BaseScene
 {
-    [SerializeField] private WorldType _worldType = WorldType.Pelmanus;
 
-	// 이를 이용하는 것은 추후에 ObjectManager를 사용하며 player를 관리하게 만드는 것이 좋겠다.
-	public static Transform player;
+	public Transform player;
 
     // 미니게임을 제조한다
 	[SerializeField] private MiniGameFactory _miniGameFactory;
-
-	[SerializeField] private Transform _player;
 
     [Header("UI")]
 	[SerializeField] private Image _fadeImage;
@@ -38,13 +41,14 @@ public class GameSceneEx : BaseScene
 
     [Header("포스트 프로세싱")]
     [SerializeField] private Volume _volume;
+
+    private WorldType _worldType;
     protected override void Init()
 	{
 		base.Init();
 		SceneType = Scene.GameScene;
 
         _worldType = Managers.World.CurrentWorldType;
-        GameSceneEx.player = _player;
 
 		Managers.Resource.Instantiate($"Background/{_worldType.ToString()}World");
         Managers.Happy.ChangeHappiness(20f);
@@ -54,16 +58,22 @@ public class GameSceneEx : BaseScene
 
     private IEnumerator GameStart()
     {
-        yield return StartCoroutine(_fadeImage.CoFadeIn(_fadeTime, _waitTimeAfterFade));
+        yield return StartCoroutine(_fadeImage.CoFadeIn(_fadeTime, waitAfter : _waitTimeAfterFade));
 
-        //배경음악 재생
+        // 배경음악 재생
         Managers.Sound.Play("anotherWorldBgm", Sound.Bgm);
 
+        // 미니게임 생성
         _miniGameFactory.Init();
         _miniGameFactory.OnGameEnd += GameOver;
     }
 
-    //게임 종료시
+    /// <summary>
+    /// 승리시 :
+    ///     현실세계로 이동하는 포탈 생성
+    /// 패배시 :
+    ///     게임오버 UI 생성
+    /// </summary>
     public void GameOver(bool isWin)
 	{
 		if (isWin)
@@ -74,9 +84,8 @@ public class GameSceneEx : BaseScene
                 return;
             }
 
-			// 현실세계로 이동하는 포탈이 생성된다
 			GameObject go = Managers.Resource.Instantiate("Item/Portal");
-			Vector3 newPosition = _player.position + new Vector3(_potalSpawnOffsetX, _potalSpawnOffsetY, 0);
+			Vector3 newPosition = player.position + new Vector3(_potalSpawnOffsetX, _potalSpawnOffsetY, 0);
             go.transform.position = newPosition;
 
             Portal portal = go.GetComponent<Portal>();
@@ -85,28 +94,30 @@ public class GameSceneEx : BaseScene
         }
 		else
 		{
-            // 뒷 배경이 어둡게 처리되고, 게임오버창이 떠오른다
             Managers.UI.ShowPopupUI<UI_GameOver>();
         }
 	}
 
-    //Film Grain, Vignette, Chromatic Aberration조절
+    /// <summary>
+    /// 강도에 따른 postprocessing 효과
+    /// </summary>
+    /// <param name="strength">postprocessing 강도 조절</param>
+    // Film Grain, Vignette, Chromatic Aberration조절
     public void SetPostProcessing(int strength)
     {
         
         switch (strength) 
         {
-            case 1:
+            case 4:
                 AdjustVolume(0.05f, 0.1f, 0.3f);
                 break;
-            case 2:
+            case 5:
                 AdjustVolume(0.1f, 0.3f, 0.5f);
                 break;
-            case 3:
+            case 6:
                 AdjustVolume(0.15f, 0.4f, 0.7f);
                 break;
         }
-
     }
 
     private void AdjustVolume(float filmIntensity, float vignetteIntensity, float chromaticAberrationIntensity)
@@ -128,7 +139,10 @@ public class GameSceneEx : BaseScene
 
     private IEnumerator EnterEndingScene()
     {
-        yield return StartCoroutine(_fadeImage.CoFadeOut(_fadeTime, _waitTimeAfterFade, _waitTimeBeforeFade));
+        _fadeImage.gameObject.SetActive(true);
+        _fadeImage.color = new Color(_fadeImage.color.r, _fadeImage.color.g, _fadeImage.color.b, 1);
+
+        yield return WaitForSecondsCache.Get(2f);
 
         Managers.Scene.LoadScene(Scene.EndingScene);
     }

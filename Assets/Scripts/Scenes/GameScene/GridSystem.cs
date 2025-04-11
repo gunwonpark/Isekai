@@ -26,112 +26,110 @@ public class GridInfo
     }
 }
 
+/// <summary>
+/// 1. 영역 전개 및 영역에 대한 오브젝트 충돌 확인
+/// 2. 가능한 영역위치 반환
+/// </summary>
 public class GridSystem : MonoBehaviour
 {
-    public Vector2 referenceSize = new Vector2(5, 5);
-    public Transform referenceTransform;
-    public int maxGridCount = 9;
-    public List<GridInfo> gridInfos = new List<GridInfo>();
-    public List<int> randomIndexList = new List<int>();
-
-    [ContextMenu("Test")]
-    public void Test()
-    {
-        Init(referenceTransform);
-        Debug.Log("Test");
-    }
+    [SerializeField] private Vector2 _referenceSize = new Vector2(5, 5);       // 그리드하나의 크기
+    [SerializeField] private Transform _referenceTransform;                    // 그리드의 기준이 되는 오브젝트
+    [SerializeField] private int _maxGridCount = 9;                            // 그리드 총 개수 
+    [SerializeField] private List<GridInfo> _gridInfos = new List<GridInfo>(); // 그리드 정보 리스트
+    private List<int> _randomIndexList = new List<int>();                      // 랜덤 위치 반환 리스트
 
     public void Init(Transform referenceTransform)
     {
-        this.referenceTransform = referenceTransform;
-
-        Vector2 mainPosition = referenceTransform.position;
-        
-        // y좌표 초기화
-        mainPosition.y = 0;
+        this._referenceTransform = referenceTransform;
 
         // 그리드 갯수 초기화
-        gridInfos = new List<GridInfo>(maxGridCount);
-        for(int i = 0; i < maxGridCount; i++)
+        _gridInfos = new List<GridInfo>(_maxGridCount);
+        for (int i = 0; i < _maxGridCount; i++)
         {
-            gridInfos.Add(new GridInfo());
+            _gridInfos.Add(new GridInfo());
         }
 
-        if (gridInfos.Count == 0) return;
+        if (_gridInfos.Count == 0) return;
 
         //랜덤 인덱스 초기화
-        randomIndexList = Enumerable.Range(0, gridInfos.Count).ToList();
+        _randomIndexList = Enumerable.Range(0, _gridInfos.Count).ToList();
 
-        for (int i = 0; i < gridInfos.Count; i++)
+        for (int i = 0; i < _gridInfos.Count; i++)
         {
-            gridInfos[i].Size = referenceSize;
+            _gridInfos[i].Size = _referenceSize;
         }
 
+        int mid = _gridInfos.Count / 2;
 
-        int mid = gridInfos.Count / 2;
+        // 그리드 위치 설정
+        Vector2 mainPosition = _referenceTransform.position;
+        mainPosition.y = 0;
+        _gridInfos[mid].Position = mainPosition;
 
-
-        gridInfos[mid].Position = mainPosition;
-
+        // 좌
         for (int i = mid - 1; i >= 0; i--)
         {
-            gridInfos[i].Position = gridInfos[i + 1].Position - new Vector2(gridInfos[i].Size.x, 0);
+            _gridInfos[i].Position = _gridInfos[i + 1].Position - new Vector2(_gridInfos[i].Size.x, 0);
         }
 
-        for (int i = mid + 1; i < gridInfos.Count; i++)
+        // 우
+        for (int i = mid + 1; i < _gridInfos.Count; i++)
         {
-            gridInfos[i].Position = gridInfos[i - 1].Position + new Vector2(gridInfos[i].Size.x, 0);
+            _gridInfos[i].Position = _gridInfos[i - 1].Position + new Vector2(_gridInfos[i].Size.x, 0);
         }
     }
 
     /// <summary>
-    /// 빈 공간이 없을시 0, 0 좌표에 생성한다
+    /// 빈 공간이 없을시 0, 0 을 반환한다
     /// </summary>
-    /// <returns></returns>
     public bool TryGetEmptyPosition(out Vector2 position)
     {
         int index = FindEmptyRandomIndex();
         if (index == -1)
         {
-            Debug.Log("모든 공간이 찼습니다.");
             position = Vector2.zero;
             return false;
         }
 
-        position = GetRealGridPosition(index);
+        position = GetGridWorldPosition(index);
         return true;
     }
 
-    // 플레이어의 위치를 기준으로 충돌하지 않는 공간에 오브젝트 생성
+    /// <summary>
+    /// 플레이어의 위치를 기준으로 충돌하지 않는 공간에 오브젝트 생성
+    /// 모든 공간이 차있을 경우생성하지 않는다.
+    /// </summary>
+    /// <returns></returns>
+    // 
     private int FindEmptyRandomIndex()
     {
-        randomIndexList.Shuffle();
+        _randomIndexList.Shuffle();
 
-        for (int i = 0; i < randomIndexList.Count; i++)
+        for (int i = 0; i < _randomIndexList.Count; i++)
         {
-            int index = randomIndexList[i];
+            int index = _randomIndexList[i];
 
-            if (Physics2D.OverlapBox(GetRealGridPosition(index), gridInfos[index].Size, 0, LayerMask.GetMask("UI")) == null)
+            // 플레이어가 이동하기 때문에 이를 통한 확인이 필요
+            // 성능에 문제가 생길시 생성된 minigame의 위치를 저장후 이를 통해 판단
+            if (Physics2D.OverlapBox(GetGridWorldPosition(index), _gridInfos[index].Size, 0, LayerMask.GetMask("UI")) == null)
             {
                 return index;
             }
         }
 
-        // 모든 공간이 차있을 경우
-        // 리스트를 동적으로 늘리며 공간을 확장한다.
-        // 현재 코드에서는 Init()으로 크기를 늘릴수 있다.
-
         return -1;
     }
 
-    private Vector2 GetRealGridPosition(int index)
-    {        
-        return gridInfos[index].Position + new Vector2(referenceTransform.position.x, 0);
+    // 그리드의 월드세계 좌표 반환
+    private Vector2 GetGridWorldPosition(int index)
+    {
+        return _gridInfos[index].Position + new Vector2(_referenceTransform.position.x, 0);
     }
 
+    #region 디버깅
     private void OnDrawGizmos()
     {
-        foreach (var gridInfo in gridInfos)
+        foreach (var gridInfo in _gridInfos)
         {
             DrawGrid(gridInfo);
         }
@@ -141,8 +139,8 @@ public class GridSystem : MonoBehaviour
 
     private void DrawGrid(GridInfo gridInfo)
     {
-        Vector3 position = new Vector3(gridInfo.Position.x, gridInfo.Position.y, 0); 
-        Vector3 size = new Vector3(gridInfo.Size.x, gridInfo.Size.y, 0.1f); 
+        Vector3 position = new Vector3(gridInfo.Position.x, gridInfo.Position.y, 0);
+        Vector3 size = new Vector3(gridInfo.Size.x, gridInfo.Size.y, 0.1f);
 
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube(position, size);
@@ -155,4 +153,5 @@ public class GridSystem : MonoBehaviour
         float width = height * Camera.main.aspect;
         Gizmos.DrawWireCube(Camera.main.transform.position, new Vector3(width - 0.1f, height - 0.1f, 0.1f));
     }
+    #endregion
 }
