@@ -62,6 +62,7 @@ public class MiniGameFactory : MonoBehaviour
     private bool isBubbleEmptyCached = false;
     private bool lastBubbleState = false;
 
+    private int successCount = 0;
     public bool IsBubbleEmpty
     {
         get
@@ -138,6 +139,12 @@ public class MiniGameFactory : MonoBehaviour
             _miniGameQueue.Enqueue(miniGame);
 
             miniGame.Init(miniGameInfo, spawnInfo, _keySpriteFactory);
+            miniGame.onMiniGameSucced +=  () =>
+            {
+                successCount++;
+                GameSceneEx scene = Managers.Scene.CurrentScene as GameSceneEx;
+                scene.SetPostProcessing(successCount);
+            };
 
             yield return new WaitForSeconds(_spawnDelay);
         }

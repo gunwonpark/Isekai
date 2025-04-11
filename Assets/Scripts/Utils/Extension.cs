@@ -15,12 +15,22 @@ public static class WaitForSecondsCache
 
     public static WaitForSeconds Get(float time)
     {
+        if(cache != null && cache.Count > 100)
+        {
+            cache.Clear();
+        }                 
+        
         if (!cache.TryGetValue(time, out var wait))
         {
             wait = new WaitForSeconds(time);
             cache[time] = wait;
         }
         return wait;
+    }
+
+    public static void Clear()
+    {
+        cache.Clear();
     }
 }
 
@@ -32,6 +42,9 @@ public static class Extension
 		return Util.GetOrAddComponent<T>(go);
 	}
 
+    /// <summary>
+    /// 기본으로 클릭 이벤트를 추가합니다.
+    /// </summary>
 	public static void BindEvent(this GameObject go, Action<PointerEventData> action, UIEvent type = UIEvent.Click)
 	{
 		UI_Base.BindEvent(go, action, type);
@@ -41,8 +54,14 @@ public static class Extension
 	{
 		return go != null && go.activeSelf;
 	}
-    
-	public static void Shuffle<T>(this List<T> list)
+
+    #region ListUtill
+    /// <summary>
+    /// 리스트를 랜덤으로 섞는다
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="list"></param>
+    public static void Shuffle<T>(this List<T> list)
 	{
 		System.Random rand = new System.Random();
 
@@ -59,14 +78,59 @@ public static class Extension
         result.Shuffle();
         return result.GetRange(0, n);
     }
+    #endregion
 
-    // 시간적으로는 거의 n이 걸리지만 복잡한 문장에는 오류가 있을 수 있다
-    // ex '>' '<' 이 문자가 너무 무분별하거나 복잡하게 포합되어 있는 경우
+    #region TextMeshPro
+    /// <summary>
+    /// <.*?> : <로 시작하고 >로 끝나는 모든 문자열 삭제
+    /// </summary>
     public static string RemoveRichTextTags(this string input)
     {
-        // <.*?> : <로 시작하고 >로 끝나는 모든 문자열
         return Regex.Replace(input, "<.*?>", string.Empty);
     }
+
+    /// <summary>
+    /// text를 마스킹된 문자로 변경한다
+    /// </summary>
+    public static string GetRandomMaskedText(int length, string maskCharacters = "#*@$%&!")
+    {
+        StringBuilder randomText = new StringBuilder(length);
+        for (int i = 0; i < length; i++)
+        {
+            randomText.Append(maskCharacters[UnityEngine.Random.Range(0, maskCharacters.Length)]);
+        }
+        return randomText.ToString();
+    }
+
+    /// <summary>
+    /// text를 마스킹된 문자로 변경한다
+    /// </summary>
+    /// <param name="text"></param>
+
+    public static string GetRandomMaskedText(this string text, string maskCharacters = "#*@$%&!")
+    {
+        return GetRandomMaskedText(text.Length, maskCharacters);
+    }
+
+    /// <summary>
+    /// text에서 랜덤으로 n개 만큼 마스킹된 문자로 변경한다
+    /// </summary>
+    public static string GetNRandomMaskedText(this string text, int n, string maskCharacters = "#*@$%&!")
+    {
+        StringBuilder stringBuilder = new StringBuilder(text);
+        List<int> randomIndices = Enumerable.Range(0, text.Length).ToList();
+        randomIndices.Shuffle();
+
+        for(int i = 0; i < n; i++)
+        {
+            int index = randomIndices[i];
+            stringBuilder[index] = maskCharacters[UnityEngine.Random.Range(0, maskCharacters.Length)];
+        }
+        return stringBuilder.ToString();
+    }
+    #endregion
+
+
 
     public static IEnumerator CoFadeIn(this Graphic graphic, float fadeTime, float waitBefore = 0f, float waitAfter = 0f)
     {
@@ -183,41 +247,18 @@ public static class Extension
         }
     }
 
-    public static IEnumerator CoTypingEffect(this TMP_Text text, string message, float typingSpeed)
+    public static IEnumerator CoTypingEffect(this TMP_Text text, string message, float typingSpeed, bool spaceSkip = false)
     {
         text.text = "";
         foreach (char letter in message)
         {
             text.text += letter;
+            if(spaceSkip && letter == ' ')
+            {
+                continue;
+            }
             yield return WaitForSecondsCache.Get(typingSpeed);
         }
     }
 
-    public static string GetRandomMaskedText(int length, string maskCharacters = "#*@$%&!")
-    {
-        StringBuilder randomText = new StringBuilder(length);
-        for (int i = 0; i < length; i++)
-        {
-            randomText.Append(maskCharacters[UnityEngine.Random.Range(0, maskCharacters.Length)]);
-        }
-        return randomText.ToString();
-    }
-
-    public static string GetRandomMaskedText(this string text, string maskCharacters = "#*@$%&!")
-    {
-        return GetRandomMaskedText(text.Length, maskCharacters);
-    }
-
-    public static string GetNRandomMaskedText(this string text, int n, string maskCharacters = "#*@$%&!")
-    {
-        StringBuilder stringBuilder = new StringBuilder(text);
-        List<int> randomIndices = Enumerable.Range(0, text.Length).ToList();
-        randomIndices.Shuffle();
-
-        foreach (int index in randomIndices)
-        {
-            stringBuilder[index] = maskCharacters[UnityEngine.Random.Range(0, maskCharacters.Length)];
-        }
-        return stringBuilder.ToString();
-    }
 }

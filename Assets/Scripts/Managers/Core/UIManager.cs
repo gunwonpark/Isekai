@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEngine.Tilemaps.TilemapRenderer;
 
 public class UIManager
 {
-	int _order = 10;
-
 	Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
 	UI_Scene _sceneUI = null;
 
-	public GameObject Root
+	private int _order = 10;
+	public UI_Scene SceneUI { get { return _sceneUI; } }
+	
+    public GameObject Root
 	{
 		get
 		{
@@ -20,22 +23,22 @@ public class UIManager
 		}
 	}
 
-	public void SetCanvas(GameObject go, bool sort = true)
+	public void SetCanvas(GameObject go, bool sort)
 	{
-		Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
+		var canvas = Util.GetOrAddComponent<Canvas>(go);
 		canvas.renderMode = RenderMode.ScreenSpaceOverlay;
 		canvas.overrideSorting = true;
 
-		if (sort)
-		{
-			canvas.sortingOrder = _order;
-			_order++;
-		}
-		else
-		{
-			canvas.sortingOrder = 0;
-		}
-	}
+		var canvasScaler = Util.GetOrAddComponent<CanvasScaler>(go);
+		canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        canvasScaler.referenceResolution = new Vector2(1920, 1080);
+
+        if (sort)
+        {
+            canvas.sortingOrder = _order;
+            _order++;
+        }
+    }
 
 	public T MakeWorldSpaceUI<T>(Transform parent = null, string name = null) where T : UI_Base
 	{
@@ -93,7 +96,7 @@ public class UIManager
 		return popup;
 	}
 
-	public void ClosePopupUI(UI_Popup popup)
+    public void ClosePopupUI(UI_Popup popup)
 	{
 		if (_popupStack.Count == 0)
 		{
@@ -117,9 +120,10 @@ public class UIManager
 
 		UI_Popup popup = _popupStack.Pop();
 		Managers.Resource.Destroy(popup.gameObject);
+
 		popup = null;
-		_order--;
-	}
+        _order--;
+    }
 
 	public void CloseAllPopupUI()
 	{

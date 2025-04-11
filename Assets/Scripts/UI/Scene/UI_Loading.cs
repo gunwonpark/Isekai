@@ -1,9 +1,10 @@
+using DG.Tweening;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Loading : MonoBehaviour
+public class UI_Loading : UI_Scene
 {
     [SerializeField] private float _fadeTime = 3f;
     [SerializeField] private float _waitTimeAfterFade = 1f;
@@ -13,10 +14,12 @@ public class UI_Loading : MonoBehaviour
     [SerializeField] private Image _worldImage;
     [SerializeField] private Image _fadeImage;
     [SerializeField] private Image _glitchPanel;
+    [SerializeField] private Image _vinterSubImage;
 
     [SerializeField] private TMP_Text _tipText;
     [SerializeField] private TMP_Text _worldText;
     [SerializeField] private TMP_Text _warningText;
+    [SerializeField] private TMP_Text _vinterWorldText;
 
     private LoadingSceneData _loadingSceneData;
 
@@ -27,6 +30,7 @@ public class UI_Loading : MonoBehaviour
         _progressBar.fillAmount = 0f;
 
         _loadingSceneData = Managers.DB.GetLoadingSceneData(Managers.World.CurrentWorldType);
+        _worldImage.sprite = _loadingSceneData.backgroundImage;
 
         yield return StartCoroutine(GetLoadingSequence());
 
@@ -43,9 +47,32 @@ public class UI_Loading : MonoBehaviour
             case WorldType.Pelmanus:
                 yield return PelmanusLoadingSequence();
                 break;
-            default:
+            case WorldType.Vinter:
+                StartCoroutine(ChangeSpriteRoutine());
                 yield return DefaultLoadingSequence();
                 break;
+            default:
+
+
+
+
+                yield return DefaultLoadingSequence();
+                break;
+        }
+    }
+
+    private IEnumerator ChangeSpriteRoutine()
+    {
+        _vinterSubImage.gameObject.SetActive(true);
+        _vinterWorldText.gameObject.SetActive(true);
+        Sprite[] sprites = _loadingSceneData.subImages.ToArray();
+        int maxIndex = sprites.Length;
+        int currentIndex = 0;
+        while (true)
+        {
+            yield return WaitForSecondsCache.Get(0.5f);
+            currentIndex = (currentIndex + 1) % sprites.Length;
+            _vinterSubImage.sprite = sprites[currentIndex];
         }
     }
 
@@ -77,11 +104,11 @@ public class UI_Loading : MonoBehaviour
     private IEnumerator GangrilLoadingSequence()
     {
         yield return FillProgressBar(0.5f, 3f);
-        yield return new WaitForSeconds(1f);
+        yield return WaitForSecondsCache.Get(1f);
         yield return StartCoroutine(_tipText.CoTypingEffect(_loadingSceneData.tip, 0.3f));
         yield return FillProgressBar(1f, 1f);
         yield return StartCoroutine(_tipText.CoBlinkText(3, 0.2f));
-        yield return new WaitForSeconds(2f);  // NoiseEffect() 제거
+        yield return WaitForSecondsCache.Get(2f);  // NoiseEffect() 제거
     }
 
     private IEnumerator FillProgressBar(float target, float duration)

@@ -20,7 +20,7 @@ public class UI_BookSelectWorldSpace : UI_Base, IPointerEnterHandler, IPointerEx
 	//private Vector3 defalultScale1;
 	//private Vector3 defalultScale2;
 
-	private SpriteClickHandler _book;
+	private LibraryBook _book;
     public override void Init()
 	{
 		_selectImage1.gameObject.BindEvent(OnClickOpenBook);
@@ -29,37 +29,25 @@ public class UI_BookSelectWorldSpace : UI_Base, IPointerEnterHandler, IPointerEx
 		defaultColor1 = _selectImage1.color;
 		defaultColor2 = _selectImage2.color;
 
-		//defalultScale1 = _selectImage1.transform.localScale;
-		//defalultScale2 = _selectImage2.transform.localScale;
-
 		SetTransform();
 	}
 
-	public void Init(SpriteClickHandler book)
+	public void Init(LibraryBook book)
 	{
 		bookTransform = book.gameObject;
 		_book = book;
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-			_book.SetCanClicked();
-			_book.StartBlink();
-            Destroy(gameObject);
-        }
-    }
 
     private void OnClickOpenBook(PointerEventData eventData)
 	{
-		Destroy(gameObject);
+        Managers.Resource.Destroy(gameObject);
 		var ui = Managers.UI.ShowPopupUI<UI_BookPopup>();
 		ui.Init(_book);
 	}
 
 	private void OnClickdecision(PointerEventData eventData)
 	{
-		Destroy(gameObject);
+        Managers.Resource.Destroy(gameObject);
 		var ui = Managers.UI.ShowPopupUI<UI_NoticePopup>();
 		ui.Init(_book);
 	}

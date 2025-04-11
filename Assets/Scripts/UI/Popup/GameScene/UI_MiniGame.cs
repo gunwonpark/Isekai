@@ -44,6 +44,8 @@ public class UI_MiniGame : UI_Popup
     private bool _isTextShowed = false;
     int _pressedKeyCount = 0;
 
+    public event Action onMiniGameSucced;
+
     public void Init(MiniGameInfo miniGameInfo, SpawnInfo spawnInfo, KeySpriteFactory keySpriteFactory)
     {
         SetMiniGameInfo(miniGameInfo);
@@ -289,6 +291,7 @@ public class UI_MiniGame : UI_Popup
         if (_currentGaugeValue >= 100f)
         {
             EndMiniGame(true);
+            onMiniGameSucced?.Invoke();
         }
     }
 

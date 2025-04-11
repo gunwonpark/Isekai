@@ -8,6 +8,8 @@ public struct LoadingSceneData
     public string name;
     public WorldType worldType;
     public string tip;
+    public Sprite backgroundImage;
+    public List<Sprite> subImages;
 }
 
 [System.Serializable]
@@ -41,6 +43,24 @@ public struct PlayerData
     public List<float> moveSpeed;
 }
 
+[System.Serializable]
+public struct LoadingGameSceneData
+{
+    public WorldType worldType;
+    public List<string> todoList;
+    public string diary;
+    public string startDate;
+    public string endDate;
+    public string worldName;
+}
+
+[System.Serializable]
+public struct EndingSceneData
+{
+    public List<string> newsDialog;
+    public List<string> finalDialog;
+}
+
 [CreateAssetMenu(fileName = "DB", menuName = "ScriptableObject/DB", order = 0)]
 public class DB : ScriptableObject
 {
@@ -55,6 +75,16 @@ public class DB : ScriptableObject
 
     [SerializeField] private PlayerData playerData = new();
     private PlayerData _sudoPlayerData = new();
+
+    [SerializeField] private List<LoadingGameSceneData> loadingGameSceneDataList = new();
+    private Dictionary<WorldType, LoadingGameSceneData> loadingGameSceneDataDic = new();
+
+    [SerializeField] private EndingSceneData endingSceneData;
+
+    [SerializeField] private List<SoundData> soundDatas = new();
+    private Dictionary<string, SoundData> soundDataDic = new();
+
+
     public void Init()
     {
 //        #region 치트수정 방지용
@@ -99,6 +129,12 @@ public class DB : ScriptableObject
             }
         }
 
+        loadingGameSceneDataDic.Clear();
+        foreach (var data in loadingGameSceneDataList)
+        {
+            loadingGameSceneDataDic.Add(data.worldType, data);
+        }
+
         // 데이터 참조지역 추후 초기화
         _sudoPlayerData = playerData;
     }
@@ -122,6 +158,11 @@ public class DB : ScriptableObject
         return new RealGameSceneData();
     }
 
+    public EndingSceneData GetEndingSceneData()
+    {
+        return endingSceneData;
+    }
+
     public WorldInfo GetGameSceneData(WorldType worldType)
     {
         if (gameSceneDataDic.TryGetValue(worldType, out WorldInfo data))
@@ -137,8 +178,16 @@ public class DB : ScriptableObject
         return _sudoPlayerData;
     }
 
+    public LoadingGameSceneData GetLoadingGameSceneData(WorldType worldType)
+    {
+        if (loadingGameSceneDataDic.TryGetValue(worldType, out LoadingGameSceneData data))
+        {
+            return data;
+        }
+        return new LoadingGameSceneData();
+    }
 
-    // For Test
+    // 전역데이터 수정 방지용
     public void SetGameSceneData(WorldType worldType, GameSceneData data)
     {
         switch (data.worldType)

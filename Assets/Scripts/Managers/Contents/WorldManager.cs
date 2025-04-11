@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class WorldManager
 {
-    private WorldType _currentWorldType = WorldType.Vinter;
+    private WorldType _currentWorldType = WorldType.Gang;
     public List<bool> isWorldClear;
     public WorldType CurrentWorldType
     {
         get { return _currentWorldType; }
         set { _currentWorldType = value; }
     }
-
-
     public void Init()
     {
         isWorldClear = new List<bool>();
@@ -21,17 +19,14 @@ public class WorldManager
             isWorldClear.Add(false);
         }
     }
-
     public void WorldClear()
     {
         isWorldClear[(int)CurrentWorldType] = true;
     }
-
     public void MoveNextWorld()
     {
         CurrentWorldType++;
     }
-
     public WorldInfo GetWorldInfo()
     {
         WorldInfo worldInfo = null;
@@ -53,7 +48,6 @@ public class WorldManager
             default:
                 break;
         }
-
         return worldInfo;
     }
 }

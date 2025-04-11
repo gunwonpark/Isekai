@@ -12,7 +12,7 @@ public class UI_BookPopup : UI_Popup
 	[SerializeField] private Button _AnyClick;
 	[SerializeField] Material[] _material;
 	private MeshRenderer _meshRenderer;
-	private SpriteClickHandler _book;
+	private LibraryBook _book;
 
 	public override void Init()
 	{
@@ -23,7 +23,7 @@ public class UI_BookPopup : UI_Popup
 		_meshRenderer.material = _material[0];
 	}
 
-	public void Init(SpriteClickHandler book)
+	public void Init(LibraryBook book)
 	{
         _book = book;
     }
@@ -31,7 +31,7 @@ public class UI_BookPopup : UI_Popup
 	public void ClosePopup()
 	{
         _book.SetCanClicked();
-		_book.StartBlink();
+		_book.StartFingerBlink();
         Managers.UI.ClosePopupUI(this);
 	}
 
@@ -90,6 +90,6 @@ public class UI_BookPopup : UI_Popup
 
 	private void OnDestroy()
 	{
-		_meshRenderer.material = _material[1];		
-	}
+		_meshRenderer.material = _material[1];
+    }
 }

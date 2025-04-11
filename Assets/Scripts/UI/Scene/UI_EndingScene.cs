@@ -6,38 +6,68 @@ using TMPro;
 public class UI_EndingScene : UI_Scene
 {
 	[SerializeField] private TMP_Text _newsText;       // 뉴스 대사 텍스트
-	[SerializeField] private TMP_Text _titleText;      // 제목 텍스트
+	[SerializeField] private TMP_Text _finalText;      // 검은화면 텍스트
+    [SerializeField] private GameObject _bubbleImage;  // 말풍선 이미지
+
+    [SerializeField] private Image _fadeImage;
 
 	[SerializeField] private AudioSource _effect;
+
+    private EndingSceneData _sceneData;
 	public override void Init()
 	{
 		base.Init();
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = Camera.main;
 
-		_newsText.text = "";       // 뉴스 텍스트 초기화
-		_titleText.text = "";      // 제목 텍스트 초기화
+        _sceneData = Managers.DB.GetEndingSceneData();
+
+        _newsText.text = "";       // 뉴스 텍스트 초기화
+		_finalText.text = "";      // 제목 텍스트 초기화
+        _bubbleImage.SetActive(false); // 말풍선 이미지 비활성화
 
         StartCoroutine(PlayEndingSequence());
 	}
 
 	private IEnumerator PlayEndingSequence()
 	{
-		yield return new WaitForSeconds(3f);
-        _effect.Play();
-        // 뉴스 대사 타이핑 효과
-        string newsDialogue = "속보입니다.\n최근 '이세계'에 빠져 '이 세계'의 자신을 잃어가는 사례가 급증하고 있다는 보고입니다.\n전문가들은 이러한 현상을 두고 <color=red><b>'이세계 증후군'</b></color>이라는 이름을 붙였습니다.";
-		yield return StartCoroutine(TypeEffect(_newsText, newsDialogue, 0.05f));
+		yield return new WaitForSeconds(0.5f);
+        _bubbleImage.SetActive(true); // 말풍선 이미지 활성화
 
-		// 대사 출력 완료 후 2초 대기
-		yield return new WaitForSeconds(2f);
-		_newsText.gameObject.SetActive(false);
+        _newsText.text = _sceneData.newsDialog[0];
 
-		// 제목 텍스트 페이드 인
-		_titleText.text = "이세계 증후군";
-		yield return StartCoroutine(FadeText(_titleText, 0f, 1f, 2f));
+        yield return WaitForSecondsCache.Get(1.5f); // 1초 대기
+        // 뉴스 텍스트 출력
+        for (int i = 1; i < _sceneData.newsDialog.Count; i++)
+        {
+            yield return StartCoroutine(TypeEffect(_newsText, _sceneData.newsDialog[i], 0.1f));
+        }
 
-		// 메인 화면으로 전환
-		Managers.Scene.LoadScene(Scene.TitleScene); // Main Title Scene으로 전환
-	}
+        // 화면 fadeOut
+        yield return StartCoroutine(_fadeImage.CoFadeOut(1f));
+        
+        yield return WaitForSecondsCache.Get(1f); // 1초 대기
+
+        // 검은 화면상의 텍스트 출력
+        foreach (var finalDialogue in _sceneData.finalDialog)
+        {
+            yield return StartCoroutine(TypeEffect(_finalText, finalDialogue, 0.1f));
+        }
+
+        _finalText.text = "";
+
+        yield return WaitForSecondsCache.Get(2f);
+
+        // 추후 비디오 영상으로 변경
+
+        // 텍스트 size 90으로 변경
+        _finalText.fontSize = 90;
+        yield return StartCoroutine(TypeEffect(_finalText, "이세계 증후군", 0.1f));
+
+        // 메인 화면으로 전환
+        //Managers.Scene.LoadScene(Scene.TitleScene); // Main Title Scene으로 전환
+    }
 
     // 텍스트 타이핑 효과
     private IEnumerator TypeEffect(TMP_Text textComponent, string content, float typingSpeed)
@@ -64,13 +94,11 @@ public class UI_EndingScene : UI_Scene
             }
             else if (c == '\n') // 줄바꿈 처리
             {
-                _effect.Stop();
                 yield return new WaitForSeconds(1.0f); // 줄바꿈 대기
                 yield return StartCoroutine(FadeText(textComponent, 1f, 0f, 1f));
 
                 textComponent.text = ""; // 텍스트 초기화
                 textComponent.color = new Color(textComponent.color.r, textComponent.color.g, textComponent.color.b, 1f);
-                _effect.Play();
             }
             else
             {
@@ -82,7 +110,6 @@ public class UI_EndingScene : UI_Scene
         }
 
         yield return new WaitForSeconds(0.5f); // 효과 마무리 시간
-        _effect.Stop();
     }
 
     // 텍스트 페이드 효과

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
 
@@ -33,6 +35,9 @@ public class GameSceneEx : BaseScene
     [Header("포탈 위치")]
     [SerializeField] private float _potalSpawnOffsetX = 8f;
     [SerializeField] private float _potalSpawnOffsetY = -2.5f;
+
+    [Header("포스트 프로세싱")]
+    [SerializeField] private Volume _volume;
     protected override void Init()
 	{
 		base.Init();
@@ -84,6 +89,42 @@ public class GameSceneEx : BaseScene
             Managers.UI.ShowPopupUI<UI_GameOver>();
         }
 	}
+
+    //Film Grain, Vignette, Chromatic Aberration조절
+    public void SetPostProcessing(int strength)
+    {
+        
+        switch (strength) 
+        {
+            case 1:
+                AdjustVolume(0.05f, 0.1f, 0.3f);
+                break;
+            case 2:
+                AdjustVolume(0.1f, 0.3f, 0.5f);
+                break;
+            case 3:
+                AdjustVolume(0.15f, 0.4f, 0.7f);
+                break;
+        }
+
+    }
+
+    private void AdjustVolume(float filmIntensity, float vignetteIntensity, float chromaticAberrationIntensity)
+    {
+        _volume.gameObject.SetActive(true);
+        if (_volume.profile.TryGet(out FilmGrain filmGrain))
+        {
+            filmGrain.intensity.Override(filmIntensity);
+        }
+        if (_volume.profile.TryGet(out Vignette vignette))
+        {
+            vignette.intensity.Override(vignetteIntensity);
+        }
+        if (_volume.profile.TryGet(out ChromaticAberration chromaticAberration))
+        {
+            chromaticAberration.intensity.Override(chromaticAberrationIntensity);
+        }
+    }
 
     private IEnumerator EnterEndingScene()
     {
