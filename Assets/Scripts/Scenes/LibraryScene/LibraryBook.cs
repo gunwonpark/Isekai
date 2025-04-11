@@ -3,52 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// 책 hover시 이벤트
+/// 책 클릭유도 이벤트 정의
+/// </summary>
 public class LibraryBook : MonoBehaviour
 {
 	[SerializeField] private SpriteRenderer _mouseRenderer;
+    [SerializeField] private BoxCollider2D _collider;
+	[SerializeField] private bool _isClicked = false;           // 클릭되었는지 여부
+    [SerializeField] private float _fingerBlinkSpeed = 0.8f;    // 손가락 깜박거림 대기시간
 
-	[SerializeField] private bool _isClicked = false;
-	
-    private void Awake()
+    // 초기 책 상태 설정
+    public void Init()
     {
-        foreach (Transform child in transform)
-        {
-            _mouseRenderer = child.GetComponent<SpriteRenderer>();
-            if (_mouseRenderer != null)
-            {
-                break;
-            }
-        }
         _mouseRenderer.enabled = false;
     }
 
-    
-
     public void StartFingerBlink()
     {
-        StartCoroutine(FingerBlink());
+        StartCoroutine(CoFingerBlink());
     }
 
-    public void StopBlink()
+    public void StopFingerBlink()
     {
         StopAllCoroutines();
         _mouseRenderer.enabled = false;
     }
 
-    // 책 클릭이 가능하게 해준다
+    // 책 클릭 초기화
     public void SetCanClicked()
 	{
         _isClicked = false;
+        _collider.enabled = true;
     }
 
-    // 손가락 깜박거림 표시
-    private IEnumerator FingerBlink()
+    // 손가락 깜박거림
+    private IEnumerator CoFingerBlink()
     {
         while (true)
         {
             _mouseRenderer.enabled = !_mouseRenderer.enabled;
 
-            yield return new WaitForSeconds(0.8f);
+            yield return WaitForSecondsCache.Get(_fingerBlinkSpeed);
         }
     }
 
@@ -59,8 +56,23 @@ public class LibraryBook : MonoBehaviour
             var ui = Managers.UI.MakeWorldSpaceUI<UI_BookSelectWorldSpace>();
             ui.Init(this);
 
-            StopBlink();
+            StopFingerBlink();
             _isClicked = true;
+        }
+    }
+
+    // 초기화
+    private void Reset()
+    {
+        _collider = GetComponent<BoxCollider2D>();
+        foreach (Transform child in transform)
+        {
+            SpriteRenderer sr = child.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                _mouseRenderer = sr;
+                break;
+            }
         }
     }
 }

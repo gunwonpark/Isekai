@@ -8,44 +8,28 @@ using UnityEngine.UI;
 
 public class HappinessHUD : UI_Scene
 {
+	
+	// 행복도에 따른 이미지 변경 요소
 	[SerializeField] private Image _gaugeBarImage;
 	[SerializeField] private Image _happyImage;
 	[SerializeField] List<Sprite> _happySprites;
+
+
     [SerializeField] private Volume _volume;
-    [SerializeField] private ColorAdjustments _color;
 
-
-	private List<Color> _colors;
-
-	private void Awake()
-	{
-        _volume.profile.TryGet(out _color);
-    }
+    private ColorAdjustments _color;
 
 	public override void Init()
 	{
 		base.Init();
 
-		Canvas canvas = GetComponent<Canvas>();
+        _volume.profile.TryGet(out _color);
+
+        Canvas canvas = GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         canvas.worldCamera = Camera.main;
 		canvas.planeDistance = 1;
 
-        // not used
-        _colors = new List<Color>()
-		{
-			new Color32(254,215,0, 255),
-			new Color32(198,145,43,255),
-			new Color32(170, 120, 56, 255),
-			new Color32(142,100,62, 255),
-			new Color32(85,64,56,255),
-			new Color32(58,51,45,255),
-			new Color32(35,32,26,255),
-			new Color32(23,21,15,255),
-			new Color32(18,18,11,255),
-			new Color32(1, 0, 0, 255)
-		};
-		
         _gaugeBarImage.fillAmount = Managers.Happy.Happiness / Managers.Happy.MaxHappiness;
 		UpdateHappinessUI(Managers.Happy.Happiness);		
 	}

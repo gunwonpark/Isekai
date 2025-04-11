@@ -6,8 +6,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public abstract class UI_Base : MonoBehaviour
-{
-	protected Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
+{	
+	/// <summary>
+	/// Start에서 초기화 되는 함수
+	/// </summary>
 	public abstract void Init();
 
 	private void Start()
@@ -15,6 +17,10 @@ public abstract class UI_Base : MonoBehaviour
 		Init();
 	}
 
+	/// <summary>
+	/// 이미지 클릭,드래그, 마우스의 이벤트에 발생하는 이벤트 바인딩
+	/// 현재는 Click과 Drag만 존재
+	/// </summary>
 	public static void BindEvent(GameObject go, Action<PointerEventData> action, UIEvent type = UIEvent.Click)
 	{
 		UI_EventHandler evt = Util.GetOrAddComponent<UI_EventHandler>(go);

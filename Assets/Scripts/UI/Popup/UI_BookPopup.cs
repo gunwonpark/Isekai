@@ -11,6 +11,7 @@ public class UI_BookPopup : UI_Popup
 	[SerializeField] private TMP_Text _TitleText;
 	[SerializeField] private Button _AnyClick;
 	[SerializeField] Material[] _material;
+
 	private MeshRenderer _meshRenderer;
 	private LibraryBook _book;
 
@@ -19,7 +20,8 @@ public class UI_BookPopup : UI_Popup
 		base.Init();
 		SetText();
 
-		_meshRenderer = GameObject.Find("Quad").GetComponent<MeshRenderer>();
+		// LibraryScene에서 관리 예정
+		_meshRenderer = GameObject.Find("BG").GetComponent<MeshRenderer>();
 		_meshRenderer.material = _material[0];
 	}
 

@@ -11,6 +11,7 @@ public class UI_GangrilNotice : UI_Base
     [SerializeField] private TMP_Text _noticeText;
     [SerializeField] private TMP_Text _warningText;
     [SerializeField] private Transform _noticeImage;
+    [SerializeField] private Image _fadeImage;
 
     private int _index;
 
@@ -44,7 +45,7 @@ public class UI_GangrilNotice : UI_Base
                 break;
         }
 
-        _checkToggle.onValueChanged.AddListener(OnCheckToggleChanged);
+        _checkToggle.onValueChanged.AddListener(OnCheckToggleIsOn);
 
     }
 
@@ -55,14 +56,14 @@ public class UI_GangrilNotice : UI_Base
     }
 
     // 3번까지 Notice창이 생성된다 3번 인덱스 에서는 게임씬으로 넘어간다.
-    private void OnCheckToggleChanged(bool isOn)
+    private void OnCheckToggleIsOn(bool isOn)
     {
         if (!isOn) return;
 
 
         if (_index == 3)
         {
-            Managers.Scene.LoadScene(Scene.GameScene);
+            StartCoroutine(EnterGameScene());
         }
         else
         {
@@ -71,6 +72,12 @@ public class UI_GangrilNotice : UI_Base
             ui.Init(_index + 1);
             Managers.Resource.Destroy(gameObject);
         }
+    }
+
+    private IEnumerator EnterGameScene()
+    {
+        yield return StartCoroutine(_fadeImage.CoFadeOut(1f));
+        Managers.Scene.LoadScene(Scene.GameScene);
     }
 
     public override void Init()
