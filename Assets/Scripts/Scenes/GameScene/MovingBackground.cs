@@ -13,7 +13,7 @@ public class MovingBackground : MonoBehaviour
    
     private void Start()
     {
-        _playerController = GameSceneEx.player.GetComponent<PlayerController>();
+        _playerController = GameObject.FindObjectOfType<PlayerController>();
         _material = GetComponent<SpriteRenderer>().material;
         _playerController.OnPlayerMove += MoveBackgound;
     }

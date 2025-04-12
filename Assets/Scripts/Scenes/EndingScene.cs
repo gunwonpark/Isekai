@@ -20,8 +20,8 @@ public class EndingScene : BaseScene
         yield return WaitForSecondsCache.Get(2f);
         _mainCameraAni.SetTrigger("CloseIn");
         yield return WaitForSecondsCache.Get(2f);
-        //_noiseImage.SetActive(false);
         _noiseImage.GetComponent<Animator>().enabled = false;
+        //_noiseImage.SetActive(false);
         _newsImage.SetActive(true);
         yield return WaitForSecondsCache.Get(2f);
         _mainCameraAni.SetTrigger("CloseOut");

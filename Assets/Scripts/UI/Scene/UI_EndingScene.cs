@@ -2,16 +2,16 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Video;
 
 public class UI_EndingScene : UI_Scene
 {
 	[SerializeField] private TMP_Text _newsText;       // 뉴스 대사 텍스트
 	[SerializeField] private TMP_Text _finalText;      // 검은화면 텍스트
     [SerializeField] private GameObject _bubbleImage;  // 말풍선 이미지
-
     [SerializeField] private Image _fadeImage;
 
-	[SerializeField] private AudioSource _effect;
+    [SerializeField] private VideoPlayer _endingVideoPlayer; // 마지막 글자 글리지 효과
 
     private EndingSceneData _sceneData;
 	public override void Init()
@@ -34,13 +34,15 @@ public class UI_EndingScene : UI_Scene
 	{
 		yield return new WaitForSeconds(0.5f);
         _bubbleImage.SetActive(true); // 말풍선 이미지 활성화
-
+        
         _newsText.text = _sceneData.newsDialog[0];
+        ResizeBubbleImage(_sceneData.newsDialog[0]); // 말풍선 이미지 크기 조정
 
         yield return WaitForSecondsCache.Get(1.5f); // 1초 대기
         // 뉴스 텍스트 출력
         for (int i = 1; i < _sceneData.newsDialog.Count; i++)
         {
+            ResizeBubbleImage(_sceneData.newsDialog[i]);
             yield return StartCoroutine(TypeEffect(_newsText, _sceneData.newsDialog[i], 0.1f));
         }
 
@@ -59,14 +61,24 @@ public class UI_EndingScene : UI_Scene
 
         yield return WaitForSecondsCache.Get(2f);
 
-        // 추후 비디오 영상으로 변경
-
-        // 텍스트 size 90으로 변경
-        _finalText.fontSize = 90;
-        yield return StartCoroutine(TypeEffect(_finalText, "이세계 증후군", 0.1f));
+        // 비디오 효과로 글리치 효과
+        _endingVideoPlayer.gameObject.SetActive(true); // 비디오 플레이어 활성화
+        yield return WaitForSecondsCache.Get(3f); // 0.5초 대기
 
         // 메인 화면으로 전환
         //Managers.Scene.LoadScene(Scene.TitleScene); // Main Title Scene으로 전환
+    }
+
+    // 말풍선 이미지를 targetText의 크기에 맞게 조정한다
+    private void ResizeBubbleImage(string targetText)
+    {
+        RectTransform bubbleRectTransform = _bubbleImage.GetComponent<RectTransform>();
+        // 텍스트 크기를 계산한다
+        Vector2 textSize = _newsText.GetPreferredValues(targetText);
+        // 말풍선 이미지의 크기를 조정한다
+        bubbleRectTransform.sizeDelta = new Vector2(textSize.x + 60, textSize.y + 30); // 여백 추가
+        // 텍스트 위치 살짝 아래로 조정
+        _newsText.rectTransform.anchoredPosition = new Vector2(0, -5f);
     }
 
     // 텍스트 타이핑 효과
