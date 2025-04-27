@@ -9,6 +9,8 @@
 
 ## 게임 화면
 
+![image](https://github.com/user-attachments/assets/6792f7b0-c6d7-4b75-8f4d-064f74e10d48)
+
 ![{4F468702-F718-4A61-92E1-F88BAA2390F8}](https://github.com/user-attachments/assets/a2cf3d69-aa0e-4a63-b220-42c51e90f7d1)
 
 
